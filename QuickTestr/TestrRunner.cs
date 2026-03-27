@@ -3,7 +3,6 @@ using QuickCheckr;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Proceedings;
-using QuickCheckr.UnderTheHood.Runners.InputShrinking.Bolts;
 using QuickFuzzr;
 
 namespace QuickTestr;
