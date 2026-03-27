@@ -17,14 +17,14 @@ Testr
 ```text
 ------------------------------------------------------------
   Parser matches golden model.
-  Seed: 997279118
+  Seed: 43650243
  ------------------------------------------------------------
   Falsified:
-    Input = "- 1 ^ 2"
-    Redux = "-1^2"
+    Input = "- (2 - 1 / 3 + 2) ^ (1 / 1 * 3 - 1 / 3 / 1 + 1 * 3 / 2 / 1) / (2 - 1 / 1) / (1 + 1 / 2 * 3 - 2 / 1 * 1 + 1 * 3)"
+    Redux = "-2^2"
 
   Original:
-    "- 1 ^ 2"
+    "- (2 - 1 / 3 + 2) ^ (1 / 1 * 3 - 1 / 3 / 1 + 1 * 3 / 2 / 1) / (2 - 1 / 1) / (1 + 1 / 2 * 3 - 2 / 1 * 1 + 1 * 3)"
  ------------------------------------------------------------
 ```
 
@@ -131,7 +131,7 @@ public static class ParseReducer
 Currently these challenges use a seeded state, because they are part of a regression test suite.
 
 At the time of writing however, this was not the case.
-The seeded report *is* representing the actual behaviour of QuickCheckr,
+The seeded report *is* representing the actual behaviour of QuickTestr,
 but for performance reasons we do not run deliberation policies everytime for instance.
   
 ### Bound5
@@ -186,8 +186,8 @@ public class H
   Seed: 472166887
  ------------------------------------------------------------
   Falsified:
-    Input = ( [ ], [ ], [ ], [ -23457 ], [ -25242 ] )
-    Redux = ( [ ], [ ], [ ], [ -7527 ], [ -25242 ] )
+    Input = ( _, _, _, [ -23457 ], [ -25242 ] )
+    Redux = ( _, _, _, [ -7527 ], [ -25242 ] )
 
   Original:
     ( [ ], [ ], [ ], [ -23457 ], [ -25242 ] )
