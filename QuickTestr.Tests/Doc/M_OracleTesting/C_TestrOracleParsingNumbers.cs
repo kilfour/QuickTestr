@@ -3,26 +3,23 @@ using QuickTestr.Tests.Tools.ThePress.Printing;
 using QuickPulse.Explains;
 using QuickCheckr;
 using QuickTestr.Tests.Doc.K_Examples.N_ParsingNumber.Model;
+using QuickTestr.Tests.Doc.K_Examples.N_ParsingNumber;
 
-namespace QuickTestr.Tests.Doc.K_Examples.N_ParsingNumber;
+namespace QuickTestr.Tests.Doc.M_OracleTesting;
 
 [DocFile]
-public class TestrParsingNumbers : TestrTest<TestrParsingNumbers>
+public class C_TestrOracleParsingNumbers : TestrTest<C_TestrOracleParsingNumbers>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
+    [DocContent("This test reuses the model, sut, fuzzr and reducer from the 'Testr Parsing Numbers' example.")]
     [DocTestrHeader]
     [DocTestr]
-    [DocContent("`.Run()` is called without arguments, so it performs the default 100.Runs().")]
     [DocReportHeader]
     [DocReport]
-    [DocBoldHeader("The Fuzzr")]
-    [DocExample(typeof(ParseFuzzr))]
-    [DocBoldHeader("The Reducer")]
-    [DocExample(typeof(ParseReducer))]
     public override void Example() =>
         Run(43650243);
 
@@ -35,21 +32,22 @@ public class TestrParsingNumbers : TestrTest<TestrParsingNumbers>
                     s => s.Simplify(Reduce.Function<string>(ParseReducer.Reducer, true))))
             .DisableValueReduction()
             .Deliberate(a => a.Length, 4)
-            .Assert(a => LostIn.Translation(a).Eval() == LostIn.FaultyTranslation(a).Eval());
+            .Expected(a => LostIn.Translation(a).Eval())
+            .Actual(a => LostIn.FaultyTranslation(a).Eval());
 
     protected override void Verify(Article article)
     {
-        Assert.Equal("Parser matches golden model.", article.FailureDescription());
-        Assert.Equal(1, article.Total().Executions());
-        Assert.Equal(1, article.Total().Actions());
-        Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(1, article.ShrinkCount);
-        Assert.Equal(1, article.Execution(1).Read().ExecutionId);
-        Assert.Equal("Run", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Expected", article.Execution(1).Action(2).Read().Label);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("\"- (2 - 1 / 3 + 2) ^ (1 / 1 * 3 - 1 / 3 / 1 + 1 * 3 / 2 / 1) / (2 - 1 / 1) / (1 + 1 / 2 * 3 - 2 / 1 * 1 + 1 * 3)\"", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("\"- (2 - 1 / 3 + 2) ^ (1 / 1 * 3 - 1 / 3 / 1 + 1 * 3 / 2 / 1) / (2 - 1 / 1) / (1 + 1 / 2 * 3 - 2 / 1 * 1 + 1 * 3)\"", article.Execution(1).Input(1).Read().Original.Value);
         Assert.Equal("\"-2^2\"", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.False(article.Execution(1).Input(1).Read().Labeled);
+        Assert.Equal("Expected", article.Execution(1).Trace(1).Read().Label);
+        Assert.Equal("-64.13024747087601", article.Execution(1).Trace(1).Read().Value);
+        Assert.False(article.Execution(1).Trace(1).Read().Labeled);
+        Assert.Equal("Actual  ", article.Execution(1).Trace(2).Read().Label);
+        Assert.Equal("NaN", article.Execution(1).Trace(2).Read().Value);
+        Assert.False(article.Execution(1).Trace(2).Read().Labeled);
     }
 }

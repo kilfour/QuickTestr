@@ -71,15 +71,11 @@ public class Bound5 : TestrTest<Bound5>
         Assert.Equal("The sum of all values is less than 5 * 256.", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(1, article.Total().Traces());
         // Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("( _, _, _, [ -23457 ], [ -25242 ] )", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("( _, _, _, [ -7527 ], [ -25242 ] )", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.False(article.Execution(1).Input(1).Read().Labeled);
-        Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("( [ ], [ ], [ ], [ -23457 ], [ -25242 ] )", article.Execution(1).Trace(1).Read().Value);
-        Assert.False(article.Execution(1).Trace(1).Read().Labeled);
     }
 }

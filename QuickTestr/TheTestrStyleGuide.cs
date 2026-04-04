@@ -7,6 +7,7 @@ using QuickPulse;
 
 namespace QuickTestr;
 
+public enum Styles { Default, Oracle }
 public static class TheTestr
 {
     private readonly static Flow<Flow> space =
@@ -20,14 +21,29 @@ public static class TheTestr
     private readonly static Flow<Flow> line =
         space.Then(LineOf(60)).Then(newLine);
 
+    private static Flow<Flow> TraceFlow(TraceDeposition trace)
+        => Pulse.Trace($"    {trace.Label} = {trace.Value}").Then(newLine);
+
     private static Flow<Flow> WarningFlow(WarningDeposition warning)
         => newLine.Then(Pulse.Trace($"   - WARNING: {warning.Value}"));
 
     private static Flow<Flow> InputFlow(InputDeposition input) =>
-        from _1 in Pulse.Trace($"    Input = {input.Value}").Then(newLine)
+        from style in Pulse.Draw<Styles>()
+        let spaces =
+            style switch
+            {
+                Styles.Default => " ",
+                Styles.Oracle => "    ",
+                _ => throw new ArgumentOutOfRangeException(nameof(style))
+            }
+        from _1 in Pulse.Trace($"    Input{spaces}= {input.Value}").Then(newLine)
         from _2 in Pulse.When(input.Redux.HasValue,
-            Pulse.Trace($"    Redux = {input.Redux.Value}").Then(newLine))
-        from _3 in Pulse.When(input.Original.HasValue,
+            Pulse.Trace($"    Redux{spaces}= {input.Redux.Value}").Then(newLine))
+        from traces in Pulse.Draw<List<TraceDeposition>>()
+        let hasTraces = traces.Count > 0
+        from _3 in Pulse.When(hasTraces, newLine)
+        from _4 in Pulse.ToFlowIf(hasTraces, a => TraceFlow(a), () => traces)
+        from _5 in Pulse.When(input.Original.HasValue,
             newLine
                 .Then(Pulse.Trace("  Original:"))
                 .Then(newLine)
@@ -35,7 +51,8 @@ public static class TheTestr
         select Flow.Continue;
 
     private static Flow<Flow> ExecutionFlow(ExecutionDeposition execution) =>
-        from _1 in newLine
+        from _0 in newLine
+        from _1 in Pulse.Prime(() => execution.TraceDepositions)
         from _2 in Pulse.ToFlow(InputFlow, execution.InputDepositions)
         from _3 in Pulse.ToFlow(WarningFlow, execution.GetWarningDepositionsForReport())
         from _4 in newLine.Then(space).Then(LineOf(60))
@@ -67,8 +84,16 @@ public static class TheTestr
     private static Flow<Flow> SummaryFlow(CaseSummary summary) =>
         Pulse.Trace($" {summary.NumberOfRuns} {Pluralize(summary.NumberOfRuns, "Run")}{Environment.NewLine}");
 
-    public static Flow<Flow> StyleGuide(CaseFile caseFile) =>
+    private static Flow<Flow> StyleGuide(CaseFile caseFile) =>
         from _1 in Pulse.ToFlowIf(caseFile.HasEvidence, EvidenceFlow, () => caseFile)
         from _2 in Pulse.OnType((CaseSummary a) => SummaryFlow(a), () => caseFile)
         select Flow.Continue;
+
+    public static Flow<Flow> DefaultStyleGuide(CaseFile caseFile) =>
+        Pulse.Prime(() => Styles.Default)
+            .Then(StyleGuide(caseFile));
+
+    public static Flow<Flow> OracleStyleGuide(CaseFile caseFile) =>
+        Pulse.Prime(() => Styles.Oracle)
+            .Then(StyleGuide(caseFile));
 }

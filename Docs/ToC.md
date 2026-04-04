@@ -1,4 +1,7 @@
     - [Testr Parsing Numbers](K_Examples/N_ParsingNumber/TestrParsingNumbers.md)
+  - [First Example](M_OracleTesting/A_FirstExample.md)
+  - [What If It Throws](M_OracleTesting/B_WhatIfItThrows.md)
+  - [Testr Oracle Parsing Numbers](M_OracleTesting/C_TestrOracleParsingNumbers.md)
   - [Testr Challenges](Y_Challenges/TestrChallenges.md)
     - [Bound5](Y_Challenges/A_Bound5/Bound5.md)
     - [Large Union List](Y_Challenges/B_LargeUnionList/LargeUnionList.md)

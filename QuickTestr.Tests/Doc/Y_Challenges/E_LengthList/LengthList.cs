@@ -23,7 +23,7 @@ and the challenge is to shrink this example to `[900]` reliably when using a PBT
 public class LengthList : TestrTest<LengthList>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
@@ -49,7 +49,6 @@ public class LengthList : TestrTest<LengthList>
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(1, article.Total().Traces());
         // Assert.Equal(14, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Run", article.Execution(1).Action(1).Read().Label);
@@ -57,8 +56,5 @@ public class LengthList : TestrTest<LengthList>
         Assert.Equal("[ 905 ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("[ 900 ]", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.False(article.Execution(1).Input(1).Read().Labeled);
-        Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ 176, 244, 257, 301, 257, 329, 381, 764, 442, 261, 535, 550, 677, 905 ]", article.Execution(1).Trace(1).Read().Value);
-        Assert.False(article.Execution(1).Trace(1).Read().Labeled);
     }
 }

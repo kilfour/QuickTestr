@@ -22,7 +22,7 @@ The expected smallest falsified sample is `[0, 1, -1]` or `[0, 1, 2]`.
 public class Distinct : TestrTest<Distinct>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
@@ -51,15 +51,11 @@ public class Distinct : TestrTest<Distinct>
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(1, article.Total().Traces());
         Assert.Equal(3, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Run", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ 3, _, 3 ]", article.Execution(1).Input(1).Read().Value);
         Assert.False(article.Execution(1).Input(1).Read().Labeled);
-        Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ 3, 9, 3, 9, 3 ]", article.Execution(1).Trace(1).Read().Value);
-        Assert.False(article.Execution(1).Trace(1).Read().Labeled);
     }
 }

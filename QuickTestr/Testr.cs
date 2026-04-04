@@ -29,6 +29,8 @@ public class TestrBuilder1<T>(FuzzrOf<T> fuzzr, Shrinker[] shrinkers, string tes
         => new(fuzzr, shrinkers, formatters, deliberation, deliberationTarget, testName, useBuiltInReducers);
     public TestrRunner<T> Assert(Func<T, bool> invariant)
         => new(fuzzr, shrinkers, formatters, invariant, null, null, testName, useBuiltInReducers);
+    public TestrOracleBuilder<T, TResult> Expected<TResult>(Func<T, TResult> expected)
+        => new(fuzzr, shrinkers, formatters, expected, null, null, testName, useBuiltInReducers);
 }
 
 public class TestrBuilder2<T>(
@@ -42,4 +44,6 @@ public class TestrBuilder2<T>(
 {
     public TestrRunner<T> Assert(Func<T, bool> invariant)
         => new(fuzzr, shrinkers, formatters, invariant, deliberation, deliberationTarget, testName, useBuiltInReducers);
+    public TestrOracleBuilder<T, TResult> Expected<TResult>(Func<T, TResult> expected)
+        => new(fuzzr, shrinkers, formatters, expected, deliberation, deliberationTarget, testName, useBuiltInReducers);
 }

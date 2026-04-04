@@ -20,7 +20,7 @@ For example, it would have to be able to transform one of [[0, 1, -1, 2, -2]] an
 public class LargeUnionList : TestrTest<LargeUnionList>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
@@ -43,15 +43,11 @@ public class LargeUnionList : TestrTest<LargeUnionList>
         Assert.Equal("No more than four distinct integers.", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(1, article.Total().Traces());
         // Assert.Equal(20, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ [ _, 17 ], [ 51 ], [ 6 ], [ 74 ] ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("[ [ _, 0 ], [ 1 ], [ 2 ], [ 3 ] ]", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.False(article.Execution(1).Input(1).Read().Labeled);
-        Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ [ 91, 42, 27, 37, 85, 85, 40, 91, 75 ], [ 43, 58, 67 ], [ 78, 1, 82, 71, 59, 69, 81, 5 ], [ 56, 7, 12, 35 ], [ 74, 37, 40, 98, 14, 28 ], [ 26, 71, 93, 9, 98, 27 ], [ ], [ 78, 39, 94, 60 ], [ 52, 60 ], [ 30, 10, 9, 9, 87, 99 ], [ 30, 74, 50, 82, 18, 38, 93 ], [ 45, 40, 18, 52 ], [ 89, 62, 60 ], [ 79, 61, 63, 17 ], [ 51 ], [ 6 ], [ 74 ] ]", article.Execution(1).Trace(1).Read().Value);
-        Assert.False(article.Execution(1).Trace(1).Read().Labeled);
     }
 }

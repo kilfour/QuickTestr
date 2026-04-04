@@ -24,7 +24,7 @@ One of the possible difficulties that might come up is the shrinking of recursiv
 public class Calculator : TestrTest<Calculator>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
@@ -111,7 +111,6 @@ public class Calculator : TestrTest<Calculator>
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(2, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(1, article.Total().Traces());
         Assert.Equal(8, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Rethrow", article.Execution(1).Action(1).Read().Label);
@@ -120,8 +119,5 @@ public class Calculator : TestrTest<Calculator>
         Assert.Equal("( _ / ( 2 / _ ) )", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("( _ / ( 0 / _ ) )", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.False(article.Execution(1).Input(1).Read().Labeled);
-        Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("{ Op: Div, L: { Value: 4 }, R: { Op: Div, L: { Value: 2 }, R: { Value: 3 } } }", article.Execution(1).Trace(1).Read().Value);
-        Assert.False(article.Execution(1).Trace(1).Read().Labeled);
     }
 }

@@ -126,6 +126,122 @@ public static class ParseReducer
         => string.Join("", tokens.Select(a => a.Text));
 }
 ```
+## First Example
+
+**The Testr:**  
+```csharp
+Testr.Named("AddBuggy Matches AddCorrect")
+    .For(Fuzzr.Tuple(Fuzzr.Int(), Fuzzr.Int()))
+    .Expected(a => AddCorrect(a.Item1, a.Item2))
+    .Actual(a => AddBuggy(a.Item1, a.Item2));
+```
+
+**Expected:**  
+```csharp
+public int AddCorrect(int a, int b) => a + b;
+```
+
+**Actual:**  
+```csharp
+public int AddBuggy(int a, int b) => a > 42 ? 0 : a + b;
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+  AddBuggy Matches AddCorrect
+  Seed: 1471595869
+ ------------------------------------------------------------
+  Falsified:
+    Input    = ( 94, _ )
+    Redux    = ( 43, _ )
+
+    Expected = 129
+    Actual   = 0
+
+  Original:
+    ( 94, 35 )
+ ------------------------------------------------------------
+```
+## What If It Throws
+
+**The Testr:**  
+```csharp
+Testr.Named("AddBuggy Matches AddCorrect")
+    .For(Fuzzr.Tuple(Fuzzr.Int(), Fuzzr.Int()))
+    .Expected(a => AddCorrect(a.Item1, a.Item2))
+    .Actual(a => AddBuggy(a.Item1, a.Item2));
+```
+
+**Expected:**  
+```csharp
+public int AddCorrect(int a, int b)
+{
+    if (a < 10)
+        ComputerSays.No<int>("a is too small");
+    return a + b;
+}
+```
+
+**Actual:**  
+```csharp
+public int AddBuggy(int a, int b)
+{
+    if (a <= 10)
+        ComputerSays.No<int>("a is too small");
+    return a + b;
+}
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+  AddBuggy Matches AddCorrect
+  Seed: 1055521326
+ ------------------------------------------------------------
+  Falsified:
+    Input    = ( 10, _ )
+
+    Expected = 23
+    Actual   = ComputerSaysNo: a is too small
+
+  Original:
+    ( 10, 13 )
+ ------------------------------------------------------------
+```
+## Testr Oracle Parsing Numbers
+This test reuses the model, sut, fuzzr and reducer from the 'Testr Parsing Numbers' example.  
+
+**The Testr:**  
+```csharp
+Testr
+    .Named("Parser matches golden model.")
+    .For(ParseFuzzr.Expression(),
+        Shrink.OnType<string>(
+            s => s.Simplify(Reduce.Function<string>(ParseReducer.Reducer, true))))
+    .DisableValueReduction()
+    .Deliberate(a => a.Length, 4)
+    .Expected(a => LostIn.Translation(a).Eval())
+    .Actual(a => LostIn.FaultyTranslation(a).Eval());
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+  Parser matches golden model.
+  Seed: 43650243
+ ------------------------------------------------------------
+  Falsified:
+    Input = "- (2 - 1 / 3 + 2) ^ (1 / 1 * 3 - 1 / 3 / 1 + 1 * 3 / 2 / 1) / (2 - 1 / 1) / (1 + 1 / 2 * 3 - 2 / 1 * 1 + 1 * 3)"
+    Redux = "-2^2"
+
+    Expected = -64.13024747087601
+    Actual   = NaN
+
+  Original:
+    "- (2 - 1 / 3 + 2) ^ (1 / 1 * 3 - 1 / 3 / 1 + 1 * 3 / 2 / 1) / (2 - 1 / 1) / (1 + 1 / 2 * 3 - 2 / 1 * 1 + 1 * 3)"
+ ------------------------------------------------------------
+```
 ## Testr Challenges
 
 Currently these challenges use a seeded state, because they are part of a regression test suite.

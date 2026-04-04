@@ -14,7 +14,7 @@ It is a basic example to validate that a library can reliably normalize simple s
 public class ReverseList : TestrTest<ReverseList>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
@@ -42,13 +42,10 @@ public class ReverseList : TestrTest<ReverseList>
         Assert.Equal("Reversing a list of integers results in the same list", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(1, article.Total().Traces());
         // Assert.Equal(5, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ _, 94 ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("[ _, 0 ]", article.Execution(1).Input(1).Read().Redux.Value);
-        Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("[ 76, 92, 75, 6, 94 ]", article.Execution(1).Trace(1).Read().Value);
     }
 }

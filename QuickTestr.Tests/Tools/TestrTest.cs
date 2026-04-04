@@ -10,7 +10,7 @@ namespace QuickTestr.Tests.Tools;
 
 public abstract class TestrTest<T> : QCTest<T>
 {
-    protected override Func<CaseFile, Flow<Flow>> StyleGuide => TheTestr.StyleGuide;
+    protected override Func<CaseFile, Flow<Flow>> StyleGuide => TheTestr.DefaultStyleGuide;
 
     protected class DocTestrHeaderAttribute() :
         DocBoldHeaderAttribute("The Testr");

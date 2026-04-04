@@ -7,7 +7,7 @@ using QuickPulse.Explains.Text;
 
 namespace QuickTestr.Tests.Verification.TestrProceedings;
 
-public class TestrDepositionsTests
+public class TestrOracleDepositionsTests
 {
     private readonly Dossier dossier =
         new(
@@ -21,7 +21,7 @@ public class TestrDepositionsTests
 
     private static LinesReader Transcribe(CaseFile caseFile)
     {
-        var result = TheClerk.Transcribes(caseFile, TheTestr.DefaultStyleGuide);
+        var result = TheClerk.Transcribes(caseFile, TheTestr.OracleStyleGuide);
         var reader = LinesReader.FromText(result);
         return reader;
     }
@@ -36,15 +36,21 @@ public class TestrDepositionsTests
                 {
                     Redux = Maybe.Just("1"),
                     Original = Maybe.Just("42")
-                }));
+                })
+                .AddTraceDeposition(new TraceDeposition("Expected", "42"))
+                .AddTraceDeposition(new TraceDeposition("Actual  ", "43"))
+                );
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Some Invariant", reader.NextLine());
         Assert.Equal("  Seed: 12345678", reader.NextLine());
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Falsified:", reader.NextLine());
-        Assert.Equal("    Input = 42", reader.NextLine());
-        Assert.Equal("    Redux = 1", reader.NextLine());
+        Assert.Equal("    Input    = 42", reader.NextLine());
+        Assert.Equal("    Redux    = 1", reader.NextLine());
+        Assert.Equal("", reader.NextLine());
+        Assert.Equal("    Expected = 42", reader.NextLine());
+        Assert.Equal("    Actual   = 43", reader.NextLine());
         Assert.Equal("", reader.NextLine());
         Assert.Equal("  Original:", reader.NextLine());
         Assert.Equal("    42", reader.NextLine());
@@ -52,3 +58,16 @@ public class TestrDepositionsTests
         Assert.True(reader.EndOfContent());
     }
 }
+
+// ------------------------------------------------------------
+//   AddBuggy Matches AddCorrect
+//   Seed: 1625330882
+//  ------------------------------------------------------------
+//   Falsified:
+//     Input    = ( 42, _ )
+//     Expected = 76
+//     Actual   = 0
+
+//   Original:
+//     ( 42, 34 )
+//  ------------------------------------------------------------

@@ -15,7 +15,7 @@ The smallest falsified sample is `[10, 6]`.
 public class Test2 : TestrTest<Test2>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
@@ -40,7 +40,6 @@ public class Test2 : TestrTest<Test2>
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(1, article.Total().Traces());
         Assert.Equal(3, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Run", article.Execution(1).Action(1).Read().Label);
@@ -48,8 +47,5 @@ public class Test2 : TestrTest<Test2>
         Assert.Equal("{ A: 37, B: 38 }", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("{ A: 10, B: 6 }", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.False(article.Execution(1).Input(1).Read().Labeled);
-        Assert.Equal("Original", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("{ A: 37, B: 38 }", article.Execution(1).Trace(1).Read().Value);
-        Assert.False(article.Execution(1).Trace(1).Read().Labeled);
     }
 }
