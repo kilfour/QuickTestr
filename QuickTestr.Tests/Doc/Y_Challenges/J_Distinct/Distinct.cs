@@ -31,7 +31,7 @@ public class Distinct : TestrTest<Distinct>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run();
+        Run(1943621438);
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>
