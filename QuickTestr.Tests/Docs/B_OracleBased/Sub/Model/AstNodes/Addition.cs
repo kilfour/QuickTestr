@@ -1,4 +1,4 @@
-namespace QuickTestr.Tests.Notes.K_Examples.N_ParsingNumber.Model.AstNodes;
+namespace QuickTestr.Tests.Docs.B_OracleBased.Sub.Model.AstNodes;
 
 public record Addition(AstNode Left, AstNode Right) : AstNode
 {

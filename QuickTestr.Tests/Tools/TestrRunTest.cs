@@ -1,10 +1,8 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using QuickTestr.Tests.Tools.ThePress;
-using QuickPulse.Explains;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse;
-using QuickCheckr;
 using QuickTestr.Tests.Tools.ThePress.Printing;
 
 namespace QuickTestr.Tests.Tools;

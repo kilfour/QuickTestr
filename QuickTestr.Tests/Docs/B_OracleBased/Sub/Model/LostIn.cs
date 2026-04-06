@@ -1,6 +1,6 @@
-using QuickTestr.Tests.Notes.K_Examples.N_ParsingNumber.Model.AstNodes;
+using QuickTestr.Tests.Docs.B_OracleBased.Sub.Model.AstNodes;
 
-namespace QuickTestr.Tests.Notes.K_Examples.N_ParsingNumber.Model;
+namespace QuickTestr.Tests.Docs.B_OracleBased.Sub.Model;
 
 public class LostIn
 {

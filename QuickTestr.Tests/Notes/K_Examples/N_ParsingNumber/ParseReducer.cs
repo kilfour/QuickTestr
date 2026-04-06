@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
-using QuickTestr.Tests.Notes.K_Examples.N_ParsingNumber.Model;
-using QuickTestr.Tests.Notes.K_Examples.N_ParsingNumber.Model.Lexing;
+using QuickTestr.Tests.Docs.B_OracleBased.Sub.Model;
+using QuickTestr.Tests.Docs.B_OracleBased.Sub.Model.Lexing;
 using QuickPulse.Explains;
 
 namespace QuickTestr.Tests.Notes.K_Examples.N_ParsingNumber;

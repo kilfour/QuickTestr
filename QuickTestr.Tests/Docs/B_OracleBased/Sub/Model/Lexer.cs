@@ -1,8 +1,8 @@
 using System.Text;
 using System.Text.RegularExpressions;
-using QuickTestr.Tests.Notes.K_Examples.N_ParsingNumber.Model.Lexing;
+using QuickTestr.Tests.Docs.B_OracleBased.Sub.Model.Lexing;
 
-namespace QuickTestr.Tests.Notes.K_Examples.N_ParsingNumber.Model;
+namespace QuickTestr.Tests.Docs.B_OracleBased.Sub.Model;
 
 public static partial class Lexer
 {

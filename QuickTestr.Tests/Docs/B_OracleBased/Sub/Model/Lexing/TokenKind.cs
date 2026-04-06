@@ -1,4 +1,4 @@
-﻿namespace QuickTestr.Tests.Notes.K_Examples.N_ParsingNumber.Model.Lexing;
+﻿namespace QuickTestr.Tests.Docs.B_OracleBased.Sub.Model.Lexing;
 
 public enum TokenKind
 {

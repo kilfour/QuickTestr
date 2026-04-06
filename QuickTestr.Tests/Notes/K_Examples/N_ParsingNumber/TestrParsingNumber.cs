@@ -2,8 +2,8 @@ using QuickTestr.Tests.Tools;
 using QuickTestr.Tests.Tools.ThePress.Printing;
 using QuickPulse.Explains;
 using QuickCheckr;
-using QuickTestr.Tests.Notes.K_Examples.N_ParsingNumber.Model;
 using QuickCheckr.StringReduction;
+using QuickTestr.Tests.Docs.B_OracleBased.Sub.Model;
 
 namespace QuickTestr.Tests.Notes.K_Examples.N_ParsingNumber;
 

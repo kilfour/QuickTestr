@@ -1,9 +1,8 @@
 # Moving On
-Now for something less trivial.  
-This is one of the `jqwik` challenges.  
+Now for something less trivial, one of the `jqwik` challenges.  
 
 The property we are testing states:  
-> No two different elements in a list, when used as indexes of said list, point to each other.  
+> No two different elements point to each other when used as indexes into the list.  
 
 **The Testr:**  
 ```csharp
@@ -25,8 +24,9 @@ Testr
         }));
 ```
 **Some Notes:**
-- `DisableValueReduction()`: By default QuickTestr tries to move ints towards zero, but in this case it's not necessary.
-- `Deliberate(a => a.Count, 2)`: This is a *Deliberation Policy*. It is used to escape local minima. In this case, we're looking for smaller lists.  
+- `DisableValueReduction()`: By default QuickTestr tries to move ints towards zero, but here that isn't necessary.
+- `Deliberate(a => a.Count, 2)`: This is a *Deliberation Policy*. It helps escape local minima during shrinking. In this case, we're looking for smaller lists.
+- The compositional abilities of QuickFuzzr allow us to generate only valid indexes, keeping inputs structurally sound.  
 
 **The Report:**  
 ```text

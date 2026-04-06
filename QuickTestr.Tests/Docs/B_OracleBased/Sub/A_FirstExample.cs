@@ -2,28 +2,28 @@ using QuickTestr.Tests.Tools;
 using QuickTestr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
-using QuickPulse.Instruments;
 
-namespace QuickTestr.Tests.Notes.M_OracleTesting;
+namespace QuickTestr.Tests.Docs.B_OracleBased.Sub;
 
 [DocFile]
-public class B_WhatIfItThrows : TestrOracleTest<B_WhatIfItThrows>
+public class A_FirstExample : TestrOracleTest<A_FirstExample>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
+    [DocContent("Starting out with a toy example once again, assume we have the following working method:")]
+    [DocExample(typeof(A_FirstExample), nameof(AddCorrect))]
+    [DocContent("And we want to compare it against a newer implementation:")]
+    [DocExample(typeof(A_FirstExample), nameof(AddBuggy))]
+    [DocContent("This implementation silently breaks when `a > 42`.")]
     [DocTestrHeader]
     [DocTestr]
-    [DocBoldHeader("Expected")]
-    [DocExample(typeof(B_WhatIfItThrows), nameof(AddCorrect))]
-    [DocBoldHeader("Actual")]
-    [DocExample(typeof(B_WhatIfItThrows), nameof(AddBuggy))]
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(1055521326);
+        Run(1471595869);
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>
@@ -39,35 +39,27 @@ public class B_WhatIfItThrows : TestrOracleTest<B_WhatIfItThrows>
         Assert.Equal(2, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(2, article.Total().Traces());
-        Assert.Equal(0, article.ShrinkCount);
+        Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Actual", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Expected", article.Execution(1).Action(2).Read().Label);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("( 10, _ )", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("( 10, 13 )", article.Execution(1).Input(1).Read().Original.Value);
+        Assert.Equal("( 94, _ )", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("( 94, 35 )", article.Execution(1).Input(1).Read().Original.Value);
+        Assert.Equal("( 43, _ )", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.False(article.Execution(1).Input(1).Read().Labeled);
         Assert.Equal("Expected", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("23", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal("129", article.Execution(1).Trace(1).Read().Value);
         Assert.False(article.Execution(1).Trace(1).Read().Labeled);
         Assert.Equal("Actual  ", article.Execution(1).Trace(2).Read().Label);
-        Assert.Equal("ComputerSaysNo: a is too small", article.Execution(1).Trace(2).Read().Value);
+        Assert.Equal("0", article.Execution(1).Trace(2).Read().Value);
         Assert.False(article.Execution(1).Trace(2).Read().Labeled);
     }
 
-    [CodeExample]
-    public int AddCorrect(int a, int b)
-    {
-        if (a < 10)
-            ComputerSays.No<int>("a is too small");
-        return a + b;
-    }
 
     [CodeExample]
-    public int AddBuggy(int a, int b)
-    {
-        if (a <= 10)
-            ComputerSays.No<int>("a is too small");
-        return a + b;
-    }
+    public int AddCorrect(int a, int b) => a + b;
+
+    [CodeExample]
+    public int AddBuggy(int a, int b) => a > 42 ? 0 : a + b;
 }

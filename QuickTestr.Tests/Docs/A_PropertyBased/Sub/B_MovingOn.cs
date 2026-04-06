@@ -12,7 +12,7 @@ namespace QuickTestr.Tests.Docs.A_PropertyBased.Sub;
 Now for something less trivial, one of the `jqwik` challenges.  
 
 The property we are testing states:  
-> No two different elements point to each other when used as indexes.
+> No two different elements point to each other when used as indexes into the list.
 """)]
 public class B_MovingOn : TestrPropertyTest<B_MovingOn>
 {

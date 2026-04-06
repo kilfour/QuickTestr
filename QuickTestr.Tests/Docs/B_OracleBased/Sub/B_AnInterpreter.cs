@@ -2,27 +2,25 @@ using QuickTestr.Tests.Tools;
 using QuickTestr.Tests.Tools.ThePress.Printing;
 using QuickPulse.Explains;
 using QuickCheckr;
-using QuickTestr.Tests.Notes.K_Examples.N_ParsingNumber;
 using QuickCheckr.StringReduction;
 using QuickTestr.Tests.Docs.B_OracleBased.Sub.Model;
 
-namespace QuickTestr.Tests.Notes.M_OracleTesting;
+namespace QuickTestr.Tests.Docs.B_OracleBased.Sub;
 
 [DocFile]
-public class C_TestrOracleParsingNumbers : TestrPropertyTest<C_TestrOracleParsingNumbers>
+public class B_AnInterpreter : TestrOracleTest<B_AnInterpreter>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
-    [DocContent("This test reuses the model, sut, fuzzr and reducer from the 'Testr Parsing Numbers' example.")]
     [DocTestrHeader]
     [DocTestr]
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(1026389787);
+        Run(443608219);
 
     private readonly char[] operators = ['+', '-', '*', '/', '^'];
 
@@ -30,19 +28,21 @@ public class C_TestrOracleParsingNumbers : TestrPropertyTest<C_TestrOracleParsin
     protected override ITestrRunner GetTestr() =>
         Testr
             .Named("Interpreter matches golden model.")
-            .For(ExpressionFuzzr.GetExpression(), ExpressionReducer())
-            .DisableValueReduction()
-            .Deliberate(a => a.Length, 4)
+            .For(ExpressionFuzzr.GetExpression(),
+                Shrink.OnType<string>(
+                    s => s.Simplify(
+                        // remove whitespace
+                        Select.While(char.IsWhiteSpace).Remove(),
+                        // remove balanced parentheses
+                        Select.Balanced('(', ')').Delimiters().Remove(),
+                        // remove operators + lhs number
+                        Select.While(char.IsDigit).OneOf(operators).Remove(),
+                        // remove unary minus noise
+                        Select.OneOf('-').OneOf('-').While(a => a == '-').Replace("-")
+                    )))
+            .Deliberate(a => a.Length, 4) // prefer smaller length strings
             .Expected(a => LostIn.Translation(a).Eval())
             .Actual(a => LostIn.FaultyTranslation(a).Eval());
-
-    private Shrinker ExpressionReducer() =>
-        Shrink.OnType<string>(s => s.Simplify(
-            Select.While(char.IsWhiteSpace).Remove(),
-            Select.Balanced('(', ')').Delimiters().Remove(),
-            Select.While(char.IsDigit).OneOf(operators).Remove(),
-            Select.OneOf(operators).While(char.IsDigit).Remove(),
-            Select.OneOf('-').OneOf('-').While(a => a == '-').Replace("-")));
 
     protected override void Verify(Article article)
     {
@@ -56,16 +56,17 @@ public class C_TestrOracleParsingNumbers : TestrPropertyTest<C_TestrOracleParsin
         Assert.Equal("Actual", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Expected", article.Execution(1).Action(2).Read().Label);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("\"2 ^ (1 / 3 - 2 * 1 / 1 + 3 + 2 / 1 / 3) / - 2 ^ 3 * - 3 ^ 2\"", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("\"2 ^ (1 / 3 - 2 * 1 / 1 + 3 + 2 / 1 / 3) / - 2 ^ 3 * - 3 ^ 2\"", article.Execution(1).Input(1).Read().Original.Value);
-        Assert.Equal("\"-3^2\"", article.Execution(1).Input(1).Read().Redux.Value);
+        Assert.Equal("\"1 ^ 1 ^ - 3 ^ 1 / - 1 ^ (2 / 2 + 1 - 3 / 3 / 3) * 3 - 1 ^ (2 - 2 / 1 + 2 / 1 / 3) + 3 / (1 + 3 + 2 * 3) / 2 * - 2 ^ 2\"", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("\"1 ^ 1 ^ - 3 ^ 1 / - 1 ^ (2 / 2 + 1 - 3 / 3 / 3) * 3 - 1 ^ (2 - 2 / 1 + 2 / 1 / 3) + 3 / (1 + 3 + 2 * 3) / 2 * - 2 ^ 2\"", article.Execution(1).Input(1).Read().Original.Value);
+        Assert.Equal("\"-2^2\"", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.False(article.Execution(1).Input(1).Read().Labeled);
         Assert.Equal("Expected", article.Execution(1).Trace(1).Read().Label);
-        Assert.Equal("4.5", article.Execution(1).Trace(1).Read().Value);
+        Assert.Equal("-4.6", article.Execution(1).Trace(1).Read().Value);
         Assert.False(article.Execution(1).Trace(1).Read().Labeled);
         Assert.Equal("Actual  ", article.Execution(1).Trace(2).Read().Label);
-        Assert.Equal("-4.5", article.Execution(1).Trace(2).Read().Value);
+        Assert.Equal("NaN", article.Execution(1).Trace(2).Read().Value);
         Assert.False(article.Execution(1).Trace(2).Read().Labeled);
+
     }
 }
 
