@@ -22,8 +22,5 @@ Testr.Named("Difference is not exactly 1.")
   Falsified:
     Input = { A: 51, B: 52 }
     Redux = { A: 10, B: 9 }
-
-  Original:
-    { A: 51, B: 52 }
  ------------------------------------------------------------
 ```

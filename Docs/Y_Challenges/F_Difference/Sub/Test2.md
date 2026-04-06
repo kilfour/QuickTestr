@@ -22,8 +22,5 @@ Testr.Named("Difference must not be small.")
   Falsified:
     Input = { A: 37, B: 38 }
     Redux = { A: 10, B: 6 }
-
-  Original:
-    { A: 37, B: 38 }
  ------------------------------------------------------------
 ```

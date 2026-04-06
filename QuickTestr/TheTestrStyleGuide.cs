@@ -22,7 +22,7 @@ public static class TheTestr
         space.Then(LineOf(60)).Then(newLine);
 
     private static Flow<Flow> TraceFlow(TraceDeposition trace)
-        => Pulse.Trace($"    {trace.Label} = {trace.Value}").Then(newLine);
+        => newLine.Then(Pulse.Trace($"    {trace.Label} = {trace.Value}"));
 
     private static Flow<Flow> WarningFlow(WarningDeposition warning)
         => newLine.Then(Pulse.Trace($"   - WARNING: {warning.Value}"));
@@ -36,16 +36,15 @@ public static class TheTestr
                 Styles.Oracle => "    ",
                 _ => throw new ArgumentOutOfRangeException(nameof(style))
             }
-        from _1 in Pulse.Trace($"    Input{spaces}= {input.Value}").Then(newLine)
+        from _1 in Pulse.Trace($"    Input{spaces}= {input.Value}")
         from _2 in Pulse.When(input.Redux.HasValue,
-            Pulse.Trace($"    Redux{spaces}= {input.Redux.Value}").Then(newLine))
+            newLine.Then(Pulse.Trace($"    Redux{spaces}= {input.Redux.Value}")))
         from traces in Pulse.Draw<List<TraceDeposition>>()
         let hasTraces = traces.Count > 0
         from _3 in Pulse.When(hasTraces, newLine)
-        from _4 in Pulse.ToFlowIf(hasTraces, a => TraceFlow(a), () => traces)
-        from _5 in Pulse.When(input.Original.HasValue,
-            newLine
-                .Then(Pulse.Trace("  Original:"))
+        from _4 in Pulse.ToFlow(a => TraceFlow(a), traces)
+        from _5 in Pulse.When(input.Original.HasValue && !Equals(input.Value, input.Original.Value),
+            newLine.Then(newLine).Then(Pulse.Trace("  Original:"))
                 .Then(newLine)
                 .Then(Pulse.Trace($"    {input.Original.Value!}")))
         select Flow.Continue;

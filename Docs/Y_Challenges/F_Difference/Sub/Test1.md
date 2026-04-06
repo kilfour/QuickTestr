@@ -22,8 +22,5 @@ Testr.Named("Difference must not be zero.")
   Falsified:
     Input = { A: 93, B: 93 }
     Redux = { A: 10, B: 10 }
-
-  Original:
-    { A: 93, B: 93 }
  ------------------------------------------------------------
 ```
