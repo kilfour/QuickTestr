@@ -88,44 +88,6 @@ In other words: less framework energy, more getting on with the test.
 * **Deterministic:** Failures come with seeds, so rerunning is straightforward.
 * **Good for oracle tests:** Compare a buggy implementation against a trusted model with minimal ceremony.
 
-## A More Realistic Example
-
-This is the kind of thing QuickTestr is very good at: compare a parser or evaluator against a golden model.
-
-```csharp
-Testr
-    .Named("Interpreter matches golden model.")
-    .For(ExpressionFuzzr.GetExpression(),
-        Shrink.OnType<string>(
-            s => s.Simplify(
-                // remove whitespace
-                Select.While(char.IsWhiteSpace).Remove(),
-                // remove balanced parentheses
-                Select.Balanced('(', ')').Delimiters().Remove(),
-                // remove operators + lhs number
-                Select.While(char.IsDigit).OneOf(operators).Remove(),
-                // remove unary minus noise
-                Select.OneOf('-').OneOf('-').While(a => a == '-').Replace("-")
-            )))
-    .Deliberate(a => a.Length, 4) // prefer smaller length strings
-    .Assert(a => LostIn.Translation(a).Eval() == LostIn.FaultyTranslation(a).Eval());
-```
-
-Which yields something like:
-
-```text
- ------------------------------------------------------------
-  Interpreter matches golden model.
-  Seed: 742123030
- ------------------------------------------------------------
-  Falsified:
-    Input = "(3 / 3 - 1 * 2 * 3 / 3 + 3 * 1 * 2 / 1) ^ 1 ^ (2 * 3 / 1) ^ 1 / - 2 ^ - 2 * - (2 / 1 * 3 / 2 - 2 * 2 - 3 * 3 * 2 + 3 * 1) * - 2 ^ (1 * 3 / 1 / 2 - 2 - 1 * 2 * 1 - 1) + 3 * - 2 ^ 2 / (3 * 1 / 2 - 3 / 3 * 2) ^ 2 * (3 * 3 * 2 / 2 - 2 / 3 / 3 / 2 - 2 - 3 * 2) ^ 2"
-    Redux = "-2^2"
- ------------------------------------------------------------
-```
-
-QuickTestr stays small at the call site, but still lets you bring in domain knowledge when the problem demands it.
-
 ## Basic Usage
 
 ### Define a property

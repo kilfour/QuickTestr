@@ -21,3 +21,10 @@
 ### Already Considered
 
 ## Other
+
+
+Testr
+    .Named("Interpreter matches golden model.")
+    .For(ExpressionFuzzr)
+    .Expected(a => LostIn.Translation(a).Eval())
+    .Actual(a => LostIn.FaultyTranslation(a).Eval());
