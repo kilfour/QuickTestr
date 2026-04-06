@@ -52,3 +52,6 @@ temp*.md
 .test-results/
 
 nuget.md
+
+Notes/
+DocsSinglePages/

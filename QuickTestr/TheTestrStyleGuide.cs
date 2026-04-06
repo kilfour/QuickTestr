@@ -24,6 +24,11 @@ public static class TheTestr
     private static Flow<Flow> TraceFlow(TraceDeposition trace)
         => newLine.Then(Pulse.Trace($"    {trace.Label} = {trace.Value}"));
 
+    private static Flow<Flow> TracesFlow(List<TraceDeposition> traces) =>
+        from _1 in Pulse.When(traces.Count > 0, newLine.Then(newLine).Then(Pulse.Trace("  Observed:")))
+        from _2 in Pulse.ToFlow(a => TraceFlow(a), traces)
+        select Flow.Continue;
+
     private static Flow<Flow> WarningFlow(WarningDeposition warning)
         => newLine.Then(Pulse.Trace($"   - WARNING: {warning.Value}"));
 
@@ -40,9 +45,7 @@ public static class TheTestr
         from _2 in Pulse.When(input.Redux.HasValue,
             newLine.Then(Pulse.Trace($"    Redux{spaces}= {input.Redux.Value}")))
         from traces in Pulse.Draw<List<TraceDeposition>>()
-        let hasTraces = traces.Count > 0
-        from _3 in Pulse.When(hasTraces, newLine)
-        from _4 in Pulse.ToFlow(a => TraceFlow(a), traces)
+        from _4 in Pulse.ToFlow(a => TracesFlow(a), traces)
         from _5 in Pulse.When(input.Original.HasValue && !Equals(input.Value, input.Original.Value),
             newLine.Then(newLine).Then(Pulse.Trace("  Original:"))
                 .Then(newLine)

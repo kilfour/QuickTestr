@@ -49,6 +49,7 @@ public class TestrOracleDepositionsTests
         Assert.Equal("    Input    = 42", reader.NextLine());
         Assert.Equal("    Redux    = 1", reader.NextLine());
         Assert.Equal("", reader.NextLine());
+        Assert.Equal("  Observed:", reader.NextLine());
         Assert.Equal("    Expected = 42", reader.NextLine());
         Assert.Equal("    Actual   = 43", reader.NextLine());
         Assert.Equal("", reader.NextLine());
