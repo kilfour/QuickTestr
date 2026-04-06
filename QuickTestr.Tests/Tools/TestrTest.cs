@@ -1,22 +1,28 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using QuickTestr.Tests.Tools.ThePress;
-using QuickCheckr.UnderTheHood.Proceedings;
-using QuickPulse;
 using QuickPulse.Explains;
 using QuickCheckr;
+using QuickTestr.Tests.Tools.ThePress.Printing;
 
 namespace QuickTestr.Tests.Tools;
 
 public abstract class TestrTest<T> : QCTest<T>
 {
-    protected override Func<CaseFile, Flow<Flow>> StyleGuide => TheTestr.DefaultStyleGuide;
-
     protected class DocTestrHeaderAttribute() :
         DocBoldHeaderAttribute("The Testr");
 
     public class DocTestrAttribute() :
         DocExampleAttribute(typeof(T), nameof(GetTestr));
+
+    public abstract void Example();
+    protected abstract void Verify(Article article);
+
+    protected override void ProcessArticle(Article article, string callerPath)
+    {
+        base.ProcessArticle(article, callerPath);
+        Verify(article);
+    }
 
     [StackTraceHidden]
     protected void Run(

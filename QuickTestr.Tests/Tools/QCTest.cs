@@ -44,17 +44,12 @@ public abstract class QCTest<T> : QCTest
     protected class DocReportExcerpt(int skiplines = 0, int numberOfLines = -1, [CallerFilePath] string path = "") :
         DocCodeFileAttribute($"{typeof(T).Name}.txt", "text", skiplines, numberOfLines, path);
 
-    public abstract void Example();
-
-    protected void ProcessArticle(Article article, string callerPath)
+    protected virtual void ProcessArticle(Article article, string callerPath)
     {
         WriteAsserts(article);
         WriteReport(article, callerPath);
         ExplainMe();
-        Verify(article);
     }
-
-    protected abstract void Verify(Article article);
 
     private const string basePath = @"C:\Code\";
 
