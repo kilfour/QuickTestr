@@ -217,8 +217,13 @@ This test reuses the model, sut, fuzzr and reducer from the 'Testr Parsing Numbe
 Testr
     .Named("Parser matches golden model.")
     .For(ParseFuzzr.Expression(),
-        Shrink.OnType<string>(
-            s => s.Simplify(Reduce.Function<string>(ParseReducer.Reducer, true))))
+        Shrink.OnType<string>(s => s.Simplify([
+        Select.While(char.IsWhiteSpace).Remove(),
+        Select.Balanced('(', ')').Delimiters().Remove(),
+        Select.While(char.IsDigit).OneOf(operators).Remove(),
+        Select.OneOf(operators).While(char.IsDigit).Remove(),
+        Select.OneOf('-').OneOf('-').While(a => a == '-').Replace("-")
+    ])))
     .DisableValueReduction()
     .Deliberate(a => a.Length, 4)
     .Expected(a => LostIn.Translation(a).Eval())
@@ -229,17 +234,17 @@ Testr
 ```text
 ------------------------------------------------------------
   Parser matches golden model.
-  Seed: 43650243
+  Seed: 1026389787
  ------------------------------------------------------------
   Falsified:
-    Input = "- (2 - 1 / 3 + 2) ^ (1 / 1 * 3 - 1 / 3 / 1 + 1 * 3 / 2 / 1) / (2 - 1 / 1) / (1 + 1 / 2 * 3 - 2 / 1 * 1 + 1 * 3)"
-    Redux = "-2^2"
+    Input = "2 ^ (1 / 3 - 2 * 1 / 1 + 3 + 2 / 1 / 3) / - 2 ^ 3 * - 3 ^ 2"
+    Redux = "-3^2"
 
-    Expected = -64.13024747087601
-    Actual   = NaN
+    Expected = 4.5
+    Actual   = -4.5
 
   Original:
-    "- (2 - 1 / 3 + 2) ^ (1 / 1 * 3 - 1 / 3 / 1 + 1 * 3 / 2 / 1) / (2 - 1 / 1) / (1 + 1 / 2 * 3 - 2 / 1 * 1 + 1 * 3)"
+    "2 ^ (1 / 3 - 2 * 1 / 1 + 3 + 2 / 1 / 3) / - 2 ^ 3 * - 3 ^ 2"
  ------------------------------------------------------------
 ```
 ## Testr Challenges

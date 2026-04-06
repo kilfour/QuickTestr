@@ -1,8 +1,6 @@
-using System.Diagnostics;
 using QuickCheckr;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
-using QuickCheckr.UnderTheHood.Proceedings;
 using QuickFuzzr;
 
 namespace QuickTestr;
@@ -16,9 +14,12 @@ public class TestrOracleRunner<T, TResult>(
     Func<T, int>? Deliberation,
     int? DeliberationTarget,
     string testName,
-    bool UseBuiltInReducers) : ITestrRunner
+    string fileName,
+    bool UseBuiltInReducers) : BaseTestrRunner
 {
-    private CheckrOf<Case> GetCheckr() =>
+    public override string TestName { get; } = testName;
+
+    protected override CheckrOf<Case> GetCheckr() =>
         from showr in Showr.ForInput()
         from format in Combine.Checkrs(formatters)
         from input in Checkr.Input("Input", fuzzr, shrinkers)
@@ -28,7 +29,7 @@ public class TestrOracleRunner<T, TResult>(
         from traceExpectedException in Checkr.TraceWhen("Expected", () => expected.Threw, () => GetExceptionReport(expected.Exception!))
         from traceActualValue in Checkr.TraceWhen("Actual  ", () => !actual.Threw, () => actual.Value)
         from traceActualException in Checkr.TraceWhen("Actual  ", () => actual.Threw, () => GetExceptionReport(actual.Exception!))
-        from expectation in Checkr.Expect(testName, () => CheckResults(expected, actual))
+        from expectation in Checkr.Expect(TestName, () => CheckResults(expected, actual))
         select Case.Closed;
 
     private static string GetExceptionReport(Exception exception)
@@ -45,23 +46,12 @@ public class TestrOracleRunner<T, TResult>(
         return false;
     }
 
-    [StackTraceHidden]
-    public CaseFile Run()
-        => Run(100.Runs());
-
-    [StackTraceHidden]
-    public CaseFile Run(int seed)
-        => GetCheckr().Run(seed, GetConfig());
-
-    [StackTraceHidden]
-    public CaseFile Run(CheckrOfTRun.RunCount tries)
-        => GetCheckr().Run(tries, GetConfig());
-
-    private Func<CheckrConfig, CheckrConfig> GetConfig()
+    protected override Func<CheckrConfig, CheckrConfig> GetConfig()
     {
         return a => a with
         {
-            StyleGuide = TheTestr.DefaultStyleGuide,
+            FileAs = fileName,
+            StyleGuide = TheTestr.OracleStyleGuide,
             DeliberationPolicy = Deliberation == null ? null :
                 a => a.InputsNamed<T>("Input", a => Deliberation(a)),
             DeliberationTarget = DeliberationTarget == null ? null : DeliberationTarget,

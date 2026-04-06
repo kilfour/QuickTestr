@@ -11,8 +11,9 @@ public class TestrOracleBuilder<T, TResult>(
     Func<T, int>? deliberation,
     int? deliberationTarget,
     string testName,
+    string fileName,
     bool useBuiltInReducers)
 {
     public TestrOracleRunner<T, TResult> Actual(Func<T, TResult> actual)
-        => new(fuzzr, shrinkers, formatters, expected, actual, deliberation, deliberationTarget, testName, useBuiltInReducers);
+        => new(fuzzr, shrinkers, formatters, expected, actual, deliberation, deliberationTarget, testName, fileName, useBuiltInReducers);
 }

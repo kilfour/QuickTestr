@@ -1,18 +1,9 @@
-using System.Diagnostics;
 using QuickCheckr;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
-using QuickCheckr.UnderTheHood.Proceedings;
 using QuickFuzzr;
 
 namespace QuickTestr;
-
-public interface ITestrRunner
-{
-    CaseFile Run();
-    CaseFile Run(int seed);
-    CaseFile Run(CheckrOfTRun.RunCount tries);
-}
 
 public class TestrRunner<T>(
     FuzzrOf<T> fuzzr,
@@ -22,33 +13,25 @@ public class TestrRunner<T>(
     Func<T, int>? Deliberation,
     int? DeliberationTarget,
     string testName,
-    bool UseBuiltInReducers) : ITestrRunner
+    string fileName,
+    bool UseBuiltInReducers) : BaseTestrRunner
 {
-    private CheckrOf<Case> GetCheckr() =>
+    public override string TestName { get; } = testName;
+
+    protected override CheckrOf<Case> GetCheckr() =>
         from showr in Showr.ForInput()
         from format in Combine.Checkrs(formatters)
         from input in Checkr.Input("Input", fuzzr, shrinkers)
         from run in Checkr.ActCarefully("Run", () => Invariant(input))
         from rethrow in Checkr.When(() => run.Threw, Checkr.Act("Rethrow", () => Invariant(input)))
-        from expectation in Checkr.ExpectWhen(testName, () => !run.Threw, () => run.Value)
+        from expectation in Checkr.ExpectWhen(TestName, () => !run.Threw, () => run.Value)
         select Case.Closed;
 
-    [StackTraceHidden]
-    public CaseFile Run()
-        => Run(100.Runs());
-
-    [StackTraceHidden]
-    public CaseFile Run(int seed)
-        => GetCheckr().Run(seed, GetConfig());
-
-    [StackTraceHidden]
-    public CaseFile Run(CheckrOfTRun.RunCount tries)
-        => GetCheckr().Run(tries, GetConfig());
-
-    private Func<CheckrConfig, CheckrConfig> GetConfig()
+    protected override Func<CheckrConfig, CheckrConfig> GetConfig()
     {
         return a => a with
         {
+            FileAs = fileName,
             StyleGuide = TheTestr.DefaultStyleGuide,
             DeliberationPolicy = Deliberation == null ? null :
                 a => a.InputsNamed<T>("Input", a => Deliberation(a)),
