@@ -10,7 +10,7 @@ namespace QuickTestr.Tests.Docs;
 [DocLink(typeof(OracleBased))]
 [DocContent("""
 QuickTestr currently supports two styles:
-- [Property-based](PropertyBased) : Define what should always hold.
-- [Oracle-based](OracleBased): Compare against something that already works.
+- [Property-based][PropertyBased] : Define what should always hold.
+- [Oracle-based][OracleBased]: Compare against something that already works.
 """)]
 public class Documentation { }

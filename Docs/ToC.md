@@ -1,7 +1,0 @@
-- [QuickTestr](Documentation.md)
-  - [Property-based Style Testing](A_PropertyBased/PropertyBased.md)
-    - [Reversing a List](A_PropertyBased/Sub/A_ReversingAList.md)
-    - [Moving On](A_PropertyBased/Sub/B_MovingOn.md)
-  - [Oracle-based Style Testing](B_OracleBased/OracleBased.md)
-    - [First Example](B_OracleBased/Sub/A_FirstExample.md)
-    - [An Interpreter](B_OracleBased/Sub/B_AnInterpreter.md)
