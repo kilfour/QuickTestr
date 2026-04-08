@@ -5,16 +5,16 @@ using QuickFuzzr;
 
 namespace QuickTestr.Bolts;
 
-public class TestrRunner<T>(
-    FuzzrOf<T> fuzzr,
+public class TestrRunner<TInput>(
+    FuzzrOf<TInput> fuzzr,
     Shrinker[] shrinkers,
     CheckrOf<Case>[] formatters,
-    Func<T, bool> Invariant,
-    Func<T, int>? Deliberation,
+    Func<TInput, bool> Invariant,
+    Func<TInput, int>? Deliberation,
     int? DeliberationTarget,
     string testName,
     string fileName,
-    bool UseBuiltInReducers) : BaseTestrRunner
+    bool UseBuiltInReducers) : BaseTestrRunner<TInput>
 {
     public override string TestName { get; } = testName;
 
@@ -34,7 +34,7 @@ public class TestrRunner<T>(
             FileAs = fileName,
             StyleGuide = TheTestr.DefaultStyleGuide,
             DeliberationPolicy = Deliberation == null ? null :
-                a => a.InputsNamed<T>("Input", a => Deliberation(a)),
+                a => a.InputsNamed<TInput>("Input", a => Deliberation(a)),
             DeliberationTarget = DeliberationTarget == null ? null : DeliberationTarget,
             ShrinkMode = UseBuiltInReducers ? a.ShrinkMode | ShrinkMode.Reduction : a.ShrinkMode,
             ReportMode = a.ReportMode & ~ReportMode.Warning & ~ReportMode.Labels & ~ReportMode.StackTrace

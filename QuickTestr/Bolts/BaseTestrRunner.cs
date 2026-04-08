@@ -3,9 +3,10 @@ using QuickCheckr;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Proceedings;
 
-namespace QuickTestr;
 
-public abstract class BaseTestrRunner : ITestrRunner
+namespace QuickTestr.Bolts;
+
+public abstract class BaseTestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
 {
     [StackTraceHidden]
     public CaseFile Run()
@@ -19,13 +20,28 @@ public abstract class BaseTestrRunner : ITestrRunner
     public CaseFile Run(CheckrOfTRun.RunCount tries)
         => GetCheckr().Run(tries, GetConfig());
 
-    public void GatherEvidence(CheckrOfTGatherEvidence.InvestigationCount investigations, CheckrOfTRun.RunCount runs, Func<ICaseFileSummary, int>? fingerprint = null)
-        => GetCheckr().GatherEvidence(
-            investigations,
-            runs,
-            1.ExecutionsPerRun(),
-            a => GetConfig()(a) with { FileAs = TestName },
-            fingerprint);
+    public void GatherEvidence(
+        CheckrOfTConductInvestigations.InvestigationCount investigations,
+        CheckrOfTRun.RunCount runs,
+        Func<TInput, object> fingerPrint,
+        Func<InvestigationDirective<TInput>, InvestigationDirective<TInput>> directives)
+    {
+        var configuredDirectives = directives(new InvestigationDirective<TInput>(null, null));
+        GetCheckr().GatherEvidence(
+                investigations,
+                runs,
+                1.ExecutionsPerRun(),
+                a => GetConfig()(a) with { FileAs = TestName },
+                (a) => fingerPrint(a.GetInput<TInput>("Input")),
+                configuredDirectives.MaxCaseFiles,
+                configuredDirectives.RejectWhen != null ? a => configuredDirectives.RejectWhen(a.GetInput<TInput>("Input")) : null);
+    }
+
+    public void GatherEvidence(
+        CheckrOfTConductInvestigations.InvestigationCount investigations,
+        CheckrOfTRun.RunCount runs,
+        Func<TInput, object> fingerPrint)
+            => GatherEvidence(investigations, runs, fingerPrint, a => a);
 
     public void ReviewColdCases()
         => GetCheckr().ReviewColdCases(a => GetConfig()(a) with { FileAs = TestName });

@@ -5,17 +5,17 @@ using QuickFuzzr;
 
 namespace QuickTestr.Bolts;
 
-public class TestrOracleRunner<T, TResult>(
-    FuzzrOf<T> fuzzr,
+public class TestrOracleRunner<TInput, TResult>(
+    FuzzrOf<TInput> fuzzr,
     Shrinker[] shrinkers,
     CheckrOf<Case>[] formatters,
-    Func<T, TResult> Expected,
-    Func<T, TResult> Actual,
-    Func<T, int>? Deliberation,
+    Func<TInput, TResult> Expected,
+    Func<TInput, TResult> Actual,
+    Func<TInput, int>? Deliberation,
     int? DeliberationTarget,
     string testName,
     string fileName,
-    bool UseBuiltInReducers) : BaseTestrRunner
+    bool UseBuiltInReducers) : BaseTestrRunner<TInput>
 {
     public override string TestName { get; } = testName;
 
@@ -53,7 +53,7 @@ public class TestrOracleRunner<T, TResult>(
             FileAs = fileName,
             StyleGuide = TheTestr.OracleStyleGuide,
             DeliberationPolicy = Deliberation == null ? null :
-                a => a.InputsNamed<T>("Input", a => Deliberation(a)),
+                a => a.InputsNamed<TInput>("Input", a => Deliberation(a)),
             DeliberationTarget = DeliberationTarget == null ? null : DeliberationTarget,
             ShrinkMode = UseBuiltInReducers ? a.ShrinkMode | ShrinkMode.Reduction : a.ShrinkMode,
             ReportMode = a.ReportMode & ~ReportMode.Warning & ~ReportMode.Labels & ~ReportMode.StackTrace
