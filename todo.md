@@ -5,7 +5,9 @@
 ### Todo
 
 ### Wish List
-
+* Auto DeliberationPolicy for Testr
+  Derive default deliberation policy from input type
+  
 ### Done/Ready for Changelog after review
 
 ## 0.0.2 : ...

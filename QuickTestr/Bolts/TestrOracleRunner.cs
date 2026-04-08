@@ -3,7 +3,7 @@ using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 
-namespace QuickTestr;
+namespace QuickTestr.Bolts;
 
 public class TestrOracleRunner<T, TResult>(
     FuzzrOf<T> fuzzr,

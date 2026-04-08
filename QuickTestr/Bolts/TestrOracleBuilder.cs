@@ -1,7 +1,7 @@
 using QuickCheckr;
 using QuickFuzzr;
 
-namespace QuickTestr;
+namespace QuickTestr.Bolts;
 
 public class TestrOracleBuilder<T, TResult>(
     FuzzrOf<T> fuzzr,

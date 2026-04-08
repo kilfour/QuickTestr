@@ -4,6 +4,7 @@ using QuickTestr.Tests.Tools.ThePress;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse;
 using QuickTestr.Tests.Tools.ThePress.Printing;
+using QuickTestr.Bolts;
 
 namespace QuickTestr.Tests.Tools;
 

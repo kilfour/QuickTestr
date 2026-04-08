@@ -4,6 +4,7 @@ using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickPulse.Explains.Text;
+using QuickTestr.Bolts;
 
 namespace QuickTestr.Tests.Verification.TestrProceedings;
 

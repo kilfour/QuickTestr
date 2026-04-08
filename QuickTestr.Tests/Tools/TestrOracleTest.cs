@@ -1,5 +1,6 @@
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickPulse;
+using QuickTestr.Bolts;
 
 namespace QuickTestr.Tests.Tools;
 

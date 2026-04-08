@@ -19,10 +19,10 @@ public class B_AnInterpreter : TestrOracleTest<B_AnInterpreter>
     [DocTestr]
     [DocReportHeader]
     [DocReport]
+    [DocBoldHeader("Domain Aware String Reduction Rules")]
+    [DocExample(typeof(Remove))]
     public override void Example() =>
         Run(443608219);
-
-    private readonly char[] operators = ['+', '-', '*', '/', '^'];
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>
@@ -31,18 +31,31 @@ public class B_AnInterpreter : TestrOracleTest<B_AnInterpreter>
             .For(ExpressionFuzzr.GetExpression(),
                 Shrink.OnType<string>(
                     s => s.Simplify(
-                        // remove whitespace
-                        Select.While(char.IsWhiteSpace).Remove(),
-                        // remove balanced parentheses
-                        Select.Balanced('(', ')').Delimiters().Remove(),
-                        // remove operators + lhs number
-                        Select.While(char.IsDigit).OneOf(operators).Remove(),
-                        // remove unary minus noise
-                        Select.OneOf('-').OneOf('-').While(a => a == '-').Replace("-")
-                    )))
+                        Remove.WhiteSpace,
+                        Remove.BalancedParentheses,
+                        Remove.LeftHandSideAndOperator,
+                        Remove.UnaryMinusNoise)))
             .Deliberate(a => a.Length, 4) // prefer smaller length strings
             .Expected(a => LostIn.Translation(a).Eval())
             .Actual(a => LostIn.FaultyTranslation(a).Eval());
+
+    [CodeExample]
+    public class Remove
+    {
+        public static readonly SelectrOf<Selection> WhiteSpace =
+            Stringr.AtleastOnce(char.IsWhiteSpace).Remove().Defined();
+
+        public static readonly SelectrOf<Selection> BalancedParentheses =
+            Stringr.Balanced('(', ')').Replace(a => a[1..^1]).Defined();
+
+        public static readonly SelectrOf<Selection> LeftHandSideAndOperator =
+            from lhs in Stringr.AtleastOnce(char.IsDigit).Remove()
+            from op in Stringr.Once('+', '-', '*', '/', '^').Remove()
+            select Selection.Defined;
+
+        public static readonly SelectrOf<Selection> UnaryMinusNoise =
+            Stringr.AtleastOnce('-').Replace(_ => "-").Defined();
+    }
 
     protected override void Verify(Article article)
     {

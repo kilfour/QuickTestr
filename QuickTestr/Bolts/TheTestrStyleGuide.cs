@@ -5,7 +5,7 @@ using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions.Failure;
 using QuickPulse;
 
-namespace QuickTestr;
+namespace QuickTestr.Bolts;
 
 public enum Styles { Default, Oracle }
 public static class TheTestr

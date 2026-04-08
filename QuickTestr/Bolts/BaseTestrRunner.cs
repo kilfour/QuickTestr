@@ -5,15 +5,6 @@ using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickTestr;
 
-public interface ITestrRunner
-{
-    CaseFile Run();
-    CaseFile Run(int seed);
-    CaseFile Run(CheckrOfTRun.RunCount tries);
-    void GatherEvidence(CheckrOfTGatherEvidence.InvestigationCount investigations, CheckrOfTRun.RunCount runs, Func<ICaseFileSummary, int>? fingerprint = null);
-    void ReviewColdCases();
-}
-
 public abstract class BaseTestrRunner : ITestrRunner
 {
     [StackTraceHidden]
@@ -38,6 +29,9 @@ public abstract class BaseTestrRunner : ITestrRunner
 
     public void ReviewColdCases()
         => GetCheckr().ReviewColdCases(a => GetConfig()(a) with { FileAs = TestName });
+
+    public void CloseResolvedColdCases()
+        => GetCheckr().CloseResolvedColdCases(a => GetConfig()(a) with { FileAs = TestName });
 
     protected abstract CheckrOf<Case> GetCheckr();
     protected abstract Func<CheckrConfig, CheckrConfig> GetConfig();
