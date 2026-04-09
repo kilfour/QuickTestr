@@ -168,14 +168,14 @@ Testr
 public class Remove
 {
     public static readonly SelectrOf<Selection> WhiteSpace =
-        Selectr.AtleastOnce(char.IsWhiteSpace).Remove().Defined();
+        Stringr.AtleastOnce(char.IsWhiteSpace).Remove().Defined();
     public static readonly SelectrOf<Selection> BalancedParentheses =
-        Selectr.Balanced('(', ')').Replace(a => a[1..^1]).Defined();
+        Stringr.Balanced('(', ')').Replace(a => a[1..^1]).Defined();
     public static readonly SelectrOf<Selection> LeftHandSideAndOperator =
-        from lhs in Selectr.AtleastOnce(char.IsDigit).Remove()
-        from op in Selectr.Once('+', '-', '*', '/', '^').Remove()
+        from lhs in Stringr.AtleastOnce(char.IsDigit).Remove()
+        from op in Stringr.Once('+', '-', '*', '/', '^').Remove()
         select Selection.Defined;
     public static readonly SelectrOf<Selection> UnaryMinusNoise =
-        Selectr.AtleastOnce('-').Replace(_ => "-").Defined();
+        Stringr.AtleastOnce('-').Replace(_ => "-").Defined();
 }
 ```
