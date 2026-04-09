@@ -31,7 +31,7 @@ public abstract class BaseTestrRunner<TInput> : ITestrRunner, ITestrRunner<TInpu
                 investigations,
                 runs,
                 1.ExecutionsPerRun(),
-                a => GetConfig()(a) with { FileAs = TestName },
+                AddFileAsToConfig(),
                 (a) => fingerPrint(a.GetInput<TInput>("Input")),
                 configuredDirectives.MaxCaseFiles,
                 configuredDirectives.RejectWhen != null ? a => configuredDirectives.RejectWhen(a.GetInput<TInput>("Input")) : null);
@@ -44,10 +44,13 @@ public abstract class BaseTestrRunner<TInput> : ITestrRunner, ITestrRunner<TInpu
             => GatherEvidence(investigations, runs, fingerPrint, a => a);
 
     public void ReviewColdCases()
-        => GetCheckr().ReviewColdCases(a => GetConfig()(a) with { FileAs = TestName });
+        => GetCheckr().ReviewColdCases(AddFileAsToConfig());
+
+    private Func<CheckrConfig, CheckrConfig> AddFileAsToConfig()
+        => a => GetConfig()(a) with { FileAs = TestName };
 
     public void CloseResolvedColdCases()
-        => GetCheckr().CloseResolvedColdCases(a => GetConfig()(a) with { FileAs = TestName });
+        => GetCheckr().CloseResolvedColdCases(AddFileAsToConfig());
 
     protected abstract CheckrOf<Case> GetCheckr();
     protected abstract Func<CheckrConfig, CheckrConfig> GetConfig();

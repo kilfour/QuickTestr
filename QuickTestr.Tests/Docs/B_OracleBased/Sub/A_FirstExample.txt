@@ -3,12 +3,16 @@
   Seed: 1471595869
  ------------------------------------------------------------
   Falsified:
-    Input    = ( 94, _ )
-    Redux    = ( 43, _ )
 
-  Observed:
-    Expected = 129
-    Actual   = 0
+    Input = ( 94, _ )
+      Observed:
+        Expected = 129
+        Actual   = 0
+
+    Redux = ( 43, _ )
+      Observed:
+        Expected = 78
+        Actual   = 0
 
   Original:
     ( 94, 35 )

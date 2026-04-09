@@ -22,30 +22,34 @@ public static class TheTestr
         space.Then(LineOf(60)).Then(newLine);
 
     private static Flow<Flow> TraceFlow(TraceDeposition trace)
-        => newLine.Then(Pulse.Trace($"    {trace.Label} = {trace.Value}"));
+        => newLine.Then(Pulse.Trace($"        {trace.Label} = {trace.Value}"));
 
     private static Flow<Flow> TracesFlow(List<TraceDeposition> traces) =>
-        from _1 in Pulse.When(traces.Count > 0, newLine.Then(newLine).Then(Pulse.Trace("  Observed:")))
+        from _1 in Pulse.When(traces.Count > 0, newLine.Then(Pulse.Trace("      Observed:")))
         from _2 in Pulse.ToFlow(a => TraceFlow(a), traces)
         select Flow.Continue;
 
     private static Flow<Flow> WarningFlow(WarningDeposition warning)
         => newLine.Then(Pulse.Trace($"   - WARNING: {warning.Value}"));
 
+    public record OracleInput(InputDeposition Input, List<TraceDeposition> Traces, List<TraceDeposition> FinalTraces);
+    private static Flow<Flow> OracleInputFlow(OracleInput oracleInput) =>
+        from _1 in newLine.Then(Pulse.Trace($"    Input = {oracleInput.Input.Value}"))
+        from _2 in Pulse.ToFlow(TracesFlow, oracleInput.Traces)
+        from _3 in Pulse.When(oracleInput.Input.Redux.HasValue, (
+            from _3_1 in newLine.Then(newLine).Then(Pulse.Trace($"    Redux = {oracleInput.Input.Redux.Value}"))
+            from _3_2 in Pulse.ToFlow(TracesFlow, oracleInput.FinalTraces)
+            select Flow.Continue))
+        from _4 in Pulse.When(oracleInput.Input.Original.HasValue && !Equals(oracleInput.Input.Value, oracleInput.Input.Original.Value),
+            newLine.Then(newLine).Then(Pulse.Trace("  Original:"))
+                .Then(newLine)
+                .Then(Pulse.Trace($"    {oracleInput.Input.Original.Value!}")))
+        select Flow.Continue;
+
     private static Flow<Flow> InputFlow(InputDeposition input) =>
-        from style in Pulse.Draw<Styles>()
-        let spaces =
-            style switch
-            {
-                Styles.Default => " ",
-                Styles.Oracle => "    ",
-                _ => throw new ArgumentOutOfRangeException(nameof(style))
-            }
-        from _1 in Pulse.Trace($"    Input{spaces}= {input.Value}")
+        from _1 in Pulse.Trace($"    Input = {input.Value}")
         from _2 in Pulse.When(input.Redux.HasValue,
-            newLine.Then(Pulse.Trace($"    Redux{spaces}= {input.Redux.Value}")))
-        from traces in Pulse.Draw<List<TraceDeposition>>()
-        from _4 in Pulse.ToFlow(a => TracesFlow(a), traces)
+            newLine.Then(Pulse.Trace($"    Redux = {input.Redux.Value}")))
         from _5 in Pulse.When(input.Original.HasValue && !Equals(input.Value, input.Original.Value),
             newLine.Then(newLine).Then(Pulse.Trace("  Original:"))
                 .Then(newLine)
@@ -53,11 +57,13 @@ public static class TheTestr
         select Flow.Continue;
 
     private static Flow<Flow> ExecutionFlow(ExecutionDeposition execution) =>
+        from style in Pulse.Draw<Styles>()
         from _0 in newLine
-        from _1 in Pulse.Prime(() => execution.TraceDepositions)
-        from _2 in Pulse.ToFlow(InputFlow, execution.InputDepositions)
-        from _3 in Pulse.ToFlow(WarningFlow, execution.GetWarningDepositionsForReport())
-        from _4 in newLine.Then(space).Then(LineOf(60))
+        from _2 in Pulse.ToFlowIf(style == Styles.Default, InputFlow, () => execution.InputDepositions)
+        from _3 in Pulse.ToFlowIf(style == Styles.Oracle, OracleInputFlow,
+            () => new OracleInput(execution.InputDepositions.Single(), execution.TraceDepositions, execution.FinalTraceDepositions))
+        from _4 in Pulse.ToFlow(WarningFlow, execution.GetWarningDepositionsForReport())
+        from _5 in newLine.Then(space).Then(LineOf(60))
         select Flow.Continue;
 
     private static Flow<Flow> FailedExpectationFlow(FailedExpectationDeposition failure)

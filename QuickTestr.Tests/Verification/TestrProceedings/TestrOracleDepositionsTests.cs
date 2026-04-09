@@ -4,6 +4,7 @@ using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickPulse.Explains.Text;
+using QuickPulse.Show;
 using QuickTestr.Bolts;
 
 namespace QuickTestr.Tests.Verification.TestrProceedings;
@@ -23,7 +24,7 @@ public class TestrOracleDepositionsTests
     private static LinesReader Transcribe(CaseFile caseFile)
     {
         var result = TheClerk.Transcribes(caseFile, TheTestr.OracleStyleGuide);
-        var reader = LinesReader.FromText(result);
+        var reader = LinesReader.FromText(result.PulseToQuickLog());
         return reader;
     }
 
@@ -40,6 +41,8 @@ public class TestrOracleDepositionsTests
                 })
                 .AddTraceDeposition(new TraceDeposition("Expected", "42"))
                 .AddTraceDeposition(new TraceDeposition("Actual  ", "43"))
+                .AddFinalTraceDeposition(new TraceDeposition("Expected", "2"))
+                .AddFinalTraceDeposition(new TraceDeposition("Actual  ", "3"))
                 );
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
@@ -47,29 +50,47 @@ public class TestrOracleDepositionsTests
         Assert.Equal("  Seed: 12345678", reader.NextLine());
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.Equal("  Falsified:", reader.NextLine());
-        Assert.Equal("    Input    = 42", reader.NextLine());
-        Assert.Equal("    Redux    = 1", reader.NextLine());
         Assert.Equal("", reader.NextLine());
-        Assert.Equal("  Observed:", reader.NextLine());
-        Assert.Equal("    Expected = 42", reader.NextLine());
-        Assert.Equal("    Actual   = 43", reader.NextLine());
+        Assert.Equal("    Input = 42", reader.NextLine());
+        Assert.Equal("      Observed:", reader.NextLine());
+        Assert.Equal("        Expected = 42", reader.NextLine());
+        Assert.Equal("        Actual   = 43", reader.NextLine());
+        Assert.Equal("", reader.NextLine());
+        Assert.Equal("    Redux = 1", reader.NextLine());
+        Assert.Equal("      Observed:", reader.NextLine());
+        Assert.Equal("        Expected = 2", reader.NextLine());
+        Assert.Equal("        Actual   = 3", reader.NextLine());
         Assert.Equal("", reader.NextLine());
         Assert.Equal("  Original:", reader.NextLine());
         Assert.Equal("    42", reader.NextLine());
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
         Assert.True(reader.EndOfContent());
     }
+
+    [Fact]
+    public void NoRedux_Or_Original()
+    {
+        var caseFile = CaseFile.From(dossier.FailureInfo, dossier.RunInfo)
+                .AddExecutionDeposition(new ExecutionDeposition(1)
+                .AddActionDeposition(new ActionDeposition("Run"))
+                .AddInputDeposition(new InputDeposition(true, "PropertyName", 42))
+                .AddTraceDeposition(new TraceDeposition("Expected", "42"))
+                .AddTraceDeposition(new TraceDeposition("Actual  ", "43"))
+                .AddFinalTraceDeposition(new TraceDeposition("Expected", "42"))
+                .AddFinalTraceDeposition(new TraceDeposition("Actual  ", "43"))
+                );
+        var reader = Transcribe(caseFile);
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        Assert.Equal("  Some Invariant", reader.NextLine());
+        Assert.Equal("  Seed: 12345678", reader.NextLine());
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        Assert.Equal("  Falsified:", reader.NextLine());
+        Assert.Equal("", reader.NextLine());
+        Assert.Equal("    Input = 42", reader.NextLine());
+        Assert.Equal("      Observed:", reader.NextLine());
+        Assert.Equal("        Expected = 42", reader.NextLine());
+        Assert.Equal("        Actual   = 43", reader.NextLine());
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        Assert.True(reader.EndOfContent());
+    }
 }
-
-// ------------------------------------------------------------
-//   AddBuggy Matches AddCorrect
-//   Seed: 1625330882
-//  ------------------------------------------------------------
-//   Falsified:
-//     Input    = ( 42, _ )
-//     Expected = 76
-//     Actual   = 0
-
-//   Original:
-//     ( 42, 34 )
-//  ------------------------------------------------------------

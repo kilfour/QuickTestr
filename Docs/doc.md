@@ -35,16 +35,7 @@ static IEnumerable<int> HideTheAnswer(IEnumerable<int> l)
 
 **The Report:**  
 ```text
-------------------------------------------------------------
-  Reverse is its own inverse
-  Seed: 174616483
- ------------------------------------------------------------
-  Falsified:
-    Input = [ 42, _ ]
-
-  Original:
-    [ 86, 33, 42, 21, 7, 62, 44, 10 ]
- ------------------------------------------------------------
+100 Runs
 ```
 ### Moving On
 Now for something less trivial, one of the `jqwik` challenges.  
@@ -122,12 +113,16 @@ Testr.Named("AddBuggy Matches AddCorrect")
   Seed: 1471595869
  ------------------------------------------------------------
   Falsified:
-    Input    = ( 94, _ )
-    Redux    = ( 43, _ )
 
-  Observed:
-    Expected = 129
-    Actual   = 0
+    Input = ( 94, _ )
+      Observed:
+        Expected = 129
+        Actual   = 0
+
+    Redux = ( 43, _ )
+      Observed:
+        Expected = 78
+        Actual   = 0
 
   Original:
     ( 94, 35 )
@@ -158,8 +153,16 @@ Testr
   Seed: 443608219
  ------------------------------------------------------------
   Falsified:
-    Input    = "1 ^ 1 ^ - 3 ^ 1 / - 1 ^ (2 / 2 + 1 - 3 / 3 / 3) * 3 - 1 ^ (2 - 2 / 1 + 2 / 1 / 3) + 3 / (1 + 3 + 2 * 3) / 2 * - 2 ^ 2"
-    Redux    = "-2^2"
+
+    Input = "1 ^ 1 ^ - 3 ^ 1 / - 1 ^ (2 / 2 + 1 - 3 / 3 / 3) * 3 - 1 ^ (2 - 2 / 1 + 2 / 1 / 3) + 3 / (1 + 3 + 2 * 3) / 2 * - 2 ^ 2"
+      Observed:
+        Expected = -4.6
+        Actual   = NaN
+
+    Redux = "-2^2"
+      Observed:
+        Expected = -4
+        Actual   = 4
  ------------------------------------------------------------
 ```
 
