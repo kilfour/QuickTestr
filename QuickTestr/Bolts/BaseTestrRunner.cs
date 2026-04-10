@@ -26,7 +26,7 @@ public abstract class BaseTestrRunner<TInput> : ITestrRunner, ITestrRunner<TInpu
         Func<TInput, object> fingerPrint,
         Func<InvestigationDirective<TInput>, InvestigationDirective<TInput>> directives)
     {
-        var configuredDirectives = directives(new InvestigationDirective<TInput>(null, null));
+        var configuredDirectives = directives(new InvestigationDirective<TInput>(5, null));
         GetCheckr().GatherEvidence(
                 investigations,
                 runs,
