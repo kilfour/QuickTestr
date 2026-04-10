@@ -3,3 +3,7 @@
 * Added Testr versions of the jqwik challenges.
 * Added an example showing how complex problems can be handled by *steering* the engine.
 * Added an alternative way of defining a Testr tailored for oracle-based testing.
+
+### 0.0.2: Investigating with Double Vision
+* Added `Expected` and `Actual` for Redux values in Oracle-based tests.
+* Introduced `Testr`-specific `GatheringEvidence`.

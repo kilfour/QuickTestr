@@ -1,7 +1,7 @@
-## Next version: 0.0.2 : ...
+## Next version: 0.0.3 : ...
  
 ### Doing
-* Implement Gathering Evidence
+
 
 ### Todo
 
@@ -10,9 +10,9 @@
   Derive default deliberation policy from input type
   
 ### Done/Ready for Changelog after review
-* Added `Expected` and `Actual` for Redux value to report for Oracle-based Tests.
 
-## 0.0.2 : ...
+
+## 0.0.4 : ...
 
 ## Skipped Tests
 
