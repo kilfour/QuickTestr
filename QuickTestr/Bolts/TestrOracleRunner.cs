@@ -39,7 +39,7 @@ public class TestrOracleRunner<TInput, TResult>(
 
     private static bool CheckResults(DelayedResult<TResult> expected, DelayedResult<TResult> actual)
     {
-        if (expected.HasValue && actual.HasValue)
+        if (!expected.Threw && !actual.Threw)
             return Equals(expected.Value, actual.Value);
         if (expected.Threw && actual.Threw)
             return Equals(expected.Exception, actual.Exception);

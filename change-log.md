@@ -7,3 +7,6 @@
 ### 0.0.2: Investigating with Double Vision
 * Added `Expected` and `Actual` for Redux values in Oracle-based tests.
 * Introduced `Testr`-specific `GatheringEvidence`.
+
+### 0.0.3: Fixing the Oracle
+* Bugfix release

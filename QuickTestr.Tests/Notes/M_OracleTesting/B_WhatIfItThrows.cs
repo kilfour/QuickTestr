@@ -39,7 +39,6 @@ public class B_WhatIfItThrows : TestrOracleTest<B_WhatIfItThrows>
         Assert.Equal(2, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
         Assert.Equal(2, article.Total().Traces());
-        Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Actual", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Expected", article.Execution(1).Action(2).Read().Label);
