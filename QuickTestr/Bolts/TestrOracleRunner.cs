@@ -40,10 +40,25 @@ public class TestrOracleRunner<TInput, TResult>(
     private static bool CheckResults(DelayedResult<TResult> expected, DelayedResult<TResult> actual)
     {
         if (!expected.Threw && !actual.Threw)
+        {
+            if (expected.HasValue != actual.HasValue)
+                return false;
+            if (!expected.HasValue)
+                return true;
             return Equals(expected.Value, actual.Value);
+        }
         if (expected.Threw && actual.Threw)
-            return Equals(expected.Exception, actual.Exception);
+            return EquivalentExceptions(expected.Exception, actual.Exception);
         return false;
+    }
+
+    private static bool EquivalentExceptions(Exception? expected, Exception? actual)
+    {
+        if (expected is null || actual is null)
+            return expected is null && actual is null;
+        return expected.GetType() == actual.GetType()
+            && expected.Message == actual.Message
+            && EquivalentExceptions(expected.InnerException, actual.InnerException);
     }
 
     protected override Func<CheckrConfig, CheckrConfig> GetConfig()
