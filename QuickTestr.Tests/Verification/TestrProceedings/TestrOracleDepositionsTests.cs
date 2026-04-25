@@ -4,7 +4,6 @@ using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickPulse.Explains.Text;
-using QuickPulse.Show;
 using QuickTestr.Bolts;
 
 namespace QuickTestr.Tests.Verification.TestrProceedings;
@@ -24,7 +23,7 @@ public class TestrOracleDepositionsTests
     private static LinesReader Transcribe(CaseFile caseFile)
     {
         var result = TheClerk.Transcribes(caseFile, TheTestr.OracleStyleGuide);
-        var reader = LinesReader.FromText(result.PulseToQuickLog());
+        var reader = LinesReader.FromText(result);
         return reader;
     }
 

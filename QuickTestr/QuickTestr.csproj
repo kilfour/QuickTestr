@@ -48,11 +48,11 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="QuickCheckr" Version="0.1.0" />
+    <!-- <PackageReference Include="QuickCheckr" Version="0.1.0" /> -->
   </ItemGroup>
 
   <ItemGroup>
-    <!-- <ProjectReference Include="..\..\QuickCheckr\QuickCheckr\QuickCheckr.csproj" /> -->
+    <ProjectReference Include="..\..\QuickCheckr\QuickCheckr\QuickCheckr.csproj" />
   </ItemGroup>
   
 </Project>
