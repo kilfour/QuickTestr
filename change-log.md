@@ -11,7 +11,7 @@
 ### 0.0.3: Fixing the Oracle
 * Bugfix release
 
-### 0.0.4: Entering the Vault
+### 0.0.5: Entering the Vault
 * QuickCheckr update.
 * Added Xml Summary comments to the public API.
 * Renamed the old investigation-style persistence API to the new vault vocabulary, including `FillVault`, `InspectVault`, `CleanupVault`, and related types.
