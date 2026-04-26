@@ -35,7 +35,16 @@ static IEnumerable<int> HideTheAnswer(IEnumerable<int> l)
 
 **The Report:**  
 ```text
-100 Runs
+------------------------------------------------------------
+  Reverse is its own inverse
+  Seed: 174616483
+ ------------------------------------------------------------
+  Falsified:
+    Input = [ 42, _ ]
+
+  Original:
+    [ 86, 33, 42, 21, 7, 62, 44, 10 ]
+ ------------------------------------------------------------
 ```
 ### Moving On
 Now for something less trivial, one of the `jqwik` challenges.  
