@@ -7,7 +7,16 @@ using QuickPulse;
 
 namespace QuickTestr.Bolts;
 
+/// <summary>
+/// Selects the report style used by QuickTestr.
+/// Use to distinguish between default property reports and oracle comparison reports.
+/// </summary>
 public enum Styles { Default, Oracle }
+
+/// <summary>
+/// Provides the built-in report style guides used by QuickTestr.
+/// Use when you want the standard compact formatting for property-based or oracle-based cases.
+/// </summary>
 public static class TheTestr
 {
     private readonly static Flow<Flow> space =
@@ -32,6 +41,10 @@ public static class TheTestr
     private static Flow<Flow> WarningFlow(WarningDeposition warning)
         => newLine.Then(Pulse.Trace($"   - WARNING: {warning.Value}"));
 
+    /// <summary>
+    /// Represents the rendered input payload for an oracle-style report.
+    /// Use internally when formatting expected and actual observations for the same input.
+    /// </summary>
     public record OracleInput(InputDeposition Input, List<TraceDeposition> Traces, List<TraceDeposition> FinalTraces);
     private static Flow<Flow> OracleInputFlow(OracleInput oracleInput) =>
         from _1 in newLine.Then(Pulse.Trace($"    Input = {oracleInput.Input.Value}"))
@@ -97,10 +110,18 @@ public static class TheTestr
         from _2 in Pulse.OnType((CaseSummary a) => SummaryFlow(a), () => caseFile)
         select Flow.Continue;
 
+    /// <summary>
+    /// Formats a case file using the default QuickTestr report style.
+    /// Use for standard property-based Testr output.
+    /// </summary>
     public static Flow<Flow> DefaultStyleGuide(CaseFile caseFile) =>
         Pulse.Prime(() => Styles.Default)
             .Then(StyleGuide(caseFile));
 
+    /// <summary>
+    /// Formats a case file using the oracle QuickTestr report style.
+    /// Use for expected-versus-actual Testr output.
+    /// </summary>
     public static Flow<Flow> OracleStyleGuide(CaseFile caseFile) =>
         Pulse.Prime(() => Styles.Oracle)
             .Then(StyleGuide(caseFile));

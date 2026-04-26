@@ -10,7 +10,7 @@
 
     <PackageId>QuickTestr</PackageId>
     <Title>QuickTestr</Title>
-    <Description>No fuss. Just Fuzz.</Description>
+    <Description>A small, opinionated property-based testing DSL for C#, built on QuickCheckr. Define inputs, assert invariants, and get reproducible, shrunk counterexamples.</Description>
     <PackageTags>fuzzing;testing</PackageTags>
 
     <RepositoryType>git</RepositoryType>

@@ -5,6 +5,10 @@ using QuickFuzzr;
 
 namespace QuickTestr.Bolts;
 
+/// <summary>
+/// Runs an oracle-based Testr by comparing expected and actual behavior.
+/// Use for Testrs defined through Expected and Actual.
+/// </summary>
 public class TestrOracleRunner<TInput, TResult>(
     FuzzrOf<TInput> fuzzr,
     Shrinker[] shrinkers,
@@ -17,6 +21,10 @@ public class TestrOracleRunner<TInput, TResult>(
     string fileName,
     bool UseBuiltInReducers) : BaseTestrRunner<TInput>
 {
+    /// <summary>
+    /// Gets the display name of this Testr.
+    /// Use when you need the configured name for reporting or storage.
+    /// </summary>
     public override string TestName { get; } = testName;
 
     protected override CheckrOf<Case> GetCheckr() =>

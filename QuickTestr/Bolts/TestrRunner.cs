@@ -5,6 +5,10 @@ using QuickFuzzr;
 
 namespace QuickTestr.Bolts;
 
+/// <summary>
+/// Runs a property-based Testr against generated inputs.
+/// Use for Testrs defined with a boolean invariant through Assert.
+/// </summary>
 public class TestrRunner<TInput>(
     FuzzrOf<TInput> fuzzr,
     Shrinker[] shrinkers,
@@ -16,6 +20,10 @@ public class TestrRunner<TInput>(
     string fileName,
     bool UseBuiltInReducers) : BaseTestrRunner<TInput>
 {
+    /// <summary>
+    /// Gets the display name of this Testr.
+    /// Use when you need the configured name for reporting or storage.
+    /// </summary>
     public override string TestName { get; } = testName;
 
     protected override CheckrOf<Case> GetCheckr() =>
