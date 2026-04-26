@@ -10,7 +10,7 @@
 
     <PackageId>QuickTestr</PackageId>
     <Title>QuickTestr</Title>
-    <Description>TODO</Description>
+    <Description>No fuss. Just Fuzz.</Description>
     <PackageTags>fuzzing;testing</PackageTags>
 
     <RepositoryType>git</RepositoryType>
