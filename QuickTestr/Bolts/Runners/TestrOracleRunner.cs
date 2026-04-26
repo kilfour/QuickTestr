@@ -3,7 +3,7 @@ using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 
-namespace QuickTestr.Bolts;
+namespace QuickTestr.Bolts.Runners;
 
 /// <summary>
 /// Runs an oracle-based Testr by comparing expected and actual behavior.
@@ -19,7 +19,7 @@ public class TestrOracleRunner<TInput, TResult>(
     int? DeliberationTarget,
     string testName,
     string fileName,
-    bool UseBuiltInReducers) : BaseTestrRunner<TInput>
+    bool UseBuiltInReducers) : TestrRunner<TInput>
 {
     /// <summary>
     /// Gets the display name of this Testr.

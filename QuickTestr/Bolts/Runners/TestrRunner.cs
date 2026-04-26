@@ -4,13 +4,13 @@ using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Proceedings;
 
 
-namespace QuickTestr.Bolts;
+namespace QuickTestr.Bolts.Runners;
 
 /// <summary>
 /// Provides the shared execution and vault behavior for concrete Testr runners.
 /// Use as the base implementation for property-based and oracle-based runner types.
 /// </summary>
-public abstract class BaseTestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
+public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
 {
     /// <summary>
     /// Runs the Testr using the default number of runs.

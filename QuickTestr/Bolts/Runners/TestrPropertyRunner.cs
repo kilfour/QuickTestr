@@ -3,13 +3,13 @@ using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 
-namespace QuickTestr.Bolts;
+namespace QuickTestr.Bolts.Runners;
 
 /// <summary>
 /// Runs a property-based Testr against generated inputs.
 /// Use for Testrs defined with a boolean invariant through Assert.
 /// </summary>
-public class TestrRunner<TInput>(
+public class TestrPropertyRunner<TInput>(
     FuzzrOf<TInput> fuzzr,
     Shrinker[] shrinkers,
     CheckrOf<Case>[] formatters,
@@ -18,7 +18,7 @@ public class TestrRunner<TInput>(
     int? DeliberationTarget,
     string testName,
     string fileName,
-    bool UseBuiltInReducers) : BaseTestrRunner<TInput>
+    bool UseBuiltInReducers) : TestrRunner<TInput>
 {
     /// <summary>
     /// Gets the display name of this Testr.

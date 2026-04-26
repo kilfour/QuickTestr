@@ -1,5 +1,6 @@
 using QuickCheckr;
 using QuickFuzzr;
+using QuickTestr.Bolts.Runners;
 
 namespace QuickTestr.Bolts;
 
@@ -7,7 +8,7 @@ namespace QuickTestr.Bolts;
 /// Completes an oracle-based Testr after the expected behavior has been defined.
 /// Use to provide the implementation that should match the trusted model.
 /// </summary>
-public class TestrOracleBuilder<T, TResult>(
+public class OracleTestr<T, TResult>(
     FuzzrOf<T> fuzzr,
     Shrinker[] shrinkers,
     CheckrOf<Case>[] formatters,

@@ -1,4 +1,4 @@
-using QuickTestr.Bolts;
+using QuickTestr.Bolts.Builders;
 
 namespace QuickTestr;
 
@@ -12,7 +12,7 @@ public static class Testr
     /// Starts a new Testr with the given name.
     /// Use to define a readable label for the property or comparison being tested.
     /// </summary>
-    public static TestrBuilder0 Named(string name) => new(name);
+    public static NamedTestr Named(string name) => new(name);
 }
 
 
