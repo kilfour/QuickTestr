@@ -2,7 +2,7 @@ using QuickCheckr;
 using QuickFuzzr;
 using QuickTestr.Bolts.Runners;
 
-namespace QuickTestr.Bolts;
+namespace QuickTestr.Bolts.Builders;
 
 /// <summary>
 /// Completes an oracle-based Testr after the expected behavior has been defined.
