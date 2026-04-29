@@ -1,9 +1,9 @@
 using QuickTestr.Tests.Tools;
-using QuickTestr.Tests.Tools.ThePress.Printing;
 using QuickPulse.Explains;
 using QuickCheckr;
 using QuickCheckr.StringReduction;
 using QuickTestr.Tests.Docs.B_OracleBased.Sub.Model;
+using QuickCheckr.Authoring.ThePress.Printing;
 
 namespace QuickTestr.Tests.Docs.B_OracleBased.Sub;
 

@@ -1,8 +1,8 @@
 using QuickTestr.Tests.Tools;
-using QuickTestr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickPulse.Instruments;
+using QuickCheckr.Authoring.ThePress.Printing;
 
 namespace QuickTestr.Tests.Notes.M_OracleTesting;
 

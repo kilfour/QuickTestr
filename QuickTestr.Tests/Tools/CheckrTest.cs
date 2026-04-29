@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using QuickCheckr;
+using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Protocol;
-using QuickTestr.Tests.Tools.ThePress;
 using QuickPulse.Explains;
 
 namespace QuickTestr.Tests.Tools;

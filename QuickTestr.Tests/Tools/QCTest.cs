@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
-using QuickTestr.Tests.Tools.ThePress;
-using QuickTestr.Tests.Tools.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse;

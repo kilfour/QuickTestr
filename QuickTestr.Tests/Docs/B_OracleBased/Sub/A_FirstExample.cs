@@ -1,7 +1,7 @@
 using QuickTestr.Tests.Tools;
-using QuickTestr.Tests.Tools.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
+using QuickCheckr.Authoring.ThePress.Printing;
 
 namespace QuickTestr.Tests.Docs.B_OracleBased.Sub;
 

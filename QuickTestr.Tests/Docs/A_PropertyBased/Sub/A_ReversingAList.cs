@@ -1,8 +1,8 @@
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickTestr.Tests.Tools;
-using QuickTestr.Tests.Tools.ThePress.Printing;
 
 namespace QuickTestr.Tests.Docs.A_PropertyBased.Sub;
 
