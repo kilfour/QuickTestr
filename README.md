@@ -37,7 +37,7 @@ Testr
     .Assert(a =>
     {
         var reversed = new List<int>(a);
-        reversed.Reverse();
+        reversed.Reverse().Reverse();
         return reversed.SequenceEqual(a);
     });
 ```
