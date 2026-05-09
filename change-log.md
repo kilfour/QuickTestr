@@ -15,3 +15,10 @@
 * QuickCheckr update.
 * Added Xml Summary comments to the public API.
 * Renamed the old investigation-style persistence API to the new vault vocabulary, including `FillVault`, `InspectVault`, `CleanupVault`, and related types.
+
+### 0.0.6: Keeping Up With the Checkrers
+* Updated to the latest QuickCheckr version.
+* Added support for improved shrinking and reporting features from QuickCheckr.
+* Added documentation examples for legacy code characterization testing.
+* Added a public shrinking challenge suite inspired by jqwik, QuickCheck, Hypothesis and test.check.
+* Reorganized and expanded the documentation.
