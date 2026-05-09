@@ -53,7 +53,6 @@ That property is false, of course, and QuickTestr reports a shrunk counterexampl
 
   Original:
     [ 63, 72, 58, 42, 30, 77, 32, 27, 60 ]
-   - WARNING: No witness for reducer at 'Input.1'.
  ------------------------------------------------------------
 ```
 
