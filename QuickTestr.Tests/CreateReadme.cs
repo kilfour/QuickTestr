@@ -1,4 +1,3 @@
-using QuickCheckr.Authoring;
 using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 using QuickPulse.Explains;
@@ -19,10 +18,10 @@ namespace QuickTestr.Tests;
 public class CreateReadme
 {
     [Fact]
-    public void Example() => Assert.Throws<FalsifiableException>(TheTestr.Run);
+    public void Example() => Assert.Throws<FalsifiableException>(TheTestr().Run);
 
     [CodeSnippet]
-    private readonly static ITestrRunner TheTestr =
+    private static ITestrRunner TheTestr() =>
         Testr.Named("Reversing a list of integers results in the same list")
             .For(Fuzzr.Int().Many(0, 10).ToList())
             .Assert(a =>
@@ -33,7 +32,7 @@ public class CreateReadme
             });
 
     [CodeSnippet]
-    private readonly static ITestrRunner DefineProperty =
+    private static ITestrRunner DefineProperty() =>
         Testr.Named("The maximum value of the list is smaller than 900.")
             .For(
                 from length in Fuzzr.Int(1, 100)

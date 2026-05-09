@@ -39,7 +39,7 @@ Testr.Named("Reversing a list of integers results in the same list")
         var reversed = new List<int>(a);
         reversed.Reverse();
         return reversed.SequenceEqual(a);
-    })
+    });
 ```
 That property is false, of course, and QuickTestr reports a shrunk counterexample:  
 ```text
@@ -96,7 +96,7 @@ Testr.Named("The maximum value of the list is smaller than 900.")
         from length in Fuzzr.Int(1, 100)
         from list in Fuzzr.Int(0, 1000).Many(length)
         select list.ToList())
-    .Assert(a => a.Max() < 900)
+    .Assert(a => a.Max() < 900);
 ```
 ### Run it  
 ```csharp
