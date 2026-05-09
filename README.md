@@ -113,6 +113,11 @@ Testr.Named("example")
 By default, `Run()` performs the default number of runs.
 You can also supply explicit run counts or a seed, depending on how you want to work.
 
+## Documentation
+
+- [Getting Started](./Docs/doc.md)
+- [Shrinking Challenges](./Docs/challenges.md)
+
 ## Installation
 
 QuickTestr is available on NuGet:
