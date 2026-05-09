@@ -4,7 +4,7 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
 
-namespace QuickTestr.Tests.Notes.Y_Challenges.G_BinHeap;
+namespace QuickTestr.Tests.Challenges.G_BinHeap;
 
 [DocFile]
 [DocContent(

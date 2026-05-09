@@ -12,12 +12,13 @@ public class TestrOracleDepositionsTests
 {
     private readonly Dossier dossier =
         new(
-            FailureInfo: new FailureInfo(FailingExpectation: "Some Invariant"),
+            FailureInfo: new FailureInfo(FailingExpectation: new ExpectationFailure("Some Invariant", [])),
             RunInfo: new RunInfo(1, 1, 12345678),
             PassedExpectations: new Dictionary<string, int>() { { "Some Invariant", 2 } },
             UncheckedExpectations: [],
             UseMemoryForInputReporting: false,
-            ReportMode: ReportMode.Default & ~ReportMode.StackTrace
+            ReportMode: ReportMode.Default & ~ReportMode.StackTrace,
+            WarningLevel: WarningLevel.Debug
         );
 
     private static LinesReader Transcribe(CaseFile caseFile)

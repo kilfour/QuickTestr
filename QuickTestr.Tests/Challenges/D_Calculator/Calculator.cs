@@ -4,7 +4,7 @@ using QuickPulse.Explains;
 using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
 
-namespace QuickTestr.Tests.Notes.Y_Challenges.D_Calculator;
+namespace QuickTestr.Tests.Challenges.D_Calculator;
 
 [DocFile]
 [DocContent(

@@ -2,7 +2,7 @@ using QuickTestr.Tests.Tools;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
 
-namespace QuickTestr.Tests.Notes.Y_Challenges.F_Difference.Sub;
+namespace QuickTestr.Tests.Challenges.F_Difference.Sub;
 
 [DocFile]
 [DocContent(

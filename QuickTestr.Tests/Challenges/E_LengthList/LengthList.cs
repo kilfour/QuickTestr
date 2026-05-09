@@ -4,7 +4,7 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
 
-namespace QuickTestr.Tests.Notes.Y_Challenges.E_LengthList;
+namespace QuickTestr.Tests.Challenges.E_LengthList;
 
 [DocFile]
 [DocContent(

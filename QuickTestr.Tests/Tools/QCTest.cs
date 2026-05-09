@@ -51,8 +51,6 @@ public abstract class QCTest<T> : QCTest
         ExplainMe();
     }
 
-    private const string basePath = @"C:\Code\";
-
     private void WriteReport(
         Article article,
         string callerPath)

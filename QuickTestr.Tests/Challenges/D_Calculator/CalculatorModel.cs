@@ -1,4 +1,4 @@
-namespace QuickTestr.Tests.Notes.Y_Challenges.D_Calculator;
+namespace QuickTestr.Tests.Challenges.D_Calculator;
 
 public enum Operation { Add, Div }
 

@@ -2,17 +2,17 @@ using QuickTestr.Tests.Tools;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
 
-namespace QuickTestr.Tests.Notes.Y_Challenges.F_Difference.Sub;
+namespace QuickTestr.Tests.Challenges.F_Difference.Sub;
 
 [DocFile]
 [DocContent(
 @"
-Test 3 ('difference must not be one') only succeeds if 
+Test 1 ('difference must not be zero') only succeeds if 
 - the first parameter is less than 10 
-- _or_ the difference is not exactly 1.
-The smallest falsified sample is `[10, 9]`.
+- _or_ the difference is not zero.
+The smallest falsified sample is `[10, 10]`
 ")]
-public class Test3 : TestrPropertyTest<Test3>
+public class Test1 : TestrPropertyTest<Test1>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -24,28 +24,28 @@ public class Test3 : TestrPropertyTest<Test3>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(1231462692);
+        Run(1485535450);
 
     [CodeSnippet]
     [CodeRemove("Difference.")]
     [CodeRemove("The.")]
     protected override ITestrRunner GetTestr() =>
-        Testr.Named("Difference is not exactly 1.")
+        Testr.Named("Difference must not be zero.")
             .For(Difference.TheFuzzr, Difference.The.Shrinkr)
-            .Assert(a => a.A < 10 || Math.Abs(a.A - a.B) != 1);
+            .Assert(a => a.A < 10 || a.A != a.B);
 
     protected override void Verify(Article article)
     {
-        Assert.Equal("Difference is not exactly 1.", article.FailureDescription());
+        Assert.Equal("Difference must not be zero.", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(2, article.ShrinkCount);
+        Assert.Equal(1, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Run", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("{ A: 51, B: 52 }", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("{ A: 10, B: 9 }", article.Execution(1).Input(1).Read().Redux.Value);
+        Assert.Equal("{ A: 93, B: 93 }", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("{ A: 10, B: 10 }", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.False(article.Execution(1).Input(1).Read().Labeled);
     }
 }

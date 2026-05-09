@@ -1,4 +1,5 @@
 using QuickCheckr;
+using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 
 namespace QuickTestr.Bolts.Builders;

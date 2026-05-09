@@ -3,7 +3,7 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
 
-namespace QuickTestr.Tests.Notes.Y_Challenges.C_ReverseList;
+namespace QuickTestr.Tests.Challenges.C_ReverseList;
 
 [DocFile]
 [DocContent(

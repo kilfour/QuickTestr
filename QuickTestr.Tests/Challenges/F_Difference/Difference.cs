@@ -3,7 +3,7 @@ using QuickCheckr;
 using QuickPulse.Explains;
 using QuickTestr.Tests.Tools;
 
-namespace QuickTestr.Tests.Notes.Y_Challenges.F_Difference;
+namespace QuickTestr.Tests.Challenges.F_Difference;
 
 [DocFile]
 [DocFuzzrHeader]

@@ -4,7 +4,7 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
 
-namespace QuickTestr.Tests.Notes.Y_Challenges.H_Coupling;
+namespace QuickTestr.Tests.Challenges.H_Coupling;
 
 [DocFile]
 [DocContent(

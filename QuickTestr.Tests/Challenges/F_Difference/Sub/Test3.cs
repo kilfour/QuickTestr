@@ -1,12 +1,18 @@
 using QuickTestr.Tests.Tools;
-using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
 
-namespace QuickTestr.Tests.Notes.Y_Challenges.K_NestedLists;
+namespace QuickTestr.Tests.Challenges.F_Difference.Sub;
 
 [DocFile]
-public class NestedLists : TestrPropertyTest<NestedLists>
+[DocContent(
+@"
+Test 3 ('difference must not be one') only succeeds if 
+- the first parameter is less than 10 
+- _or_ the difference is not exactly 1.
+The smallest falsified sample is `[10, 9]`.
+")]
+public class Test3 : TestrPropertyTest<Test3>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -18,27 +24,28 @@ public class NestedLists : TestrPropertyTest<NestedLists>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(1959968277);
+        Run(1231462692);
 
     [CodeSnippet]
+    [CodeRemove("Difference.")]
+    [CodeRemove("The.")]
     protected override ITestrRunner GetTestr() =>
-        Testr
-            .Named("The sum of lengths of the element lists is at most 10.")
-            .For(Fuzzr.Int().Many(0, 20).ToList().Many(0, 20).ToList())
-            .Deliberate(a => a.Count)
-            .Assert(a => a.Sum(a => a.Count) <= 10);
+        Testr.Named("Difference is not exactly 1.")
+            .For(Difference.TheFuzzr, Difference.The.Shrinkr)
+            .Assert(a => a.A < 10 || Math.Abs(a.A - a.B) != 1);
 
     protected override void Verify(Article article)
     {
-        Assert.Equal("The sum of lengths of the element lists is at most 10.", article.FailureDescription());
+        Assert.Equal("Difference is not exactly 1.", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Actions());
         Assert.Equal(1, article.Total().Inputs());
-        Assert.Equal(31, article.ShrinkCount);
+        Assert.Equal(2, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Run", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("[ [ _, _, _, _, _, _, _, _, _, _, _ ] ]", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("{ A: 51, B: 52 }", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("{ A: 10, B: 9 }", article.Execution(1).Input(1).Read().Redux.Value);
         Assert.False(article.Execution(1).Input(1).Read().Labeled);
     }
 }

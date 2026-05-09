@@ -4,7 +4,7 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
 
-namespace QuickTestr.Tests.Notes.Y_Challenges.B_LargeUnionList;
+namespace QuickTestr.Tests.Challenges.B_LargeUnionList;
 
 [DocFile]
 [DocContent(

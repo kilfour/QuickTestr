@@ -3,7 +3,7 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
 
-namespace QuickTestr.Tests.Notes.Y_Challenges.I_Deletion;
+namespace QuickTestr.Tests.Challenges.I_Deletion;
 
 [DocFile]
 [DocContent(

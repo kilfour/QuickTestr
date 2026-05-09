@@ -1,4 +1,5 @@
 using QuickCheckr;
+using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 using QuickTestr.Bolts.Runners;
 
