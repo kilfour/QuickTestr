@@ -2,7 +2,7 @@
 This is an example of how oracle-based testing can be used to deal with legacy code.  
 It is taken from a course I gave in the past.
 
-Some students mentioned it wasn't an exercise, it was a crime.  
+Some students mentioned it wasn't an exercise, ... it was a crime.  
 ```csharp
 public class Calculator
 {

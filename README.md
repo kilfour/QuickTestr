@@ -117,6 +117,7 @@ You can also supply explicit run counts or a seed, depending on how you want to 
 
 - [Getting Started](./Docs/doc.md)
 - [Shrinking Challenges](./Docs/challenges.md)
+- [Dante's Calculator: Oracle Testing Legacy Code](./Examples/dantes-calculator.md)
 
 ## Installation
 
