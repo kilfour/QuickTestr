@@ -39,7 +39,7 @@ For instance:
 """
 For completeness, let me just note that the same thing can be achieved using `Theory` and `InlineData`.
 
-I have included an example in this repository [here]().
+I have included an example in this repository [here](https://github.com/kilfour/QuickTestr/blob/main/QuickTestr.Tests/Examples/DantesCalculator/CalculatorCharacterizationTests.cs).
 
 The `Theory` version works, but it scales poorly.
 
