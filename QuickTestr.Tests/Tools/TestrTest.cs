@@ -27,14 +27,14 @@ public abstract class TestrTest<T> : QCTest<T>
     [StackTraceHidden]
     protected void Run(
         [CallerFilePath] string callerPath = "")
-        => ProcessArticle(TheJournalist.Exposes(
+        => ProcessArticle(TheJournalist.Investigates(
             () => GetTestr().Run())
             , callerPath);
 
     protected void Run(
         int seed,
         [CallerFilePath] string callerPath = "")
-        => ProcessArticle(TheJournalist.Exposes(
+        => ProcessArticle(TheJournalist.Investigates(
             () => GetTestr().Run(seed))
             , callerPath);
 
@@ -42,16 +42,9 @@ public abstract class TestrTest<T> : QCTest<T>
     protected void Run(
         CheckrOfTRun.RunCount runCount,
         [CallerFilePath] string callerPath = "")
-        => ProcessArticle(TheJournalist.Exposes(
+        => ProcessArticle(TheJournalist.Investigates(
             () => GetTestr().Run(runCount))
             , callerPath);
-
-
-    // [StackTraceHidden]
-    // protected void RunWithoutFailure(
-    //     [CallerFilePath] string callerPath = "")
-    //     => ProcessArticle(TheJournalist.Unearths(TheInvariant())
-    //         , callerPath);
 
     protected abstract ITestrRunner GetTestr();
 }
