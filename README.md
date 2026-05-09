@@ -1,34 +1,59 @@
 # <img src='icon.png' width='40' align='top'/> QuickTestr
+> **No fuss. Just Fuzz.**  
+> `Named => For => Assert => Run`
+
+[![Docs](https://img.shields.io/badge/docs-QuickTestr-blue?style=flat-square&logo=readthedocs)](https://github.com/kilfour/QuickTestr/blob/main/Docs/doc.md)
+[![NuGet](https://img.shields.io/nuget/v/QuickTestr.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/QuickTestr)
+[![License: MIT](https://img.shields.io/badge/license-MIT-success?style=flat-square)](https://github.com/kilfour/QuickTestr/blob/main/LICENSE)
+
+
+**QuickTestr** is a small, opinionated DSL built on top of **QuickCheckr**.
+It is meant for the cases where you want the power of property-based testing, but do not need the full stateful workflow.
+
+Where **QuickCheckr** is designed for sequences of actions, evolving state, pools, and behavioural shrinking,
+**QuickTestr** focuses on the more traditional shape of a property:
+
+* Generate input.
+* Assert an invariant.
+* Get a useful counterexample when it fails.
+
+It is still powered by the QuickCheckr engine underneath, which means you keep the same emphasis on explainable failures,
+transparent reporting, and domain-guided shrinking.
+
+If your test is basically "for all generated values, this should hold", **QuickTestr** is probably the nicer entry point.
+If your bug only shows up after a sequence of operations on the same object, reach for **QuickCheckr**.
+
+You don't really need to know about **QuickCheckr** when using this library, but understanding input generation is useful in practice.  
+**QuickCheckr** uses [**QuickFuzzr**](https://github.com/kilfour/QuickFuzzr/blob/main/README.md) for its random input generation.
 
 ## Example
 
 Here is a deliberately small example:
 
+  
 ```csharp
-Testr
-    .Named("Reversing a list of integers results in the same list")
+Testr.Named("Reversing a list of integers results in the same list")
     .For(Fuzzr.Int().Many(0, 10).ToList())
     .Assert(a =>
     {
         var reversed = new List<int>(a);
         reversed.Reverse();
         return reversed.SequenceEqual(a);
-    });
+    })
 ```
-
-That property is false, of course, and QuickTestr reports a shrunk counterexample:
-
+That property is false, of course, and QuickTestr reports a shrunk counterexample:  
 ```text
 ------------------------------------------------------------
   Reversing a list of integers results in the same list
-  Seed: 12901993
+  Seed: 2121545599
  ------------------------------------------------------------
   Falsified:
-    Input = [ _, 94 ]
+    Input = [ _, 60 ]
     Redux = [ _, 0 ]
 
   Original:
-    [ 76, 92, 75, 6, 94 ]
+    [ 63, 72, 58, 42, 30, 77, 32, 27, 60 ]
+   - WARNING: No witness for reducer at 'Input.1'.
  ------------------------------------------------------------
 ```
 
@@ -64,19 +89,16 @@ In other words: less framework energy, more getting on with the test.
 
 ## Basic Usage
 
-### Define a property
-
+### Define a property  
 ```csharp
 Testr.Named("The maximum value of the list is smaller than 900.")
     .For(
         from length in Fuzzr.Int(1, 100)
         from list in Fuzzr.Int(0, 1000).Many(length)
         select list.ToList())
-    .Assert(a => a.Max() < 900);
+    .Assert(a => a.Max() < 900)
 ```
-
-### Run it
-
+### Run it  
 ```csharp
 Testr.Named("example")
     .For(Fuzzr.Int())
@@ -119,5 +141,4 @@ Current and near-future areas include:
 
 ## License
 
-This project is licensed under the [MIT License](https://github.com/kilfour/QuickTestr/blob/main/LICENSE).
-
+This project is licensed under the [MIT License](https://github.com/kilfour/QuickTestr/blob/main/LICENSE).  
