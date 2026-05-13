@@ -171,8 +171,8 @@ One of the possible difficulties that might come up is the shrinking of recursiv
 ```csharp
 Testr
     .Named("No division by zero")
-    .For(TheFuzzr, TheShrinkr)
     .Format(TheFormatr)
+    .For(TheFuzzr, TheShrinkr)
     .Deliberate(a => DepthOf(a))
     .Assert(a => { a.Evaluate(); return true; });
 ```
@@ -454,11 +454,11 @@ The expected smallest falsified sample is [1, 0].
 ```csharp
 Testr
     .Named("No two different indexes point to each other.")
+    .DisableValueReduction()
     .For(
         from length in Fuzzr.Int()
         from enumerable in Fuzzr.Int(0, length - 1).Many(length)
         select enumerable.ToList())
-    .DisableValueReduction()
     .Deliberate(a => a.Count, 2)
     .Assert(list => list.All(
         element =>

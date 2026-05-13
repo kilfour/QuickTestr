@@ -13,6 +13,8 @@ namespace QuickTestr.Bolts.Modelr;
 public sealed class WithOperations<T, U>(
     string testName,
     string fileName,
+    bool useBuiltInReducers,
+    CheckrOf<Case>[] formatters,
     Func<T> model,
     Func<U> sut,
     List<Func<T, U, CheckrOf<Case>>> operations,
@@ -23,12 +25,6 @@ public sealed class WithOperations<T, U>(
     /// Use when you need the configured name for reporting or storage.
     /// </summary>
     public string TestName { get; } = testName;
-
-    private readonly Func<T> model = model;
-    private readonly Func<U> sut = sut;
-    private readonly List<Func<T, U, CheckrOf<Case>>> operations = operations;
-
-    private readonly List<Observation<T, U>> observations = [observation];
 
     /// <summary>
     /// Adds another observation to the model-based Testr.
@@ -48,17 +44,6 @@ public sealed class WithOperations<T, U>(
     {
         observations.Add(Observation.From(label, observe, ((Tracer<T, U>)trace(new Tracer<T, U>())).TraceCheckr));
         return this;
-    }
-
-    private CheckrOf<Case> GetCheckr()
-    {
-        var checkr =
-            from m in Trackr.Stashed(model)
-            from s in Trackr.Stashed(sut)
-            from ops in Checkr.OneOf([.. operations.Select(a => a(m, s))])
-            from obs in Combine.Checkrs(observations.Select(a => a.Observe(m, s)))
-            select Case.Closed;
-        return checkr;
     }
 
     /// <summary>
@@ -94,8 +79,26 @@ public sealed class WithOperations<T, U>(
             // DeliberationPolicy = Deliberation == null ? null :
             //     a => a.InputsNamed<TInput>("Input", a => Deliberation(a)),
             // DeliberationTarget = DeliberationTarget == null ? null : DeliberationTarget,
-            // ShrinkMode = UseBuiltInReducers ? a.ShrinkMode | ShrinkMode.Reduction : a.ShrinkMode,
+            ShrinkMode = useBuiltInReducers ? a.ShrinkMode | ShrinkMode.Reduction : a.ShrinkMode,
             ReportMode = a.ReportMode & ~ReportMode.Labels & ~ReportMode.StackTrace
         };
+    }
+
+    private readonly Func<T> model = model;
+    private readonly Func<U> sut = sut;
+    private readonly List<Func<T, U, CheckrOf<Case>>> operations = operations;
+    private readonly List<Observation<T, U>> observations = [observation];
+
+    private CheckrOf<Case> GetCheckr()
+    {
+        var checkr =
+            from m in Trackr.Stashed(model)
+            from s in Trackr.Stashed(sut)
+            from showr in Showr.ForInput()
+            from format in Combine.Checkrs(formatters)
+            from ops in Checkr.OneOf([.. operations.Select(a => a(m, s))])
+            from obs in Combine.Checkrs(observations.Select(a => a.Observe(m, s)))
+            select Case.Closed;
+        return checkr;
     }
 }

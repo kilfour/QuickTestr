@@ -19,8 +19,8 @@ namespace QuickTestr.Tests.Docs.C_ModelBasedTesting;
 [DocReport]
 public class ModelBasedTesting : TestrRunTest<ModelBasedTesting>
 {
-    protected override bool Asserts => true;
-    protected override bool Report => true;
+    protected override bool Asserts => false;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
@@ -42,7 +42,6 @@ public class ModelBasedTesting : TestrRunTest<ModelBasedTesting>
                 sut => sut.Clear())
             .Observe("Result Matches",
                 (model, sut) => model.Result == sut.Result, a => a.Trace())
-            //a => a.Trace((model, sut) => (model.Result, sut.Result)))
             .Run();
 }
 

@@ -46,8 +46,8 @@ public class Calculator : TestrPropertyTest<Calculator>
     protected override ITestrRunner GetTestr() =>
         Testr
             .Named("No division by zero")
-            .For(TheFuzzr, TheShrinkr)
             .Format(TheFormatr)
+            .For(TheFuzzr, TheShrinkr)
             .Deliberate(a => DepthOf(a))
             .Assert(a => { a.Evaluate(); return true; });
 

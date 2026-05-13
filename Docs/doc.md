@@ -56,11 +56,11 @@ The property we are testing states:
 ```csharp
 Testr
     .Named("No two different indexes point to each other.")
+    .DisableValueReduction()
     .For(
         from length in Fuzzr.Int()
         from enumerable in Fuzzr.Int(0, length - 1).Many(length)
         select enumerable.ToList())
-    .DisableValueReduction()
     .Deliberate(a => a.Count, 2)
     .Assert(list => list.All(
         element =>
@@ -226,7 +226,7 @@ public class Calculator
 
 **The Testr:**  
 ```csharp
-Testr.Named("Calculator Memory")
+Testr.Named("Calculator Clear matches model")
     .Model(() => new CalculatorModel())
     .Sut(() => new Calculator())
     .Operation("Add", Fuzzr.Int(),
@@ -238,9 +238,8 @@ Testr.Named("Calculator Memory")
     .Operation("Clear",
         model => model.Clear(),
         sut => sut.Clear())
-    .Observe("Matches",
-        (model, sut) => model.Result == sut.Result,
-        a => a.Trace((model, sut) => (model.Result, sut.Result)))
+    .Observe("Result Matches",
+        (model, sut) => model.Result == sut.Result, a => a.Trace())
     .Run();
 ```
 
@@ -248,21 +247,21 @@ Testr.Named("Calculator Memory")
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ModelBasedTesting.cs:54:1
- Original failing run:    11 executions
- Minimal failing case:    4 executions (after 10 shrinks)
- Seed:                    1082712665
+ Location:                ModelBasedTesting.cs:55:1
+ Original failing run:    15 executions
+ Minimal failing case:    4 executions (after 14 shrinks)
+ Seed:                    1405961563
  ------------------------------------------------------------
   Executed: Add (3 Times)
    - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: Clear
-   - Model = 0
-   - Sut   = 96
- ==================================
-  !! Expectation Failed: Matches
- ==================================
+   - Model = { Result: 0 }
+   - Sut   = { Result: 176 }
+ =========================================
+  !! Expectation Failed: Result Matches
+ =========================================
  Passed Expectations
- - Matches: 10x
+ - Result Matches: 14x
  ------------------------------------------------------------
 ```

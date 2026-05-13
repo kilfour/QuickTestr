@@ -8,23 +8,14 @@ namespace QuickTestr.Bolts.Builders;
 /// Configures how a generated input should be reduced, formatted, or evaluated.
 /// Use to refine shrinking behavior before defining the actual assertion or oracle.
 /// </summary>
-public class InputTestr<T>(FuzzrOf<T> fuzzr, Shrinker[] shrinkers, string testName, string fileName)
+public class InputTestr<T>(
+    string testName,
+    string fileName,
+    bool useBuiltInReducers,
+    CheckrOf<Case>[] formatters,
+    FuzzrOf<T> fuzzr,
+    Shrinker[] shrinkers)
 {
-    private bool useBuiltInReducers = true;
-    private CheckrOf<Case>[] formatters = [];
-
-    /// <summary>
-    /// Disables the built-in value reduction step during shrinking.
-    /// Use when structural shrinking is enough or value reduction pushes examples the wrong way.
-    /// </summary>
-    public InputTestr<T> DisableValueReduction() { useBuiltInReducers = false; return this; }
-
-    /// <summary>
-    /// Adds custom formatters to the report for the generated input.
-    /// Use when the default rendering does not explain the failing example clearly enough.
-    /// </summary>
-    public InputTestr<T> Format(CheckrOf<Case>[] formatters) { this.formatters = formatters; return this; }
-
     /// <summary>
     /// Adds a deliberation score used to guide shrinking.
     /// Use when smaller or simpler counterexamples depend on a domain-specific notion of progress.

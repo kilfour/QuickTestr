@@ -38,11 +38,12 @@ public class B_MovingOn : TestrPropertyTest<B_MovingOn>
     protected override ITestrRunner GetTestr() =>
         Testr
             .Named("No two different indexes point to each other.")
+            .DisableValueReduction()
             .For(
                 from length in Fuzzr.Int()
                 from enumerable in Fuzzr.Int(0, length - 1).Many(length)
                 select enumerable.ToList())
-            .DisableValueReduction()
+
             .Deliberate(a => a.Count, 2)
             .Assert(list => list.All(
                 element =>
