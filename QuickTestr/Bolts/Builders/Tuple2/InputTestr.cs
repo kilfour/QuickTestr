@@ -2,7 +2,7 @@ using QuickCheckr;
 using QuickFuzzr;
 using QuickTestr.Bolts.Runners;
 
-namespace QuickTestr.Bolts.Builders;
+namespace QuickTestr.Bolts.Builders.Tuple2;
 
 /// <summary>
 /// Configures how a generated input should be reduced, formatted, or evaluated.

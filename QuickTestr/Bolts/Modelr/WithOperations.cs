@@ -16,7 +16,7 @@ public sealed class WithOperations<T, U>(
     Func<T> model,
     Func<U> sut,
     List<Func<T, U, CheckrOf<Case>>> operations,
-    Observation<T, U> observation)
+    Observation<T, U> observation) : IModelrRunner
 {
     /// <summary>
     /// Gets the display name of this Testr.
