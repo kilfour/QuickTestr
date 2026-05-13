@@ -23,4 +23,11 @@ public class NamedTestr(string testName)
     /// </summary>
     public InputTestr<T> For<T>(FuzzrOf<T> fuzzr, params Shrinker[] shrinkers)
         => new(fuzzr, shrinkers, testName, fileName);
+
+    /// <summary>
+    /// Selects two input generators and optional custom shrinkers for this Testr.
+    /// Use to define pairs of values QuickTestr should explore together and how they should shrink.
+    /// </summary>
+    public InputTestr<T1, T2> For<T1, T2>(FuzzrOf<T1> fuzzrOfT1, FuzzrOf<T2> fuzzrOfT2, params Shrinker[] shrinkers)
+        => new(fuzzrOfT1, fuzzrOfT2, shrinkers, testName, fileName);
 }

@@ -73,7 +73,7 @@ public static class TheTestr
         from style in Pulse.Draw<Styles>()
         from _0 in newLine
         from _2 in Pulse.ToFlowIf(style == Styles.Default, InputFlow, () => execution.InputDepositions)
-        from _3 in Pulse.ToFlowIf(style == Styles.Oracle, OracleInputFlow,
+        from _3 in Pulse.ToFlowIf(style == Styles.Oracle && execution.InputDepositions.Any(), OracleInputFlow,
             () => new OracleInput(execution.InputDepositions.Single(), execution.TraceDepositions, execution.FinalTraceDepositions))
         from _4 in Pulse.ToFlow(WarningFlow, execution.GetWarningDepositionsForReport())
         from _5 in newLine.Then(space).Then(LineOf(60))

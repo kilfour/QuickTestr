@@ -22,3 +22,6 @@
 * Added documentation examples for legacy code characterization testing.
 * Added a public shrinking challenge suite inspired by jqwik, QuickCheck, Hypothesis and test.check.
 * Reorganized and expanded the documentation.
+
+### 0.0.7:
+* Added synctactic sugar for generating Tuple input (arity 2 only)
