@@ -32,5 +32,9 @@ public class NamedTestr(string testName)
     public InputTestr<T1, T2> For<T1, T2>(FuzzrOf<T1> fuzzrOfT1, FuzzrOf<T2> fuzzrOfT2, params Shrinker[] shrinkers)
         => new(fuzzrOfT1, fuzzrOfT2, shrinkers, testName, fileName);
 
+    /// <summary>
+    /// Starts a model-based Testr from a trusted model instance.
+    /// Use when you want to compare a stateful system under test against a reference implementation.
+    /// </summary>
     public WithModel<T> Model<T>(Func<T> model) => new(testName, fileName, model);
 }

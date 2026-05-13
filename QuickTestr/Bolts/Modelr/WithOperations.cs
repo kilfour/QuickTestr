@@ -6,6 +6,10 @@ using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickTestr.Bolts.Modelr;
 
+/// <summary>
+/// Completes a model-based Testr after operations and an initial observation are defined.
+/// Use when adding more observations or running the configured model-based check.
+/// </summary>
 public sealed class WithOperations<T, U>(
     string testName,
     string fileName,
@@ -26,12 +30,20 @@ public sealed class WithOperations<T, U>(
 
     private readonly List<Observation<T, U>> observations = [observation];
 
+    /// <summary>
+    /// Adds another observation to the model-based Testr.
+    /// Use when several invariants should hold after each generated operation.
+    /// </summary>
     public WithOperations<T, U> Observe(string label, Func<T, U, bool> observe)
     {
         observations.Add(Observation.From(label, observe));
         return this;
     }
 
+    /// <summary>
+    /// Adds another observation with custom trace output to the model-based Testr.
+    /// Use when a failing invariant needs targeted diagnostic values in the report.
+    /// </summary>
     public WithOperations<T, U> Observe(string label, Func<T, U, bool> observe, Func<ITracer<T, U>, ITracer<T, U>> trace)
     {
         observations.Add(Observation.From(label, observe, ((Tracer<T, U>)trace(new Tracer<T, U>())).TraceCheckr));
@@ -49,14 +61,26 @@ public sealed class WithOperations<T, U>(
         return checkr;
     }
 
+    /// <summary>
+    /// Runs the model-based Testr using the default execution settings.
+    /// Use for the normal execution path when you do not need explicit run control.
+    /// </summary>
     [StackTraceHidden]
     public CaseFile Run()
         => GetCheckr().Run(10.Runs(), 50.ExecutionsPerRun(), GetConfig());
 
+    /// <summary>
+    /// Runs the model-based Testr using the specified run and execution counts.
+    /// Use when you want to control how much stateful exploration is performed.
+    /// </summary>
     [StackTraceHidden]
     public CaseFile Run(CheckrOfTRun.RunCount runs, CheckrOfTRun.ExecutionCount executionsPerRun)
         => GetCheckr().Run(runs, executionsPerRun, GetConfig());
 
+    /// <summary>
+    /// Runs the model-based Testr using the specified seed.
+    /// Use when you want to reproduce a known stateful execution path.
+    /// </summary>
     [StackTraceHidden]
     public CaseFile Run(int seed, CheckrOfTRun.ExecutionCount executionsPerRun)
         => GetCheckr().Run(seed, executionsPerRun, GetConfig());
