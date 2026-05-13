@@ -23,5 +23,6 @@
 * Added a public shrinking challenge suite inspired by jqwik, QuickCheck, Hypothesis and test.check.
 * Reorganized and expanded the documentation.
 
-### 0.0.7:
+### 0.0.7: This Year's Model
 * Added synctactic sugar for generating Tuple input (arity 2 only)
+* Added initial support for model-based testing.

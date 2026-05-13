@@ -1,4 +1,4 @@
-## Next version: 0.0.3 : ...
+## Next version: 0.0.7 : This Year's Model
  
 ### Doing
 
@@ -12,7 +12,7 @@
 ### Done/Ready for Changelog after review
 
 
-## 0.0.4 : ...
+## 0.0.8 : ...
 
 ## Skipped Tests
 

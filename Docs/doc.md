@@ -191,3 +191,78 @@ public class Remove
         Stringr.AtleastOnce('-').Replace(_ => "-").Defined();
 }
 ```
+## Model Based Testing
+
+**The Model:**  
+```csharp
+public class CalculatorModel
+{
+    public int Result { get; private set; } = 0;
+    public void Add(int a) => Result += a;
+    public void Subtract(int a) => Result -= a;
+    public void Clear() => Result = 0;
+}
+```
+
+**SUT:**  
+```csharp
+public class Calculator
+{
+    public int Result { get; private set; } = 0;
+    private int counter = 0;
+    public void Add(int a)
+    {
+        counter++;
+        Result += a;
+    }
+    public void Subtract(int a) => Result -= a;
+    public void Clear()
+    {
+        if (counter != 3)
+            Result = 0;
+    }
+}
+```
+
+**The Testr:**  
+```csharp
+Testr.Named("Calculator Memory")
+    .Model(() => new CalculatorModel())
+    .Sut(() => new Calculator())
+    .Operation("Add", Fuzzr.Int(),
+        (model, a) => model.Add(a),
+        (sut, a) => sut.Add(a))
+    .Operation("Subtract", Fuzzr.Int(),
+        (model, a) => model.Subtract(a),
+        (sut, a) => sut.Subtract(a))
+    .Operation("Clear",
+        model => model.Clear(),
+        sut => sut.Clear())
+    .Observe("Matches",
+        (model, sut) => model.Result == sut.Result,
+        a => a.Trace((model, sut) => (model.Result, sut.Result)))
+    .Run();
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                ModelBasedTesting.cs:54:1
+ Original failing run:    11 executions
+ Minimal failing case:    4 executions (after 10 shrinks)
+ Seed:                    1082712665
+ ------------------------------------------------------------
+  Executed: Add (3 Times)
+   - WARNING: All inputs were considered irrelevant.
+ ------------------------------------------------------------
+  Executed: Clear
+   - Model = 0
+   - Sut   = 96
+ ==================================
+  !! Expectation Failed: Matches
+ ==================================
+ Passed Expectations
+ - Matches: 10x
+ ------------------------------------------------------------
+```

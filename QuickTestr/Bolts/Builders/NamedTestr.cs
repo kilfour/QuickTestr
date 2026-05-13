@@ -1,5 +1,6 @@
 using QuickCheckr;
 using QuickFuzzr;
+using QuickTestr.Bolts.Modelr;
 
 namespace QuickTestr.Bolts.Builders;
 
@@ -30,4 +31,6 @@ public class NamedTestr(string testName)
     /// </summary>
     public InputTestr<T1, T2> For<T1, T2>(FuzzrOf<T1> fuzzrOfT1, FuzzrOf<T2> fuzzrOfT2, params Shrinker[] shrinkers)
         => new(fuzzrOfT1, fuzzrOfT2, shrinkers, testName, fileName);
+
+    public WithModel<T> Model<T>(Func<T> model) => new(testName, fileName, model);
 }

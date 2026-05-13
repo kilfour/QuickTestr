@@ -1,0 +1,19 @@
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                ModelBasedTesting.cs:54:1
+ Original failing run:    12 executions
+ Minimal failing case:    4 executions (after 11 shrinks)
+ Seed:                    953978548
+ ------------------------------------------------------------
+  Executed: Add (3 Times)
+   - WARNING: All inputs were considered irrelevant.
+ ------------------------------------------------------------
+  Executed: Clear
+   - Model = { Result: 0 }
+   - Sut   = { Result: 234 }
+ =========================================
+  !! Expectation Failed: Result Matches
+ =========================================
+ Passed Expectations
+ - Result Matches: 11x
+ ------------------------------------------------------------

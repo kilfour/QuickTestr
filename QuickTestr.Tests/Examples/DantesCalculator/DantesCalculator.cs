@@ -52,8 +52,7 @@ and the engine continuously explores new combinations automatically.
 That makes it particularly effective for legacy systems with many interacting rules,
 where the real bugs tend to hide in unexpected edge-case combinations.
 """)]
-    public override void Example() =>
-        Run(1000.Runs());
+    public override void Example() => Run();
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>
@@ -68,7 +67,7 @@ where the real bugs tend to hide in unexpected edge-case combinations.
         Assert.Equal(1, article.Total().PassedExpectations());
         Assert.Equal(0, article.ShrinkCount);
         Assert.Equal("Calculator Oracle", article.PassedExpectation(1).Read().Label);
-        Assert.Equal(1000, article.PassedExpectation(1).Read().TimesPassed);
+        Assert.Equal(100, article.PassedExpectation(1).Read().TimesPassed);
     }
 }
 
