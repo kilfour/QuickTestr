@@ -8,20 +8,17 @@
 
 
 **QuickTestr** is a small, opinionated DSL built on top of **QuickCheckr**.
-It is meant for the cases where you want the power of property-based testing, but do not need the full stateful workflow.
+It is meant for cases where you want property-based testing with a smaller,
+more guided API surface than full QuickCheckr workflows.
 
 Where **QuickCheckr** is designed for sequences of actions, evolving state, pools, and behavioural shrinking,
-**QuickTestr** focuses on the more traditional shape of a property:
-
-* Generate input.
-* Assert an invariant.
-* Get a useful counterexample when it fails.
+**QuickTestr** focuses on properties, oracle comparisons,
+and lightweight model-based testing.
 
 It is still powered by the QuickCheckr engine underneath, which means you keep the same emphasis on explainable failures,
 transparent reporting, and domain-guided shrinking.
 
 If your test is basically "for all generated values, this should hold", **QuickTestr** is probably the nicer entry point.
-If your bug only shows up after a sequence of operations on the same object, reach for **QuickCheckr**.
 
 You don't really need to know about **QuickCheckr** when using this library, but understanding input generation is useful in practice.  
 **QuickCheckr** uses [**QuickFuzzr**](https://github.com/kilfour/QuickFuzzr/blob/main/README.md) for its random input generation.
@@ -85,6 +82,7 @@ In other words: less framework energy, more getting on with the test.
 * **Custom reducers:** Plug in domain-aware shrinking when built-ins are not enough.
 * **Deterministic:** Failures come with seeds, so rerunning is straightforward.
 * **Good for oracle tests:** Compare a buggy implementation against a trusted model with minimal ceremony.
+* **Model-based testing:** Generate and verify operation sequences against a trusted model.
 
 ## Basic Usage
 

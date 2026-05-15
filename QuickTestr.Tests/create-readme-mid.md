@@ -28,6 +28,7 @@ In other words: less framework energy, more getting on with the test.
 * **Custom reducers:** Plug in domain-aware shrinking when built-ins are not enough.
 * **Deterministic:** Failures come with seeds, so rerunning is straightforward.
 * **Good for oracle tests:** Compare a buggy implementation against a trusted model with minimal ceremony.
+* **Model-based testing:** Generate and verify operation sequences against a trusted model.
 
 ## Basic Usage
 

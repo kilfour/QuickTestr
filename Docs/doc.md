@@ -1,11 +1,14 @@
 # QuickTestr
-QuickTestr currently supports two styles:
+QuickTestr currently supports three styles:
 - [Property-based][PropertyBased] : Define what should always hold.
-- [Oracle-based][OracleBased]: Compare against something that already works.  
+- [Oracle-based][OracleBased]: Compare against something that already works.
+- [Model-based][ModelBased]: Compare state transitions against a model.  
 
 [PropertyBased]: #property-based-style-testing
 
 [OracleBased]: #oracle-based-style-testing
+
+[ModelBased]: #model-based-testing
 ## Property-based Style Testing
 In property-based testing you describe **what should always be true**, regardless of the input.  
 QuickTestr generates many inputs and tries to falsify your rule, shrinking failures to a minimal example.
@@ -191,7 +194,14 @@ public class Remove
         Stringr.AtleastOnce('-').Replace(_ => "-").Defined();
 }
 ```
-## Model Based Testing
+## Model-based Testing
+The third supported style of QuickTestr verification.
+
+Here we introduce a model that tracks state alongside the real system.
+
+Similar to Oracle-based testing but now behavior depends on sequences of operations, not just isolated inputs.
+  
+### Calculator Memory
 
 **The Model:**  
 ```csharp
@@ -247,21 +257,98 @@ Testr.Named("Calculator Clear matches model")
 ```text
 ------------------------------------------------------------
  Test:                    Example
- Location:                ModelBasedTesting.cs:55:1
- Original failing run:    15 executions
- Minimal failing case:    4 executions (after 14 shrinks)
- Seed:                    1405961563
+ Location:                A_CalculatorMemory.cs:55:1
+ Original failing run:    9 executions
+ Minimal failing case:    4 executions (after 8 shrinks)
+ Seed:                    871180484
  ------------------------------------------------------------
   Executed: Add (3 Times)
    - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: Clear
    - Model = { Result: 0 }
-   - Sut   = { Result: 176 }
+   - Sut   = { Result: 179 }
  =========================================
   !! Expectation Failed: Result Matches
  =========================================
  Passed Expectations
- - Result Matches: 14x
+ - Result Matches: 8x
+ ------------------------------------------------------------
+```
+### Rolodex
+
+**The Model:**  
+```csharp
+public class RolodexOracle
+{
+    private readonly List<Person> people = [];
+    public IReadOnlyList<Person> People => people;
+    public void Add(string firstName, string lastName)
+    {
+        people.Add(new Person { FirstName = firstName, LastName = lastName });
+    }
+    public void DeleteAllByName(string name)
+    {
+        people.RemoveAll(person => person.FirstName == name || person.LastName == name);
+    }
+}
+```
+
+**SUT:**  
+```csharp
+public class Rolodex
+{
+    private readonly List<Person> people = [];
+    public IReadOnlyList<Person> People => people;
+    public void Add(string firstName, string lastName)
+    {
+        people.Add(new Person { FirstName = firstName, LastName = lastName });
+    }
+    public void DeleteAllByName(string name)
+    {
+        for (int i = 0; i < people.Count(); i++)
+        {
+            if (people[i].FirstName == name || people[i].LastName == name)
+            {
+                people.RemoveAt(i);
+            }
+        }
+    }
+}
+```
+```csharp
+public class Person
+{
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
+}
+```
+
+**The Testr:**  
+```csharp
+Testr.Named("Rolodex")
+    .StoreCaseFiles()
+    .Model(() => new RolodexOracle())
+    .Sut(() => new Rolodex())
+    .Operation("Add", NameFuzzr,
+        (model, a) => model.Add(a.First, a.Last),
+        (sut, a) => sut.Add(a.First, a.Last))
+    .Operation("Delete All By Name",
+        model => model.People.Any(), // precondition for this operation
+        model =>
+            from names in Fuzzr.FromEach(model.People, a => Fuzzr.OneOf(a.FirstName, a.LastName))
+            from name in Fuzzr.OneOf(names)
+            select name,
+        (model, a) => model.DeleteAllByName(a),
+        (sut, a) => sut.DeleteAllByName(a))
+    .Observe("People Match", PeopleMatch, a => a.Trace())
+    .Run(10.Runs(), 100.ExecutionsPerRun());
+```
+
+**The Report:**  
+```text
+10 Runs
+ Passed Expectations
+ - People Match: 1000x
  ------------------------------------------------------------
 ```

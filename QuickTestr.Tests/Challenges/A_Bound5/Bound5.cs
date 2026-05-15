@@ -14,7 +14,7 @@ This is false because of overflow. e.g. ([-20000], [-20000], [], [], []) is a co
 The interesting thing about this example is the interdependence between separate parts of the sample data.
 A single list in the tuple will never break the invariant, but you need at least two lists together.
 This prevents most of trivial shrinking algorithms from getting close to a minimum example,
-which would look somethink like ([-32768], [-1], [], [], []).
+which would look something like ([-32768], [-1], [], [], []).
 ")]
 public class Bound5 : TestrPropertyTest<Bound5>
 {

@@ -24,5 +24,5 @@
 * Reorganized and expanded the documentation.
 
 ### 0.0.7: This Year's Model
-* Added synctactic sugar for generating Tuple input (arity 2 only)
+* Added syntactic sugar for generating Tuple input (arity 2 only)
 * Added initial support for model-based testing.

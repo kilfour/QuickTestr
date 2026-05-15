@@ -6,6 +6,20 @@ using QuickCheckr.Authoring.ThePress.Printing;
 namespace QuickTestr.Tests.Challenges.K_NestedLists;
 
 [DocFile]
+[DocContent(
+@"
+This tests the performance of shrinking a list of lists, testing the false
+property that the sum of lengths of the element lists is at most 10.
+
+The reason this is interesting is that it has lots of local minima under
+pure deletion based approaches. e.g. `[[0], ..., [0]]` and `[[0, ..., 0]]` are
+both minima for this under anything that can only make individual elements
+smaller.
+
+Some libraries, e.g. Hypothesis and jqwik, can shrink this reliably to
+a single list of 11 elements: `[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]`.
+
+")]
 public class NestedLists : TestrPropertyTest<NestedLists>
 {
     protected override bool Asserts => false;

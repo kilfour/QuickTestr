@@ -57,3 +57,5 @@ nuget.md
 /DocsSinglePages/
 
 .dotnet-home/
+
+*.lscache

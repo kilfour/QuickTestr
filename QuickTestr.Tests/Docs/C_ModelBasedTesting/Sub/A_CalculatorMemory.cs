@@ -1,12 +1,9 @@
-using QuickCheckr;
-using QuickCheckr.Authoring;
-using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickTestr.Tests.Tools;
 
-namespace QuickTestr.Tests.Docs.C_ModelBasedTesting;
+namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
 
 [DocFile]
 [DocModelHeader]
@@ -14,10 +11,10 @@ namespace QuickTestr.Tests.Docs.C_ModelBasedTesting;
 [DocBoldHeader("SUT")]
 [DocExample(typeof(Calculator))]
 [DocTestrHeader]
-[DocExample(typeof(ModelBasedTesting), nameof(Example))]
+[DocExample(typeof(A_CalculatorMemory), nameof(Example))]
 [DocReportHeader]
 [DocReport]
-public class ModelBasedTesting : TestrRunTest<ModelBasedTesting>
+public class A_CalculatorMemory : TestrRunTest<A_CalculatorMemory>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;

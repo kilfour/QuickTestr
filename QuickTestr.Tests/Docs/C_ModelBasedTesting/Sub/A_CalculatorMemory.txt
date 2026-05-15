@@ -1,19 +1,19 @@
  ------------------------------------------------------------
  Test:                    Example
- Location:                ModelBasedTesting.cs:55:1
- Original failing run:    15 executions
- Minimal failing case:    4 executions (after 14 shrinks)
- Seed:                    1405961563
+ Location:                A_CalculatorMemory.cs:55:1
+ Original failing run:    9 executions
+ Minimal failing case:    4 executions (after 8 shrinks)
+ Seed:                    871180484
  ------------------------------------------------------------
   Executed: Add (3 Times)
    - WARNING: All inputs were considered irrelevant.
  ------------------------------------------------------------
   Executed: Clear
    - Model = { Result: 0 }
-   - Sut   = { Result: 176 }
+   - Sut   = { Result: 179 }
  =========================================
   !! Expectation Failed: Result Matches
  =========================================
  Passed Expectations
- - Result Matches: 14x
+ - Result Matches: 8x
  ------------------------------------------------------------

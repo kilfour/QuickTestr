@@ -1,4 +1,3 @@
-using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
