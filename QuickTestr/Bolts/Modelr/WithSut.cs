@@ -34,15 +34,18 @@ public sealed class WithSut<T, U>(string testName, string fileName, bool useBuil
     /// Use when the operation needs no generated input.
     /// </summary>
     public WithSut<T, U> Operation(string label, Action<T> modelOperation, Action<U> sutOperation)
-        => AddOperation((m, s) => Checkr.Act(label, () => { modelOperation(m); sutOperation(s); }));
+        => AddOperation((m, s) =>
+            from act in Checkr.Act(label, () => { modelOperation(m); sutOperation(s); })
+            select Case.Closed);
 
     /// <summary>
     /// Adds a conditional state transition that runs on both the model and the system under test.
     /// Use when the operation needs no generated input and should only run in specific model states.
     /// </summary>
     public WithSut<T, U> Operation(string label, Func<T, bool> condition, Action<T> modelOperation, Action<U> sutOperation)
-        => AddConditionalOperation(condition,
-            (m, s) => Checkr.Act(label, () => { modelOperation(m); sutOperation(s); }));
+        => AddConditionalOperation(condition, (m, s) =>
+             from act in Checkr.ActCarefully(label, () => { modelOperation(m); sutOperation(s); })
+             select Case.Closed);
 
     /// <summary>
     /// Adds a generated state transition that runs on both the model and the system under test.
@@ -51,7 +54,7 @@ public sealed class WithSut<T, U>(string testName, string fileName, bool useBuil
     public WithSut<T, U> Operation<V>(string label, FuzzrOf<V> fuzzr, Action<T, V> modelOperation, Action<U, V> sutOperation)
         => AddOperation((m, s) =>
             from input in Checkr.Input("Input", fuzzr)
-            from act in Checkr.Act(label, () => { modelOperation(m, input); sutOperation(s, input); })
+            from act in Checkr.ActCarefully(label, () => { modelOperation(m, input); sutOperation(s, input); })
             select Case.Closed);
 
     /// <summary>
@@ -61,7 +64,7 @@ public sealed class WithSut<T, U>(string testName, string fileName, bool useBuil
     public WithSut<T, U> Operation<V>(string label, Func<T, bool> condition, FuzzrOf<V> fuzzr, Action<T, V> modelOperation, Action<U, V> sutOperation)
         => AddConditionalOperation(condition, (m, s) =>
             from input in Checkr.Input("Input", fuzzr)
-            from act in Checkr.Act(label, () => { modelOperation(m, input); sutOperation(s, input); })
+            from act in Checkr.ActCarefully(label, () => { modelOperation(m, input); sutOperation(s, input); })
             select Case.Closed);
 
     /// <summary>
@@ -71,7 +74,7 @@ public sealed class WithSut<T, U>(string testName, string fileName, bool useBuil
     public WithSut<T, U> Operation<V>(string label, Func<T, FuzzrOf<V>> fuzzr, Action<T, V> modelOperation, Action<U, V> sutOperation)
         => AddOperation((m, s) =>
             from input in Checkr.Input("Input", () => fuzzr(m))
-            from act in Checkr.Act(label, () => { modelOperation(m, input); sutOperation(s, input); })
+            from act in Checkr.ActCarefully(label, () => { modelOperation(m, input); sutOperation(s, input); })
             select Case.Closed);
 
     /// <summary>
@@ -81,7 +84,7 @@ public sealed class WithSut<T, U>(string testName, string fileName, bool useBuil
     public WithSut<T, U> Operation<V>(string label, Func<T, bool> condition, Func<T, FuzzrOf<V>> fuzzr, Action<T, V> modelOperation, Action<U, V> sutOperation)
         => AddConditionalOperation(condition, (m, s) =>
             from input in Checkr.Input("Input", () => fuzzr(m))
-            from act in Checkr.Act(label, () => { modelOperation(m, input); sutOperation(s, input); })
+            from act in Checkr.ActCarefully(label, () => { modelOperation(m, input); sutOperation(s, input); })
             select Case.Closed);
 
 

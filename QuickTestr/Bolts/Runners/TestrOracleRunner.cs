@@ -56,17 +56,8 @@ public class TestrOracleRunner<TInput, TResult>(
             return Equals(expected.Value, actual.Value);
         }
         if (expected.Threw && actual.Threw)
-            return EquivalentExceptions(expected.Exception, actual.Exception);
+            return ExceptionIs.Equivalent(expected.Exception, actual.Exception);
         return false;
-    }
-
-    private static bool EquivalentExceptions(Exception? expected, Exception? actual)
-    {
-        if (expected is null || actual is null)
-            return expected is null && actual is null;
-        return expected.GetType() == actual.GetType()
-            && expected.Message == actual.Message
-            && EquivalentExceptions(expected.InnerException, actual.InnerException);
     }
 
     protected override Func<CheckrConfig, CheckrConfig> GetConfig()
@@ -83,3 +74,5 @@ public class TestrOracleRunner<TInput, TResult>(
         };
     }
 }
+
+
