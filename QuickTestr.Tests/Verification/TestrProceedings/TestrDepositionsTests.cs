@@ -23,7 +23,7 @@ public class TestrDepositionsTests
 
     private static LinesReader Transcribe(CaseFile caseFile)
     {
-        var result = TheClerk.Transcribes(caseFile, TheTestr.DefaultStyleGuide);
+        var result = TheClerk.Transcribes(caseFile, PropertyStyleGuide.Render);
         var reader = LinesReader.FromText(result);
         return reader;
     }

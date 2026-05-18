@@ -8,5 +8,6 @@
 
   Original:
     ( 37, 31 )
-   - WARNING: No witness for reducer at 'Input.Item2'.
+
+  WARNING: No witness for reducer at 'Input.Item2'.
  ------------------------------------------------------------

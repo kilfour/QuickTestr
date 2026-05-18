@@ -66,7 +66,7 @@ public class TestrOracleRunnerT2<TInput1, TInput2, TResult>(
         return a => a with
         {
             FileAs = fileName,
-            StyleGuide = TheTestr.OracleStyleGuide,
+            StyleGuide = OracleStyleGuide.Render,
             DeliberationPolicy = deliberation == null ? null :
                 a => a.InputsNamed<(TInput1, TInput2)>("Input", a => deliberation(a.Item1, a.Item2)),
             DeliberationTarget = deliberationTarget == null ? null : deliberationTarget,

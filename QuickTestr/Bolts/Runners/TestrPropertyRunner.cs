@@ -40,7 +40,7 @@ public class TestrPropertyRunner<TInput>(
         return a => a with
         {
             FileAs = fileName,
-            StyleGuide = TheTestr.DefaultStyleGuide,
+            StyleGuide = PropertyStyleGuide.Render,
             DeliberationPolicy = Deliberation == null ? null :
                 a => a.InputsNamed<TInput>("Input", a => Deliberation(a)),
             DeliberationTarget = DeliberationTarget == null ? null : DeliberationTarget,

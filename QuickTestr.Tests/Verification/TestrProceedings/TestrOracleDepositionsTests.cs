@@ -23,7 +23,7 @@ public class TestrOracleDepositionsTests
 
     private static LinesReader Transcribe(CaseFile caseFile)
     {
-        var result = TheClerk.Transcribes(caseFile, TheTestr.OracleStyleGuide);
+        var result = TheClerk.Transcribes(caseFile, OracleStyleGuide.Render);
         var reader = LinesReader.FromText(result);
         return reader;
     }

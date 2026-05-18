@@ -6,5 +6,5 @@ namespace QuickTestr.Tests.Tools;
 
 public abstract class TestrOracleRunTest<T> : TestrRunTest<T>
 {
-    protected override Func<CaseFile, Flow<Flow>> StyleGuide => TheTestr.OracleStyleGuide;
+    protected override Func<CaseFile, Flow<Flow>> StyleGuide => OracleStyleGuide.Render;
 }

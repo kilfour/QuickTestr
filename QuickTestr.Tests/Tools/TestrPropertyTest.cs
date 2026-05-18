@@ -6,5 +6,5 @@ namespace QuickTestr.Tests.Tools;
 
 public abstract class TestrPropertyTest<T> : TestrTest<T>
 {
-    protected override Func<CaseFile, Flow<Flow>> StyleGuide => TheTestr.DefaultStyleGuide;
+    protected override Func<CaseFile, Flow<Flow>> StyleGuide => PropertyStyleGuide.Render;
 }
