@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
-using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.FilingCabinet;
 
 namespace QuickTestr.Tests.Tools;
 
@@ -13,7 +13,7 @@ public abstract class TestrRunTest<T> : QCTest<T>
 
     [StackTraceHidden]
     protected void Run(
-        Func<CaseFile> runTestr,
+        Func<IRecord> runTestr,
         Action<Article> verifier,
         [CallerFilePath] string callerPath = "")
     {

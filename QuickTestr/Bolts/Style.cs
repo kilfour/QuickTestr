@@ -5,8 +5,10 @@ namespace QuickTestr.Bolts;
 
 public static class Style
 {
-    public static string Pluralize(int count, string str) =>
-        count > 1 ? $"{str}s" : str;
+    public static Flow<Flow> Pluralize(int count, string str) =>
+        Pulse.Trace(count > 1 ? $"{str}s" : str);
+    public static Flow<Flow> Pluralize(this Flow<Flow> other, int count, string str)
+        => other.Then(Pluralize(count, str));
 
     public static Flow<Flow> Space() => Pulse.Trace(" ");
     public static Flow<Flow> Space(this Flow<Flow> other)

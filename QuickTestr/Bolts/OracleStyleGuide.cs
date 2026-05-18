@@ -1,6 +1,6 @@
-using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.FilingCabinet;
+using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickPulse;
 
 namespace QuickTestr.Bolts;
@@ -16,8 +16,8 @@ public static class OracleStyleGuide
     /// Formats a case file using the oracle QuickTestr report style.
     /// Use for expected-versus-actual Testr output.
     /// </summary>
-    public static Flow<Flow> Render(CaseFile caseFile) =>
-        CommonStyleGuide.Render(caseFile, ExecutionFlow);
+    public static Flow<Flow> Render(IRecord record) =>
+        CommonStyleGuide.Render(record, ExecutionFlow);
 
     private static Flow<Flow> ExecutionFlow(ExecutionDeposition execution) =>
         Pulse

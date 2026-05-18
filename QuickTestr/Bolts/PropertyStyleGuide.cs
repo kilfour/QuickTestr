@@ -1,11 +1,9 @@
-using QuickCheckr;
-using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.FilingCabinet;
+using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickPulse;
 
 namespace QuickTestr.Bolts;
-
 
 
 /// <summary>
@@ -18,8 +16,8 @@ public static class PropertyStyleGuide
     /// Formats a case file using the property-based QuickTestr report style.
     /// Use for standard property-based Testr output.
     /// </summary>
-    public static Flow<Flow> Render(CaseFile caseFile) =>
-        CommonStyleGuide.Render(caseFile, ExecutionFlow);
+    public static Flow<Flow> Render(IRecord record) =>
+        CommonStyleGuide.Render(record, ExecutionFlow);
 
     private static Flow<Flow> ExecutionFlow(ExecutionDeposition execution) =>
         Pulse
@@ -36,6 +34,6 @@ public static class PropertyStyleGuide
             .When(input.Original.HasValue && !Equals(input.Value, input.Original.Value),
                 Style
                     .NewLine()
-                    .OnNewLine().Indent(1).Caption("Original"))
-                    .OnNewLine().Indent(3).Trace(input.Original.Value!);
+                    .OnNewLine().Indent(1).Caption("Original")
+                    .OnNewLine().Indent(3).Trace(input.Original.Value!));
 }

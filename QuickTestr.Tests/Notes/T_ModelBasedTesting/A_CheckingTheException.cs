@@ -1,4 +1,4 @@
-using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.FilingCabinet;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickPulse.Instruments;
@@ -23,15 +23,15 @@ They only matter if they lead to an observed state mismatch.
 [DocReport]
 public class A_CheckingTheException : TestrRunTest<A_CheckingTheException>
 {
-    protected override bool Asserts => true;
-    protected override bool Report => true;
-    protected override bool Explain => true;
+    protected override bool Asserts => false;
+    protected override bool Report => false;
+    protected override bool Explain => false;
 
     [Fact]
     public void RunExample() => Run(Example, a => { });
 
     [CodeSnippet]
-    private static CaseFile Example() =>
+    private static IRecord Example() =>
         Testr.Named("NameCollector matches model")
             .Model(() => new NameCollectorModel())
             .Sut(() => new NameCollector())

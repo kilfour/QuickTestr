@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using QuickCheckr;
+using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
-using QuickCheckr.UnderTheHood.Proceedings;
 
 
 namespace QuickTestr.Bolts.Runners;
@@ -17,7 +17,7 @@ public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
     /// Use for the normal execution path when you do not need explicit configuration.
     /// </summary>
     [StackTraceHidden]
-    public CaseFile Run()
+    public IRecord Run()
         => Run(100.Runs());
 
     /// <summary>
@@ -25,7 +25,7 @@ public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
     /// Use when you want a reproducible execution of a known case.
     /// </summary>
     [StackTraceHidden]
-    public CaseFile Run(int seed)
+    public IRecord Run(int seed)
         => GetCheckr().Run(seed, GetConfig());
 
     /// <summary>
@@ -33,7 +33,7 @@ public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
     /// Use when you want to control how much search effort is spent.
     /// </summary>
     [StackTraceHidden]
-    public CaseFile Run(CheckrOfTRun.RunCount tries)
+    public IRecord Run(CheckrOfTRun.RunCount tries)
         => GetCheckr().Run(tries, GetConfig());
 
     /// <summary>

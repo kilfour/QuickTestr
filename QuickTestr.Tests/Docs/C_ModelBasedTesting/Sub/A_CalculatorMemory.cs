@@ -1,4 +1,4 @@
-using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.FilingCabinet;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickTestr.Tests.Tools;
@@ -24,7 +24,7 @@ public class A_CalculatorMemory : TestrRunTest<A_CalculatorMemory>
     public void RunExample() => Run(Example, a => { });
 
     [CodeSnippet]
-    private static CaseFile Example() =>
+    private static IRecord Example() =>
         Testr.Named("Calculator Clear matches model")
             .Model(() => new CalculatorModel())
             .Sut(() => new Calculator())

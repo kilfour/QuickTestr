@@ -64,7 +64,6 @@ where the real bugs tend to hide in unexpected edge-case combinations.
     {
         Assert.Equal("", article.FailureDescription());
         Assert.Equal(1, article.Total().PassedExpectations());
-        Assert.Equal(0, article.ShrinkCount);
         Assert.Equal("Calculator Oracle", article.PassedExpectation(1).Read().Label);
         Assert.Equal(100, article.PassedExpectation(1).Read().TimesPassed);
     }

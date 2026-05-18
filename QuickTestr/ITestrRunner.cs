@@ -1,5 +1,5 @@
 using QuickCheckr;
-using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.FilingCabinet;
 using QuickTestr.Bolts;
 
 namespace QuickTestr;
@@ -14,19 +14,19 @@ public interface ITestrRunner
     /// Runs the Testr using the default number of runs.
     /// Use for the normal execution path when you do not need explicit configuration.
     /// </summary>
-    CaseFile Run();
+    IRecord Run();
 
     /// <summary>
     /// Runs the Testr using the specified seed.
     /// Use when you want a reproducible execution of a known case.
     /// </summary>
-    CaseFile Run(int seed);
+    IRecord Run(int seed);
 
     /// <summary>
     /// Runs the Testr using the specified number of runs.
     /// Use when you want to control how much search effort is spent.
     /// </summary>
-    CaseFile Run(CheckrOfTRun.RunCount tries);
+    IRecord Run(CheckrOfTRun.RunCount tries);
 
     /// <summary>
     /// Re-enters the typed vault workflow for this Testr.

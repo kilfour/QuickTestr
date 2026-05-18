@@ -1,4 +1,4 @@
-using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.FilingCabinet;
 using QuickPulse;
 using QuickTestr.Bolts;
 
@@ -6,5 +6,5 @@ namespace QuickTestr.Tests.Tools;
 
 public abstract class TestrOracleRunTest<T> : TestrRunTest<T>
 {
-    protected override Func<CaseFile, Flow<Flow>> StyleGuide => OracleStyleGuide.Render;
+    protected override Func<IRecord, Flow<Flow>> StyleGuide => OracleStyleGuide.Render;
 }

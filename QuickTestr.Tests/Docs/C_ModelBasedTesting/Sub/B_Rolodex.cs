@@ -1,5 +1,5 @@
 using QuickCheckr;
-using QuickCheckr.UnderTheHood.Proceedings;
+using QuickCheckr.FilingCabinet;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickTestr.Tests.Tools;
@@ -21,13 +21,13 @@ public class B_Rolodex : TestrRunTest<B_Rolodex>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explain => true;
+    protected override bool Explain => false;
 
     [Fact]
     public void RunExample() => Run(Example, a => { });
 
     [CodeSnippet]
-    private static CaseFile Example() =>
+    private static IRecord Example() =>
         Testr.Named("Rolodex")
             .StoreCaseFiles()
             .Model(() => new RolodexOracle())

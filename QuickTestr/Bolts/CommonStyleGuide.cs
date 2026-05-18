@@ -1,7 +1,6 @@
-using QuickCheckr.UnderTheHood.Proceedings;
-using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions.Failure;
+using QuickCheckr.FilingCabinet;
+using QuickCheckr.FilingCabinet.Depositions;
+using QuickCheckr.FilingCabinet.Depositions.Failure;
 using QuickPulse;
 
 namespace QuickTestr.Bolts;
@@ -13,12 +12,12 @@ public static class CommonStyleGuide
     /// Formats a case file using the property-based QuickTestr report style.
     /// Use for standard property-based or oracle-based Testr output.
     /// </summary>
-    public static Flow<Flow> Render(CaseFile caseFile, Func<ExecutionDeposition, Flow<Flow>> renderExecution) =>
+    public static Flow<Flow> Render(IRecord record, Func<ExecutionDeposition, Flow<Flow>> renderExecution) =>
         Pulse.Prime(() => renderExecution).Dissipate()
-            .OnType((CaseSummary a) => SummaryFlow(a), () => caseFile)
-            .ToFlowIf(caseFile.HasEvidence, EvidenceFlow, () => caseFile);
+            .OnType((Findings a) => Findings(a), () => record)
+            .OnType((CaseFile a) => CaseFile(a), () => record);
 
-    public static Flow<Flow> SummaryFlow(CaseSummary summary) =>
+    public static Flow<Flow> Findings(Findings summary) =>
         Style
             .DrawTopLine()
             .OnNewLine()
@@ -27,7 +26,7 @@ public static class CommonStyleGuide
             .Trace(Style.Pluralize(summary.NumberOfRuns, "Run"))
             .DrawLine();
 
-    private static Flow<Flow> EvidenceFlow(CaseFile caseFile) =>
+    private static Flow<Flow> CaseFile(CaseFile caseFile) =>
         Style
             .DrawTopLine()
             .ToFlow(FailureFlow, caseFile.FailureDeposition)
@@ -52,7 +51,6 @@ public static class CommonStyleGuide
         from _ in
             Pulse
             .ToFlow(executionFlow, execution)
-            .ToFlow(WarningsFlow, execution.GetWarningDepositionsForReport())
             .DrawLine()
         select Flow.Continue;
 

@@ -1,8 +1,9 @@
+using QuickCheckr.FilingCabinet;
+using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
 using QuickCheckr.UnderTheHood.Proceedings;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
-using QuickCheckr.UnderTheHood.Proceedings.Depositions;
 using QuickPulse.Explains.Text;
 using QuickTestr.Bolts;
 
@@ -15,15 +16,14 @@ public class TestrDepositionsTests
             FailureInfo: new FailureInfo(FailingExpectation: new ExpectationFailure("Some Invariant", [])),
             RunInfo: new RunInfo(1, 1, 12345678),
             PassedExpectations: new Dictionary<string, int>() { { "Some Invariant", 2 } },
-            UncheckedExpectations: [],
             UseMemoryForInputReporting: false,
             ReportMode: ReportMode.Default & ~ReportMode.StackTrace,
             WarningLevel: WarningLevel.Debug
         );
 
-    private static LinesReader Transcribe(CaseFile caseFile)
+    private static LinesReader Transcribe(IRecord record)
     {
-        var result = TheClerk.Transcribes(caseFile, PropertyStyleGuide.Render);
+        var result = TheClerk.Transcribes(record, PropertyStyleGuide.Render);
         var reader = LinesReader.FromText(result);
         return reader;
     }

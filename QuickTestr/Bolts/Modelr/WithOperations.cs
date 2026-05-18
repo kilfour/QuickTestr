@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using QuickCheckr;
+using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
-using QuickCheckr.UnderTheHood.Proceedings;
 
 namespace QuickTestr.Bolts.Modelr;
 
@@ -51,7 +51,7 @@ public sealed class WithOperations<T, U>(
     /// Use for the normal execution path when you do not need explicit run control.
     /// </summary>
     [StackTraceHidden]
-    public CaseFile Run()
+    public IRecord Run()
         => GetCheckr().Run(10.Runs(), 50.ExecutionsPerRun(), GetConfig());
 
     /// <summary>
@@ -59,7 +59,7 @@ public sealed class WithOperations<T, U>(
     /// Use when you want to control how much stateful exploration is performed.
     /// </summary>
     [StackTraceHidden]
-    public CaseFile Run(CheckrOfTRun.RunCount runs, CheckrOfTRun.ExecutionCount executionsPerRun)
+    public IRecord Run(CheckrOfTRun.RunCount runs, CheckrOfTRun.ExecutionCount executionsPerRun)
         => GetCheckr().Run(runs, executionsPerRun, GetConfig());
 
     /// <summary>
@@ -67,7 +67,7 @@ public sealed class WithOperations<T, U>(
     /// Use when you want to reproduce a known stateful execution path.
     /// </summary>
     [StackTraceHidden]
-    public CaseFile Run(int seed, CheckrOfTRun.ExecutionCount executionsPerRun)
+    public IRecord Run(int seed, CheckrOfTRun.ExecutionCount executionsPerRun)
         => GetCheckr().Run(seed, executionsPerRun, GetConfig());
 
     private Func<CheckrConfig, CheckrConfig> GetConfig()
