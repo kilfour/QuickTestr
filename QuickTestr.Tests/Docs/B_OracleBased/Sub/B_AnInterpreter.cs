@@ -72,13 +72,10 @@ public class B_AnInterpreter : TestrOracleTest<B_AnInterpreter>
         Assert.Equal("\"1 ^ 1 ^ - 3 ^ 1 / - 1 ^ (2 / 2 + 1 - 3 / 3 / 3) * 3 - 1 ^ (2 - 2 / 1 + 2 / 1 / 3) + 3 / (1 + 3 + 2 * 3) / 2 * - 2 ^ 2\"", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("\"1 ^ 1 ^ - 3 ^ 1 / - 1 ^ (2 / 2 + 1 - 3 / 3 / 3) * 3 - 1 ^ (2 - 2 / 1 + 2 / 1 / 3) + 3 / (1 + 3 + 2 * 3) / 2 * - 2 ^ 2\"", article.Execution(1).Input(1).Read().Original.Value);
         Assert.Equal("\"-2^2\"", article.Execution(1).Input(1).Read().Redux.Value);
-        Assert.False(article.Execution(1).Input(1).Read().Labeled);
         Assert.Equal("Expected", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("-4.6", article.Execution(1).Trace(1).Read().Value);
-        Assert.False(article.Execution(1).Trace(1).Read().Labeled);
         Assert.Equal("Actual  ", article.Execution(1).Trace(2).Read().Label);
         Assert.Equal("NaN", article.Execution(1).Trace(2).Read().Value);
-        Assert.False(article.Execution(1).Trace(2).Read().Labeled);
 
     }
 }

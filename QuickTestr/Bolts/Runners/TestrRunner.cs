@@ -33,39 +33,39 @@ public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
     /// Use when you want to control how much search effort is spent.
     /// </summary>
     [StackTraceHidden]
-    public IRecord Run(CheckrOfTRun.RunCount tries)
+    public IRecord Run(RunCount tries)
         => GetCheckr().Run(tries, GetConfig());
 
     /// <summary>
-    /// Searches for distinct failing cases and stores them in the vault using a custom policy.
-    /// Use when you want to tune which cases are kept or ignored during vault filling.
+    /// Searches for distinct failing cases and stores them in the vault.
+    /// Use when you want a representative set of different failing inputs for the same Testr.
+    /// Inputs are grouped by value and a limited set of failures (10) is retained.
     /// </summary>
-    public void FillVault(
+    public IRecord FillVault(
         SearchCount searchCount,
-        CheckrOfTRun.RunCount runs,
-        Func<TInput, object> classifyBy,
-        Func<VaultPolicy<TInput>, VaultPolicy<TInput>> policy)
-    {
-        var configuredPolicy = policy(new VaultPolicy<TInput>(5, null));
-        GetCheckr().GatherEvidence(
+        RunCount runs) =>
+            FillVault(searchCount, runs, VaultPolicy<TInput>.Default);
+
+    /// <summary>
+    /// Searches for distinct failing cases and stores them in the vault using a custom policy.
+    /// Use when you want to control how failures are grouped, limited, or skipped during vault filling.
+    /// </summary>
+    public IRecord FillVault(
+        SearchCount searchCount,
+        RunCount runs,
+        VaultPolicy<TInput> policy) =>
+            GetCheckr().Conduct(
                 searchCount.NumberOfSearches.Investigations(),
                 runs,
                 1.ExecutionsPerRun(),
                 AddFileAsToConfig(),
-                (a) => classifyBy(a.GetInput<TInput>("Input")),
-                configuredPolicy.MaxStoredCases,
-                configuredPolicy.SkipWhen != null ? a => configuredPolicy.SkipWhen(a.GetInput<TInput>("Input")) : null);
-    }
-
-    /// <summary>
-    /// Searches for distinct failing cases and stores them in the vault.
-    /// Use when you want a representative set of different failures for the same Testr.
-    /// </summary>
-    public void FillVault(
-        SearchCount searchCount,
-        CheckrOfTRun.RunCount runs,
-        Func<TInput, object> classifyBy)
-            => FillVault(searchCount, runs, classifyBy, a => a);
+                new Directive
+                {
+                    ClassifyBy = (a) => policy.ClassifyBy(a.GetInput<TInput>("Input")),
+                    MaxCaseFiles = policy.MaxStoredFailures,
+                    Reject = policy.SkipWhen != null
+                        ? a => policy.SkipWhen(a.GetInput<TInput>("Input")) : null
+                });
 
     /// <summary>
     /// Re-runs the stored vault cases and reports which ones still fail.

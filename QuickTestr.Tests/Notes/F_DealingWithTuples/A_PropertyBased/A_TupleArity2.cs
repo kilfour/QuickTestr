@@ -40,7 +40,6 @@ public class A_TupleArity2 : TestrPropertyTest<A_TupleArity2>
         Assert.Equal("( _, 31 )", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("( 37, 31 )", article.Execution(1).Input(1).Read().Original.Value);
         Assert.Equal("( _, 0 )", article.Execution(1).Input(1).Read().Redux.Value);
-        Assert.False(article.Execution(1).Input(1).Read().Labeled);
         Assert.Equal("No witness for reducer at 'Input.Item2'.", article.Execution(1).Warning(1).Read().Value);
     }
 }

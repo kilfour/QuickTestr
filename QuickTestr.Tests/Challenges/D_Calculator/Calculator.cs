@@ -117,6 +117,5 @@ public class Calculator : TestrPropertyTest<Calculator>
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("( _ / ( 2 / _ ) )", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("( _ / ( 0 / _ ) )", article.Execution(1).Input(1).Read().Redux.Value);
-        Assert.False(article.Execution(1).Input(1).Read().Labeled);
     }
 }

@@ -23,7 +23,7 @@ public class TestrOracleDepositionsTests
 
     private static LinesReader Transcribe(IRecord record)
     {
-        var result = TheClerk.Transcribes(record, OracleStyleGuide.Render);
+        var result = TheClerk.Transcribes(record, new OracleClerk().File);
         var reader = LinesReader.FromText(result);
         return reader;
     }
@@ -34,7 +34,7 @@ public class TestrOracleDepositionsTests
         var caseFile = CaseFile.From(dossier.FailureInfo, dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
                 .AddActionDeposition(new ActionDeposition("Run"))
-                .AddInputDeposition(new InputDeposition(true, "PropertyName", 42)
+                .AddInputDeposition(new InputDeposition("PropertyName", 42)
                 {
                     Redux = Maybe.Just("1"),
                     Original = Maybe.Just("42")
@@ -73,7 +73,7 @@ public class TestrOracleDepositionsTests
         var caseFile = CaseFile.From(dossier.FailureInfo, dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
                 .AddActionDeposition(new ActionDeposition("Run"))
-                .AddInputDeposition(new InputDeposition(true, "PropertyName", 42))
+                .AddInputDeposition(new InputDeposition("PropertyName", 42))
                 .AddTraceDeposition(new TraceDeposition("Expected", "42"))
                 .AddTraceDeposition(new TraceDeposition("Actual  ", "43"))
                 .AddFinalTraceDeposition(new TraceDeposition("Expected", "42"))

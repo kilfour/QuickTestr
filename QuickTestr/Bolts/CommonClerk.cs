@@ -1,19 +1,24 @@
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.FilingCabinet.Depositions;
 using QuickCheckr.FilingCabinet.Depositions.Failure;
+using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse;
 
 namespace QuickTestr.Bolts;
 
-public static class CommonStyleGuide
+public static class CommonClerk
 {
 
     /// <summary>
     /// Formats a case file using the property-based QuickTestr report style.
     /// Use for standard property-based or oracle-based Testr output.
     /// </summary>
-    public static Flow<Flow> Render(IRecord record, Func<ExecutionDeposition, Flow<Flow>> renderExecution) =>
+    public static Flow<Flow> Render(
+        IRecord record,
+        Func<ExecutionDeposition, Flow<Flow>> renderExecution,
+        Func<Inquiry, Flow<Flow>> inquiryFlow) =>
         Pulse.Prime(() => renderExecution).Dissipate()
+            .OnType((Inquiry a) => inquiryFlow(a), () => record)
             .OnType((Findings a) => Findings(a), () => record)
             .OnType((CaseFile a) => CaseFile(a), () => record);
 
@@ -66,5 +71,15 @@ public static class CommonStyleGuide
             .Trace("WARNING:")
             .Space()
             .Trace(warning.Value);
+
+    public static Flow<Flow> InquiryHeaderCount(this Flow<Flow> other, int count, string label, string suffix) =>
+        other.Then(
+            Style
+                .OnNewLine()
+                .Trace(count)
+                .Space()
+                .Trace(label)
+                .Space()
+                .Pluralize(count, suffix));
 }
 

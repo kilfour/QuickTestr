@@ -1,5 +1,6 @@
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.FilingCabinet.Depositions;
+using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse;
 
@@ -10,19 +11,48 @@ namespace QuickTestr.Bolts;
 /// Provides the built-in report style guides used by QuickTestr.
 /// Use when you want the standard compact formatting for oracle-based cases.
 /// </summary>
-public static class OracleStyleGuide
+public class OracleClerk : ITranscribe
 {
     /// <summary>
     /// Formats a case file using the oracle QuickTestr report style.
     /// Use for expected-versus-actual Testr output.
     /// </summary>
-    public static Flow<Flow> Render(IRecord record) =>
-        CommonStyleGuide.Render(record, ExecutionFlow);
+    public Flow<Flow> File(IRecord record) =>
+        CommonClerk.Render(record, ExecutionFlow, Inquiry);
+
+    private static Flow<Flow> Inquiry(Inquiry inquiry) =>
+        Style
+            .DrawTopLine()
+            .InquiryHeaderCount(inquiry.NumberOfRuns, "Total", "Run")
+            .InquiryHeaderCount(inquiry.FailureCount, "Failed", "Run")
+            .InquiryHeaderCount(inquiry.DistinctFailureCount, "Distinct", "Failure")
+            .OnNewLine().TraceIf(inquiry.MaxStoredCaseFilesReached, () => "Max Stored Failures Reached")
+            .DrawLine()
+            .NewLine()
+            .ToFlow(InquiryCaseFile, inquiry.DistinctFailures)
+            .NewLine()
+            .DoubleLine()
+            .OnNewLine().Trace("Passed Expectations")
+            .ToFlow(InquiryPassedExpectations, inquiry.PassedExpectationDepositions)
+            .DoubleLine();
+
+    public static Flow<Flow> InquiryCaseFile(CaseFile caseFile) =>
+        Style
+            .DoubleLine()
+            .OnNewLine().Trace($"Seed:                    {caseFile.Seed}")
+            .OnNewLine().Trace($"Failure:                 {caseFile.FailureDeposition.GetFailureDescription()}")
+            .ToFlow(ExecutionFlow, caseFile.ExecutionDepositions)
+            .DoubleLine()
+            .NewLine();
+
+    private static Flow<Flow> InquiryPassedExpectations(IEnumerable<PassedExpectation> input) =>
+        Pulse
+            .ToFlow(a => Style.OnNewLine().Trace($"- {a.Label}: {a.TimesPassed}x"), input);
 
     private static Flow<Flow> ExecutionFlow(ExecutionDeposition execution) =>
         Pulse
             .ToFlowIf(execution.InputDepositions.Count != 0, OracleInputFlow, () => GetInputAndTraces(execution))
-            .ToFlow(CommonStyleGuide.WarningsFlow, execution.GetWarningDepositionsForReport());
+            .ToFlow(CommonClerk.WarningsFlow, execution.GetWarningDepositionsForReport());
 
     private record OracleInput(InputDeposition Input, List<TraceDeposition> Traces, List<TraceDeposition> FinalTraces);
 

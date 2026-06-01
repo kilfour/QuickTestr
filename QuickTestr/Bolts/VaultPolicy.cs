@@ -1,7 +1,14 @@
 namespace QuickTestr.Bolts;
 
 /// <summary>
-/// Configures which cases are kept while filling the vault.
-/// Use to limit stored cases or skip inputs that are not worth persisting.
+/// Configures how failing inputs are grouped and stored while filling the vault.
+/// Use to control which failures are considered distinct, how many are kept,
+/// or which inputs should be skipped.
 /// </summary>
-public record VaultPolicy<TInput>(int? MaxStoredCases = 5, Func<TInput, bool>? SkipWhen = null);
+public record VaultPolicy<TInput>(
+    Func<TInput, object> ClassifyBy,
+    int? MaxStoredFailures = 10,
+    Func<TInput, bool>? SkipWhen = null)
+{
+    public static VaultPolicy<TInput> Default => new(a => a!);
+}

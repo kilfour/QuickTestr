@@ -68,7 +68,6 @@ public class BinHeap : TestrPropertyTest<BinHeap>
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("{ Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 998, Left: { }, Right: { } } }", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("{ Left: { Value: 999, Left: { }, Right: { } }, Right: { Value: 0, Left: { }, Right: { } } }", article.Execution(1).Input(1).Read().Redux.Value);
-        Assert.False(article.Execution(1).Input(1).Read().Labeled);
     }
 
     public abstract record Heap;

@@ -53,6 +53,5 @@ public class NestedLists : TestrPropertyTest<NestedLists>
         Assert.Equal("Run", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ [ _, _, _, _, _, _, _, _, _, _, _ ] ]", article.Execution(1).Input(1).Read().Value);
-        Assert.False(article.Execution(1).Input(1).Read().Labeled);
     }
 }

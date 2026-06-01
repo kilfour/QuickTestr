@@ -44,20 +44,14 @@ public class A_TupleArity2 : TestrOracleTest<A_TupleArity2>
         Assert.Equal("( _, 31 )", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("( 37, 31 )", article.Execution(1).Input(1).Read().Original.Value);
         Assert.Equal("( _, 0 )", article.Execution(1).Input(1).Read().Redux.Value);
-        Assert.False(article.Execution(1).Input(1).Read().Labeled);
         Assert.Equal("Expected", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("37", article.Execution(1).Trace(1).Read().Value);
-        Assert.False(article.Execution(1).Trace(1).Read().Labeled);
         Assert.Equal("Actual  ", article.Execution(1).Trace(2).Read().Label);
         Assert.Equal("31", article.Execution(1).Trace(2).Read().Value);
-        Assert.False(article.Execution(1).Trace(2).Read().Labeled);
         Assert.Equal("Expected", article.Execution(1).FinalTrace(1).Read().Label);
         Assert.Equal("37", article.Execution(1).FinalTrace(1).Read().Value);
-        Assert.False(article.Execution(1).FinalTrace(1).Read().Labeled);
         Assert.Equal("Actual  ", article.Execution(1).FinalTrace(2).Read().Label);
         Assert.Equal("0", article.Execution(1).FinalTrace(2).Read().Value);
-        Assert.False(article.Execution(1).FinalTrace(2).Read().Labeled);
         Assert.Equal("No witness for reducer at 'Input.Item2'.", article.Execution(1).Warning(1).Read().Value);
-
     }
 }

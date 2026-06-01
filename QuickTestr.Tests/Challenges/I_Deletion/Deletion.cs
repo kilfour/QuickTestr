@@ -58,6 +58,5 @@ public class Deletion : TestrPropertyTest<Deletion>
         Assert.Equal("Run", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("( [ 1, 1 ], 1 )", article.Execution(1).Input(1).Read().Value);
-        Assert.False(article.Execution(1).Input(1).Read().Labeled);
     }
 }

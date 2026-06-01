@@ -76,6 +76,5 @@ public class Bound5 : TestrPropertyTest<Bound5>
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("( _, _, _, [ -23457 ], [ -25242 ] )", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("( _, _, _, [ -7527 ], [ -25242 ] )", article.Execution(1).Input(1).Read().Redux.Value);
-        Assert.False(article.Execution(1).Input(1).Read().Labeled);
     }
 }

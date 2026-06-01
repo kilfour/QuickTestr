@@ -55,6 +55,5 @@ public class LengthList : TestrPropertyTest<LengthList>
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ 905 ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("[ 900 ]", article.Execution(1).Input(1).Read().Redux.Value);
-        Assert.False(article.Execution(1).Input(1).Read().Labeled);
     }
 }

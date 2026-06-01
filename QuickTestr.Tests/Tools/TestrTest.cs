@@ -4,6 +4,7 @@ using QuickPulse.Explains;
 using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Authoring.ThePress;
+using QuickCheckr.FilingCabinet;
 
 namespace QuickTestr.Tests.Tools;
 
@@ -26,6 +27,12 @@ public abstract class TestrTest<T> : QCTest<T>
 
     [StackTraceHidden]
     protected void Run(
+        Func<IRecord> testr,
+        [CallerFilePath] string callerPath = "")
+        => ProcessArticle(TheJournalist.Investigates(testr), callerPath);
+
+    [StackTraceHidden]
+    protected void Run(
         [CallerFilePath] string callerPath = "")
         => ProcessArticle(TheJournalist.Investigates(
             () => GetTestr().Run())
@@ -40,7 +47,7 @@ public abstract class TestrTest<T> : QCTest<T>
 
     [StackTraceHidden]
     protected void Run(
-        CheckrOfTRun.RunCount runCount,
+        RunCount runCount,
         [CallerFilePath] string callerPath = "")
         => ProcessArticle(TheJournalist.Investigates(
             () => GetTestr().Run(runCount))

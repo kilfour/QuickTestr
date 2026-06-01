@@ -26,7 +26,7 @@ public interface ITestrRunner
     /// Runs the Testr using the specified number of runs.
     /// Use when you want to control how much search effort is spent.
     /// </summary>
-    IRecord Run(CheckrOfTRun.RunCount tries);
+    IRecord Run(RunCount tries);
 
     /// <summary>
     /// Re-enters the typed vault workflow for this Testr.
@@ -43,22 +43,21 @@ public interface ITestrRunner<TInput>
 {
     /// <summary>
     /// Searches for distinct failing cases and stores them in the vault.
-    /// Use when you want a representative set of different failures for the same Testr.
+    /// Use when you want a representative set of different failing inputs for the same Testr.
+    /// Inputs are grouped by value and a limited set of failures (10) is retained.
     /// </summary>
-    void FillVault(
+    IRecord FillVault(
         SearchCount searchCount,
-        CheckrOfTRun.RunCount runs,
-        Func<TInput, object> classifyBy);
+        RunCount runs);
 
     /// <summary>
     /// Searches for distinct failing cases and stores them in the vault using a custom policy.
-    /// Use when you want to tune which cases are kept or ignored during vault filling.
+    /// Use when you want to control how failures are grouped, limited, or skipped during vault filling.
     /// </summary>
-    void FillVault(
+    IRecord FillVault(
         SearchCount searchCount,
-        CheckrOfTRun.RunCount runs,
-        Func<TInput, object> classifyBy,
-        Func<VaultPolicy<TInput>, VaultPolicy<TInput>> policy);
+        RunCount runs,
+        VaultPolicy<TInput> policy);
 
     /// <summary>
     /// Re-runs the stored vault cases and reports which ones still fail.

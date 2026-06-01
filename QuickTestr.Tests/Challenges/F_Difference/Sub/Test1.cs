@@ -46,6 +46,5 @@ public class Test1 : TestrPropertyTest<Test1>
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("{ A: 93, B: 93 }", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("{ A: 10, B: 10 }", article.Execution(1).Input(1).Read().Redux.Value);
-        Assert.False(article.Execution(1).Input(1).Read().Labeled);
     }
 }

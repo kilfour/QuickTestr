@@ -77,6 +77,5 @@ Let's break it by moving all `42`s to the end.
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ 42, _ ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("[ 86, 33, 42, 21, 7, 62, 44, 10 ]", article.Execution(1).Input(1).Read().Original.Value);
-        Assert.False(article.Execution(1).Input(1).Read().Labeled);
     }
 }

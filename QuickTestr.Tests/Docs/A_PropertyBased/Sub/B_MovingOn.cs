@@ -63,6 +63,5 @@ public class B_MovingOn : TestrPropertyTest<B_MovingOn>
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ 1, 0 ]", article.Execution(1).Input(1).Read().Value);
-        Assert.False(article.Execution(1).Input(1).Read().Labeled);
     }
 }

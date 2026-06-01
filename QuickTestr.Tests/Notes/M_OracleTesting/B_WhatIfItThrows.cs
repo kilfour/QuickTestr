@@ -45,13 +45,10 @@ public class B_WhatIfItThrows : TestrOracleTest<B_WhatIfItThrows>
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("( 10, _ )", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("( 10, 13 )", article.Execution(1).Input(1).Read().Original.Value);
-        Assert.False(article.Execution(1).Input(1).Read().Labeled);
         Assert.Equal("Expected", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("23", article.Execution(1).Trace(1).Read().Value);
-        Assert.False(article.Execution(1).Trace(1).Read().Labeled);
         Assert.Equal("Actual  ", article.Execution(1).Trace(2).Read().Label);
         Assert.Equal("ComputerSaysNo: a is too small", article.Execution(1).Trace(2).Read().Value);
-        Assert.False(article.Execution(1).Trace(2).Read().Labeled);
     }
 
     [CodeExample]

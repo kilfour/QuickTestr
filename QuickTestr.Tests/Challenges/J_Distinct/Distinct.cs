@@ -56,6 +56,5 @@ public class Distinct : TestrPropertyTest<Distinct>
         Assert.Equal("Run", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ 3, _, 3 ]", article.Execution(1).Input(1).Read().Value);
-        Assert.False(article.Execution(1).Input(1).Read().Labeled);
     }
 }

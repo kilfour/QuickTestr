@@ -48,6 +48,5 @@ public class LargeUnionList : TestrPropertyTest<LargeUnionList>
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("[ [ _, 17 ], [ 51 ], [ 6 ], [ 74 ] ]", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("[ [ _, 0 ], [ 1 ], [ 2 ], [ 3 ] ]", article.Execution(1).Input(1).Read().Redux.Value);
-        Assert.False(article.Execution(1).Input(1).Read().Labeled);
     }
 }

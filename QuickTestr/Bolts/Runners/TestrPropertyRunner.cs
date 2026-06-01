@@ -40,10 +40,10 @@ public class TestrPropertyRunner<TInput>(
         return a => a with
         {
             FileAs = fileName,
-            StyleGuide = PropertyStyleGuide.Render,
-            DeliberationPolicy = Deliberation == null ? null :
-                a => a.InputsNamed<TInput>("Input", a => Deliberation(a)),
-            DeliberationTarget = DeliberationTarget == null ? null : DeliberationTarget,
+            Clerk = new PropertyClerk(),
+            Deliberation = Deliberation != null
+                ? new Deliberation(a => a.InputsNamed<TInput>("Input", a => Deliberation(a)), DeliberationTarget)
+                : null,
             ShrinkMode = UseBuiltInReducers ? a.ShrinkMode | ShrinkMode.Reduction : a.ShrinkMode,
             ReportMode = a.ReportMode & ~ReportMode.Labels & ~ReportMode.StackTrace
         };

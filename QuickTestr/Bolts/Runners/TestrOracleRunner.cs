@@ -65,10 +65,10 @@ public class TestrOracleRunner<TInput, TResult>(
         return a => a with
         {
             FileAs = fileName,
-            StyleGuide = OracleStyleGuide.Render,
-            DeliberationPolicy = Deliberation == null ? null :
-                a => a.InputsNamed<TInput>("Input", a => Deliberation(a)),
-            DeliberationTarget = DeliberationTarget == null ? null : DeliberationTarget,
+            Clerk = new OracleClerk(),
+            Deliberation = Deliberation != null
+                ? new Deliberation(a => a.InputsNamed<TInput>("Input", a => Deliberation(a)), DeliberationTarget)
+                : null,
             ShrinkMode = UseBuiltInReducers ? a.ShrinkMode | ShrinkMode.Reduction : a.ShrinkMode,
             ReportMode = a.ReportMode & ~ReportMode.Labels & ~ReportMode.StackTrace | ReportMode.FinalTrace
         };

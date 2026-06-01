@@ -23,7 +23,7 @@ public class TestrDepositionsTests
 
     private static LinesReader Transcribe(IRecord record)
     {
-        var result = TheClerk.Transcribes(record, PropertyStyleGuide.Render);
+        var result = TheClerk.Transcribes(record, new PropertyClerk().File);
         var reader = LinesReader.FromText(result);
         return reader;
     }
@@ -34,7 +34,7 @@ public class TestrDepositionsTests
         var caseFile = CaseFile.From(dossier.FailureInfo, dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
                 .AddActionDeposition(new ActionDeposition("Run"))
-                .AddInputDeposition(new InputDeposition(true, "PropertyName", 42)
+                .AddInputDeposition(new InputDeposition("PropertyName", 42)
                 {
                     Redux = Maybe.Just("1"),
                     Original = Maybe.Just("42")

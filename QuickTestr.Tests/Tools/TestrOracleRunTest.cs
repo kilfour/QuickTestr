@@ -1,10 +1,9 @@
-using QuickCheckr.FilingCabinet;
-using QuickPulse;
+using QuickCheckr.Protocol;
 using QuickTestr.Bolts;
 
 namespace QuickTestr.Tests.Tools;
 
 public abstract class TestrOracleRunTest<T> : TestrRunTest<T>
 {
-    protected override Func<IRecord, Flow<Flow>> StyleGuide => OracleStyleGuide.Render;
+    protected override ITranscribe Clerk => new OracleClerk();
 }

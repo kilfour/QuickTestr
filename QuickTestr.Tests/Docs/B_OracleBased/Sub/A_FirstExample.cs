@@ -47,13 +47,10 @@ public class A_FirstExample : TestrOracleTest<A_FirstExample>
         Assert.Equal("( 94, _ )", article.Execution(1).Input(1).Read().Value);
         Assert.Equal("( 94, 35 )", article.Execution(1).Input(1).Read().Original.Value);
         Assert.Equal("( 43, _ )", article.Execution(1).Input(1).Read().Redux.Value);
-        Assert.False(article.Execution(1).Input(1).Read().Labeled);
         Assert.Equal("Expected", article.Execution(1).Trace(1).Read().Label);
         Assert.Equal("129", article.Execution(1).Trace(1).Read().Value);
-        Assert.False(article.Execution(1).Trace(1).Read().Labeled);
         Assert.Equal("Actual  ", article.Execution(1).Trace(2).Read().Label);
         Assert.Equal("0", article.Execution(1).Trace(2).Read().Value);
-        Assert.False(article.Execution(1).Trace(2).Read().Labeled);
     }
 
 

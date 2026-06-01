@@ -59,7 +59,7 @@ public sealed class WithOperations<T, U>(
     /// Use when you want to control how much stateful exploration is performed.
     /// </summary>
     [StackTraceHidden]
-    public IRecord Run(CheckrOfTRun.RunCount runs, CheckrOfTRun.ExecutionCount executionsPerRun)
+    public IRecord Run(RunCount runs, ExecutionCount executionsPerRun)
         => GetCheckr().Run(runs, executionsPerRun, GetConfig());
 
     /// <summary>
@@ -67,7 +67,7 @@ public sealed class WithOperations<T, U>(
     /// Use when you want to reproduce a known stateful execution path.
     /// </summary>
     [StackTraceHidden]
-    public IRecord Run(int seed, CheckrOfTRun.ExecutionCount executionsPerRun)
+    public IRecord Run(int seed, ExecutionCount executionsPerRun)
         => GetCheckr().Run(seed, executionsPerRun, GetConfig());
 
     private Func<CheckrConfig, CheckrConfig> GetConfig()
