@@ -346,8 +346,83 @@ Testr.Named("Rolodex")
 
 **The Report:**  
 ```text
+------------------------------------------------------------
+ Test:                    Example
+ Location:                B_Rolodex.cs:63:1
+ Original failing run:    91 executions
+ Minimal failing case:    3 executions (after 88 shrinks)
+ Seed:                    1977593959
+ ------------------------------------------------------------
+  Executed: Add
+   - Input = ( "j", _ )
+             ( "j", "jxvmriqtwz" )
+ ------------------------------------------------------------
+  Executed: Add
+   - Input = ( "j", _ )
+             ( "j", "yvqrqoch" )
+ ------------------------------------------------------------
+  Executed: Delete All By Name
+   - Input = "j"
+             "j"
+   - Model = { People: [ ] }
+   - Sut   = { People: [ { FirstName: "j", LastName: "yvqrqoch" } ] }
+ =======================================
+  !! Expectation Failed: People Match
+ =======================================
+ Passed Expectations
+ - People Match: 90x
+ ------------------------------------------------------------
+```
+### Checking The Exception
+Operation exceptions do not fail the model test by themselves.  
+They only matter if they lead to an observed state mismatch.  
+
+**The Model:**  
+```csharp
+public class NameCollectorModel
+{
+    private readonly List<string> names = [];
+    public IReadOnlyList<string> Names => names;
+    public void Add(string name)
+    {
+        if (!names.Contains(name))
+            names.Add(name);
+    }
+}
+```
+
+**SUT:**  
+```csharp
+public class NameCollector
+{
+    private readonly List<string> names = [];
+    public IReadOnlyList<string> Names => names;
+    public void Add(string name)
+    {
+        if (names.Contains(name))
+            ComputerSays.No("Already have that one ...");
+        names.Add(name);
+    }
+}
+```
+
+**The Testr:**  
+```csharp
+Testr.Named("NameCollector matches model")
+    .Model(() => new NameCollectorModel())
+    .Sut(() => new NameCollector())
+    .Operation("Add", Fuzzr.String(1),
+        (model, a) => model.Add(a),
+        (sut, a) => sut.Add(a))
+    .Observe("Result Matches",
+        (model, sut) => model.Names.SequenceEqual(sut.Names), a => a.Trace())
+    .Run();
+```
+
+**The Report:**  
+```text
 10 Runs
  Passed Expectations
- - People Match: 1000x
+ - Result Matches: 500x
  ------------------------------------------------------------
 ```

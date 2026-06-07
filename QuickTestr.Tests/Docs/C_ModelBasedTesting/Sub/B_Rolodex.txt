@@ -1,4 +1,26 @@
- 10 Runs
+ ------------------------------------------------------------
+ Test:                    Example
+ Location:                B_Rolodex.cs:63:1
+ Original failing run:    91 executions
+ Minimal failing case:    3 executions (after 88 shrinks)
+ Seed:                    1977593959
+ ------------------------------------------------------------
+  Executed: Add
+   - Input = ( "j", _ )
+             ( "j", "jxvmriqtwz" )
+ ------------------------------------------------------------
+  Executed: Add
+   - Input = ( "j", _ )
+             ( "j", "yvqrqoch" )
+ ------------------------------------------------------------
+  Executed: Delete All By Name
+   - Input = "j"
+             "j"
+   - Model = { People: [ ] }
+   - Sut   = { People: [ { FirstName: "j", LastName: "yvqrqoch" } ] }
+ =======================================
+  !! Expectation Failed: People Match
+ =======================================
  Passed Expectations
- - People Match: 1000x
+ - People Match: 90x
  ------------------------------------------------------------

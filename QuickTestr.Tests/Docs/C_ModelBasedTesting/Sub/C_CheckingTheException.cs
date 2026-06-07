@@ -4,7 +4,7 @@ using QuickPulse.Explains;
 using QuickPulse.Instruments;
 using QuickTestr.Tests.Tools;
 
-namespace QuickTestr.Tests.Notes.T_ModelBasedTesting;
+namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
 
 [DocFile]
 [DocContent(
@@ -18,10 +18,10 @@ They only matter if they lead to an observed state mismatch.
 [DocBoldHeader("SUT")]
 [DocExample(typeof(NameCollector))]
 [DocTestrHeader]
-[DocExample(typeof(A_CheckingTheException), nameof(Example))]
+[DocExample(typeof(C_CheckingTheException), nameof(Example))]
 [DocReportHeader]
 [DocReport]
-public class A_CheckingTheException : TestrRunTest<A_CheckingTheException>
+public class C_CheckingTheException : TestrRunTest<C_CheckingTheException>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
