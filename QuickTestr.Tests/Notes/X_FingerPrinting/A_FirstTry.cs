@@ -13,9 +13,9 @@ public class A_FirstTry : TestrPropertyTest<A_FirstTry>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
-    protected override bool Explain => true;
+    protected override bool Explain => false;
 
-    [Fact]
+    [Fact(Skip = "Touches the FileSystem, use InMemoryCustodian")]
     [DocTestrHeader]
     [DocTestr]
     [DocBoldHeader("The Runner")]
@@ -28,7 +28,7 @@ public class A_FirstTry : TestrPropertyTest<A_FirstTry>
     private IRecord RunIt() =>
         GetTestr()
             .WithVault<int>()
-            .FillVault(200.Searches(), 200.Runs());
+            .FillVault(5.Searches(), 10.Runs());
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>

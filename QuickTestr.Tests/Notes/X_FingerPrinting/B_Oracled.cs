@@ -12,10 +12,10 @@ namespace QuickTestr.Tests.Notes.X_FingerPrinting;
 public class B_Oracled : TestrOracleTest<B_Oracled>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
-    protected override bool Explain => true;
+    protected override bool Report => false;
+    protected override bool Explain => false;
 
-    [Fact]
+    [Fact(Skip = "Touches the FileSystem, use InMemoryCustodian")]
     [DocTestrHeader]
     [DocTestr]
     [DocBoldHeader("The Runner")]
@@ -28,7 +28,7 @@ public class B_Oracled : TestrOracleTest<B_Oracled>
     private IRecord RunIt() =>
         GetTestr()
             .WithVault<int>()
-            .FillVault(200.Searches(), 200.Runs());
+            .FillVault(5.Searches(), 10.Runs());
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>

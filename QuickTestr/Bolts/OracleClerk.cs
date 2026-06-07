@@ -26,7 +26,10 @@ public class OracleClerk : ITranscribe
             .InquiryHeaderCount(inquiry.NumberOfRuns, "Total", "Run")
             .InquiryHeaderCount(inquiry.FailureCount, "Failed", "Run")
             .InquiryHeaderCount(inquiry.DistinctFailureCount, "Distinct", "Failure")
-            .OnNewLine().TraceIf(inquiry.MaxStoredCaseFilesReached, () => "Max Stored Failures Reached")
+            .When(inquiry.MaxStoredCaseFilesReached,
+                Style
+                    .OnNewLine()
+                    .Trace("Max Stored Failures Reached"))
             .DrawLine()
             .NewLine()
             .ToFlow(InquiryCaseFile, inquiry.DistinctFailures)

@@ -327,7 +327,6 @@ public class Person
 **The Testr:**  
 ```csharp
 Testr.Named("Rolodex")
-    .StoreCaseFiles()
     .Model(() => new RolodexOracle())
     .Sut(() => new Rolodex())
     .Operation("Add", NameFuzzr,

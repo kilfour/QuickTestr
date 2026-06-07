@@ -1,127 +1,11 @@
  ------------------------------------------------------------
- 10 Total Runs
- 10 Failed Runs
- 10 Distinct Failures
- Max Stored Failures Reached
+ 23 Total Runs
+ 5 Failed Runs
+ 1 Distinct Failure
  ------------------------------------------------------------
 
  ============================================================
- Seed:                    2093444793
- Failure:                 Oracle Not between [40, 50]
-
-    Input = 45
-      Observed:
-        Expected = 45
-        Actual   = 0
-
-    Redux = 40
-      Observed:
-        Expected = 40
-        Actual   = 0
- ============================================================
-
- ============================================================
- Seed:                    881660900
- Failure:                 Oracle Not between [40, 50]
-
-    Input = 42
-      Observed:
-        Expected = 42
-        Actual   = 0
-
-    Redux = 40
-      Observed:
-        Expected = 40
-        Actual   = 0
- ============================================================
-
- ============================================================
- Seed:                    470321204
- Failure:                 Oracle Not between [40, 50]
-
-    Input = 50
-      Observed:
-        Expected = 50
-        Actual   = 0
-
-    Redux = 40
-      Observed:
-        Expected = 40
-        Actual   = 0
- ============================================================
-
- ============================================================
- Seed:                    1788598809
- Failure:                 Oracle Not between [40, 50]
-
-    Input = 48
-      Observed:
-        Expected = 48
-        Actual   = 0
-
-    Redux = 40
-      Observed:
-        Expected = 40
-        Actual   = 0
- ============================================================
-
- ============================================================
- Seed:                    611338109
- Failure:                 Oracle Not between [40, 50]
-
-    Input = 40
-      Observed:
-        Expected = 40
-        Actual   = 0
- ============================================================
-
- ============================================================
- Seed:                    571547432
- Failure:                 Oracle Not between [40, 50]
-
-    Input = 46
-      Observed:
-        Expected = 46
-        Actual   = 0
-
-    Redux = 40
-      Observed:
-        Expected = 40
-        Actual   = 0
- ============================================================
-
- ============================================================
- Seed:                    2014537606
- Failure:                 Oracle Not between [40, 50]
-
-    Input = 49
-      Observed:
-        Expected = 49
-        Actual   = 0
-
-    Redux = 40
-      Observed:
-        Expected = 40
-        Actual   = 0
- ============================================================
-
- ============================================================
- Seed:                    1108283948
- Failure:                 Oracle Not between [40, 50]
-
-    Input = 47
-      Observed:
-        Expected = 47
-        Actual   = 0
-
-    Redux = 40
-      Observed:
-        Expected = 40
-        Actual   = 0
- ============================================================
-
- ============================================================
- Seed:                    1889532576
+ Seed:                    1484579186
  Failure:                 Oracle Not between [40, 50]
 
     Input = 41
@@ -135,22 +19,8 @@
         Actual   = 0
  ============================================================
 
- ============================================================
- Seed:                    674913407
- Failure:                 Oracle Not between [40, 50]
-
-    Input = 43
-      Observed:
-        Expected = 43
-        Actual   = 0
-
-    Redux = 40
-      Observed:
-        Expected = 40
-        Actual   = 0
- ============================================================
-
 
  ============================================================
  Passed Expectations
+ - Oracle Not between [40, 50]: 18x
  ============================================================

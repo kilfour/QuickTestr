@@ -29,7 +29,6 @@ public class B_Rolodex : TestrRunTest<B_Rolodex>
     [CodeSnippet]
     private static IRecord Example() =>
         Testr.Named("Rolodex")
-            //.StoreCaseFiles()
             .Model(() => new RolodexOracle())
             .Sut(() => new Rolodex())
             .Operation("Add", NameFuzzr,
