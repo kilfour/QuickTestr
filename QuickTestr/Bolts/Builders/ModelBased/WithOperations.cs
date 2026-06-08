@@ -18,7 +18,8 @@ public sealed class WithOperations<T, U>(
     CheckrOf<Case>[] formatters,
     Func<T> model,
     Func<U> sut,
-    List<Func<T, U, CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)>>> operations,
+    bool verifyReturnValues,
+    List<Func<bool, T, U, CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)>>> operations,
     Observation<T, U> observation) : IModelrRunner
 {
     /// <summary>
@@ -87,7 +88,7 @@ public sealed class WithOperations<T, U>(
 
     private readonly Func<T> model = model;
     private readonly Func<U> sut = sut;
-    private readonly List<Func<T, U, CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)>>> operations = operations;
+    private readonly List<Func<bool, T, U, CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)>>> operations = operations;
     private readonly List<Observation<T, U>> observations = [observation];
 
     private CheckrOf<Case> GetCheckr()
@@ -97,7 +98,7 @@ public sealed class WithOperations<T, U>(
             from s in Trackr.Stashed(sut)
             from showr in Showr.ForInput()
             from format in Combine.Checkrs(formatters)
-            from ops in Checkr.OneOfWhen([.. operations.Select(a => a(m, s))])
+            from ops in Checkr.OneOfWhen([.. operations.Select(a => a(verifyReturnValues, m, s))])
             from obs in Combine.Checkrs(observations.Select(a => a.Observe(m, s)))
             select Case.Closed;
         return checkr;

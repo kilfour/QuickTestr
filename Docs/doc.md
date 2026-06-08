@@ -256,23 +256,19 @@ Testr.Named("Calculator Clear matches model")
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                A_CalculatorMemory.cs:55:1
- Original failing run:    9 executions
- Minimal failing case:    4 executions (after 8 shrinks)
- Seed:                    871180484
+  Falsified after:         5 executions
+  Minimal scenario:        4 executions
+  Seed:                    1841485277
  ------------------------------------------------------------
-  Executed: Add (3 Times)
-   - WARNING: All inputs were considered irrelevant.
+  1. Add
+  2. Add
+  3. Add
+  4. Clear
  ------------------------------------------------------------
-  Executed: Clear
-   - Model = { Result: 0 }
-   - Sut   = { Result: 179 }
- =========================================
-  !! Expectation Failed: Result Matches
- =========================================
- Passed Expectations
- - Result Matches: 8x
+  !! Failed: Result Matches
+
+     Model: { Result: 0 }
+     Sut:   { Result: 159 }
  ------------------------------------------------------------
 ```
 ### Rolodex
@@ -347,30 +343,21 @@ Testr.Named("Rolodex")
 **The Report:**  
 ```text
 ------------------------------------------------------------
- Test:                    Example
- Location:                B_Rolodex.cs:63:1
- Original failing run:    91 executions
- Minimal failing case:    3 executions (after 88 shrinks)
- Seed:                    1977593959
+  Falsified after:         43 executions
+  Minimal scenario:        3 executions
+  Seed:                    851622562
  ------------------------------------------------------------
-  Executed: Add
-   - Input = ( "j", _ )
-             ( "j", "jxvmriqtwz" )
+  1. Add
+     ( "z", _ )
+  2. Add
+     ( _, "z" )
+  3. Delete All By Name
+     "z"
  ------------------------------------------------------------
-  Executed: Add
-   - Input = ( "j", _ )
-             ( "j", "yvqrqoch" )
- ------------------------------------------------------------
-  Executed: Delete All By Name
-   - Input = "j"
-             "j"
-   - Model = { People: [ ] }
-   - Sut   = { People: [ { FirstName: "j", LastName: "yvqrqoch" } ] }
- =======================================
-  !! Expectation Failed: People Match
- =======================================
- Passed Expectations
- - People Match: 90x
+  !! Failed: People Match
+
+     Model: { People: [ ] }
+     Sut:   { People: [ { FirstName: "ovhk", LastName: "z" } ] }
  ------------------------------------------------------------
 ```
 ### Checking The Exception
@@ -421,8 +408,137 @@ Testr.Named("NameCollector matches model")
 
 **The Report:**  
 ```text
-10 Runs
+------------------------------------------------------------
+ 10 Runs
+ ------------------------------------------------------------
  Passed Expectations
  - Result Matches: 500x
+ ------------------------------------------------------------
+```
+### But I Care About The Exception
+Operation exceptions do not fail the model test by themselves.  
+They only matter if they lead to an observed state mismatch.  
+
+**The Model:**  
+```csharp
+public class NameCollectorModel
+{
+    private readonly List<string> names = [];
+    public IReadOnlyList<string> Names => names;
+    public void Add(string name)
+    {
+        if (!names.Contains(name))
+            names.Add(name);
+    }
+}
+```
+
+**SUT:**  
+```csharp
+public class NameCollector
+{
+    private readonly List<string> names = [];
+    public IReadOnlyList<string> Names => names;
+    public void Add(string name)
+    {
+        if (names.Contains(name))
+            ComputerSays.No("Already have that one ...");
+        names.Add(name);
+    }
+}
+```
+
+**The Testr:**  
+```csharp
+Testr.Named("NameCollector matches model")
+    .Model(() => new NameCollectorModel())
+    .Sut(() => new NameCollector())
+    .VerifyReturnValues()
+    .Operation("Add", Fuzzr.String(1),
+        (model, a) => model.Add(a),
+        (sut, a) => sut.Add(a))
+    .Observe("Result Matches",
+        (model, sut) => model.Names.SequenceEqual(sut.Names), a => a.Trace())
+    .Run();
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+  Falsified after:         9 executions
+  Minimal scenario:        2 executions
+  Seed:                    305762951
+ ------------------------------------------------------------
+  1. Add
+     "l"
+  2. Add
+     "l"
+ ------------------------------------------------------------
+  !! Failed: Add, results do not match
+
+     Actual   ComputerSaysNo: Already have that one ...
+ ------------------------------------------------------------
+```
+### Checking The Results As Well
+
+**The Model:**  
+```csharp
+public class IdentityCounterModel
+{
+    public int Counter { get; private set; }
+    public int Do(int a)
+    {
+        Counter++;
+        return a;
+    }
+}
+```
+
+**SUT:**  
+```csharp
+public class IdentityCounter
+{
+    public int Counter { get; private set; }
+    public int Do(int a)
+    {
+        Counter++;
+        if (Counter > 3)
+            return 0;
+        return a;
+    }
+}
+```
+
+**The Testr:**  
+```csharp
+Testr.Named("IdentityCounter matches model")
+    .Model(() => new IdentityCounterModel())
+    .Sut(() => new IdentityCounter())
+    .VerifyReturnValues()
+    .Operation("Do", Fuzzr.Int(),
+        (model, a) => model.Do(a),
+        (sut, a) => sut.Do(a))
+    .Observe("Counter Matches",
+        (model, sut) => model.Counter == sut.Counter)
+    .Run();
+```
+
+**The Report:**  
+```text
+------------------------------------------------------------
+  Falsified after:         4 executions
+  Minimal scenario:        4 executions
+  Seed:                    336357044
+ ------------------------------------------------------------
+  1. Do
+  2. Do
+  3. Do
+  4. Do
+     20
+ ------------------------------------------------------------
+  !! Failed: Do, results do not match
+
+     Expected 20
+     Actual   0
  ------------------------------------------------------------
 ```

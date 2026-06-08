@@ -1,15 +1,16 @@
  ------------------------------------------------------------
-  Falsified after:         5 executions
+  Falsified after:         4 executions
   Minimal scenario:        4 executions
-  Seed:                    1841485277
+  Seed:                    336357044
  ------------------------------------------------------------
-  1. Add
-  2. Add
-  3. Add
-  4. Clear
+  1. Do
+  2. Do
+  3. Do
+  4. Do
+     20
  ------------------------------------------------------------
-  !! Failed: Result Matches
+  !! Failed: Do, results do not match
 
-     Model: { Result: 0 }
-     Sut:   { Result: 159 }
+     Expected 20
+     Actual   0
  ------------------------------------------------------------
