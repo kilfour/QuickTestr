@@ -4,7 +4,7 @@ using QuickCheckr.FilingCabinet.Depositions.Failure;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse;
 
-namespace QuickTestr.Bolts;
+namespace QuickTestr.Bolts.ClerksOffice;
 
 public static class CommonClerk
 {
@@ -20,7 +20,8 @@ public static class CommonClerk
         Pulse.Prime(() => renderExecution).Dissipate()
             .OnType((Inquiry a) => inquiryFlow(a), () => record)
             .OnType((Findings a) => Findings(a), () => record)
-            .OnType((CaseFile a) => CaseFile(a), () => record);
+            .OnType((CaseFile a) => CaseFile(a), () => record)
+            .OnType((ColdCasesReview a) => TheColdCasesReview.Flow(a), () => record);
 
     public static Flow<Flow> Findings(Findings summary) =>
         Style

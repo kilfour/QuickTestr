@@ -4,18 +4,18 @@ using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood.Proceedings.ClerksOffice;
 using QuickPulse;
 
-namespace QuickTestr.Bolts;
+namespace QuickTestr.Bolts.ClerksOffice;
 
 
 /// <summary>
 /// Provides the built-in report style guides used by QuickTestr.
-/// Use when you want the standard compact formatting for oracle-based cases.
+/// Use when you want the standard compact formatting for property-based cases.
 /// </summary>
-public class OracleClerk : ITranscribe
+public class PropertyClerk : ITranscribe
 {
     /// <summary>
-    /// Formats a case file using the oracle QuickTestr report style.
-    /// Use for expected-versus-actual Testr output.
+    /// Formats a case file using the property-based QuickTestr report style.
+    /// Use for standard property-based Testr output.
     /// </summary>
     public Flow<Flow> File(IRecord record) =>
         CommonClerk.Render(record, ExecutionFlow, Inquiry);
@@ -54,49 +54,19 @@ public class OracleClerk : ITranscribe
 
     private static Flow<Flow> ExecutionFlow(ExecutionDeposition execution) =>
         Pulse
-            .ToFlowIf(execution.InputDepositions.Count != 0, OracleInputFlow, () => GetInputAndTraces(execution))
+            .ToFlow(InputFlow, execution.InputDepositions)
             .ToFlow(CommonClerk.WarningsFlow, execution.GetWarningDepositionsForReport());
 
-    private record OracleInput(InputDeposition Input, List<TraceDeposition> Traces, List<TraceDeposition> FinalTraces);
-
-    private static OracleInput GetInputAndTraces(ExecutionDeposition execution) =>
-        new(execution.InputDepositions.Single(), execution.TraceDepositions, execution.FinalTraceDepositions);
-
-    private static Flow<Flow> OracleInputFlow(OracleInput oracleInput) =>
+    private static Flow<Flow> InputFlow(InputDeposition input) =>
         Style
-            .NewLine()
-            .OnNewLine()
-            .Indent(3)
-            .LabeledValue("Input", oracleInput.Input.Value)
-            .ToFlow(TracesFlow, oracleInput.Traces)
-            .When(oracleInput.Input.Redux.HasValue,
+            .OnNewLine().Indent(3).LabeledValue("Input", input.Value)
+            .When(input.Redux.HasValue,
+                Style
+                    .OnNewLine()
+                    .Indent(3).LabeledValue("Redux", input.Redux.Value!))
+            .When(input.Original.HasValue && !Equals(input.Value, input.Original.Value),
                 Style
                     .NewLine()
-                    .OnNewLine()
-                    .Indent(3)
-                    .LabeledValue("Redux", oracleInput.Input.Redux.Value!)
-                    .ToFlow(TracesFlow, oracleInput.FinalTraces))
-            .When(oracleInput.Input.Original.HasValue && !Equals(oracleInput.Input.Value, oracleInput.Input.Original.Value),
-                Style
-                    .NewLine()
-                    .OnNewLine()
-                    .Indent(1)
-                    .Caption("Original")
-                    .OnNewLine()
-                    .Indent(3)
-                    .Trace(oracleInput.Input.Original.Value!));
-
-    private static Flow<Flow> TracesFlow(List<TraceDeposition> traces) =>
-        Pulse.When(traces.Count > 0,
-            Style
-                .OnNewLine()
-                .Indent(5)
-                .Caption("Observed"))
-                .ToFlow(TraceFlow, traces);
-
-    private static Flow<Flow> TraceFlow(TraceDeposition trace)
-        => Style
-            .OnNewLine()
-            .Indent(7)
-            .LabeledValue(trace.Label, trace.Value);
+                    .OnNewLine().Indent(1).Caption("Original")
+                    .OnNewLine().Indent(3).Trace(input.Original.Value!));
 }

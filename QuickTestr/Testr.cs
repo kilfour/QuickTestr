@@ -1,4 +1,4 @@
-using QuickTestr.Bolts.Builders;
+using QuickTestr.Bolts;
 
 namespace QuickTestr;
 
