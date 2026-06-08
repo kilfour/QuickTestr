@@ -3,6 +3,7 @@ using QuickCheckr;
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
+using QuickTestr.Bolts.ClerksOffice;
 
 namespace QuickTestr.Bolts.Builders.ModelBased;
 
@@ -75,7 +76,7 @@ public sealed class WithOperations<T, U>(
         return a => a with
         {
             FileAs = fileName,
-            // StyleGuide = TheTestr.DefaultStyleGuide,
+            Clerk = new ModelClerk(),
             // DeliberationPolicy = Deliberation == null ? null :
             //     a => a.InputsNamed<TInput>("Input", a => Deliberation(a)),
             // DeliberationTarget = DeliberationTarget == null ? null : DeliberationTarget,

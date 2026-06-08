@@ -17,7 +17,7 @@ namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
 [DocExample(typeof(B_Rolodex), nameof(Example))]
 [DocReportHeader]
 [DocReport]
-public class B_Rolodex : TestrRunTest<B_Rolodex>
+public class B_Rolodex : TestrModelRunTest<B_Rolodex>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;

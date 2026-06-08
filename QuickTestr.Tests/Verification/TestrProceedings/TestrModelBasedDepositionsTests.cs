@@ -9,12 +9,12 @@ using QuickTestr.Bolts.ClerksOffice;
 
 namespace QuickTestr.Tests.Verification.TestrProceedings;
 
-public class TestrDepositionsTests
+public class TestrModelBasedDepositionsTests
 {
     private readonly Dossier dossier =
         new(
             FailureInfo: new FailureInfo(FailingExpectation: new ExpectationFailure("Some Invariant", [])),
-            RunInfo: new RunInfo(1, 1, 12345678),
+            RunInfo: new RunInfo(2, 1, 12345678),
             PassedExpectations: new Dictionary<string, int>() { { "Some Invariant", 2 } },
             UseMemoryForInputReporting: false,
             ReportMode: ReportMode.Default & ~ReportMode.StackTrace,
@@ -23,7 +23,7 @@ public class TestrDepositionsTests
 
     private static LinesReader Transcribe(IRecord record)
     {
-        var result = TheClerk.Transcribes(record, new PropertyClerk().File);
+        var result = TheClerk.Transcribes(record, new ModelClerk().File);
         var reader = LinesReader.FromText(result);
         return reader;
     }
@@ -41,16 +41,17 @@ public class TestrDepositionsTests
                 }));
         var reader = Transcribe(caseFile);
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal("  Some Invariant", reader.NextLine());
-        Assert.Equal("  Seed: 12345678", reader.NextLine());
+        Assert.Equal("  Falsified after:         2 executions", reader.NextLine());
+        Assert.Equal("  Minimal scenario:        1 execution", reader.NextLine());
+        Assert.Equal("  Seed:                    12345678", reader.NextLine());
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
-        Assert.Equal("  Falsified:", reader.NextLine());
-        Assert.Equal("    Input = 42", reader.NextLine());
-        Assert.Equal("    Redux = 1", reader.NextLine());
+        Assert.Equal("  1. Run", reader.NextLine());
+        Assert.Equal("     42", reader.NextLine());
+        Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        Assert.Equal("  !! Failed: Some Invariant", reader.NextLine());
         Assert.Equal("", reader.NextLine());
-        Assert.Equal("  Original:", reader.NextLine());
-        Assert.Equal("    42", reader.NextLine());
         Assert.Equal(" ------------------------------------------------------------", reader.NextLine());
+        Assert.True(reader.EndOfContent());
         Assert.True(reader.EndOfContent());
     }
 }

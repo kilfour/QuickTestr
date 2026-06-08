@@ -1,19 +1,15 @@
  ------------------------------------------------------------
- Test:                    Example
- Location:                A_CalculatorMemory.cs:55:1
- Original failing run:    9 executions
- Minimal failing case:    4 executions (after 8 shrinks)
- Seed:                    871180484
+  Falsified after:         11 executions
+  Minimal scenario:        4 executions
+  Seed:                    658145941
  ------------------------------------------------------------
-  Executed: Add (3 Times)
-   - WARNING: All inputs were considered irrelevant.
+  1. Add
+  2. Add
+  3. Add
+  4. Clear
  ------------------------------------------------------------
-  Executed: Clear
-   - Model = { Result: 0 }
-   - Sut   = { Result: 179 }
- =========================================
-  !! Expectation Failed: Result Matches
- =========================================
- Passed Expectations
- - Result Matches: 8x
+  !! Failed:Result Matches
+
+     Model: { Result: 0 }
+     Sut:   { Result: 152 }
  ------------------------------------------------------------

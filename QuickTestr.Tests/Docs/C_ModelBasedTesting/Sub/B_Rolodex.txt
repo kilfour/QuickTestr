@@ -1,26 +1,17 @@
  ------------------------------------------------------------
- Test:                    Example
- Location:                B_Rolodex.cs:63:1
- Original failing run:    91 executions
- Minimal failing case:    3 executions (after 88 shrinks)
- Seed:                    1977593959
+  Falsified after:         43 executions
+  Minimal scenario:        3 executions
+  Seed:                    851622562
  ------------------------------------------------------------
-  Executed: Add
-   - Input = ( "j", _ )
-             ( "j", "jxvmriqtwz" )
+  1. Add
+     ( "z", _ )
+  2. Add
+     ( _, "z" )
+  3. Delete All By Name
+     "z"
  ------------------------------------------------------------
-  Executed: Add
-   - Input = ( "j", _ )
-             ( "j", "yvqrqoch" )
- ------------------------------------------------------------
-  Executed: Delete All By Name
-   - Input = "j"
-             "j"
-   - Model = { People: [ ] }
-   - Sut   = { People: [ { FirstName: "j", LastName: "yvqrqoch" } ] }
- =======================================
-  !! Expectation Failed: People Match
- =======================================
- Passed Expectations
- - People Match: 90x
+  !! Failed: People Match
+
+     Model: { People: [ ] }
+     Sut:   { People: [ { FirstName: "ovhk", LastName: "z" } ] }
  ------------------------------------------------------------

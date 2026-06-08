@@ -21,7 +21,7 @@ They only matter if they lead to an observed state mismatch.
 [DocExample(typeof(C_CheckingTheException), nameof(Example))]
 [DocReportHeader]
 [DocReport]
-public class C_CheckingTheException : TestrRunTest<C_CheckingTheException>
+public class C_CheckingTheException : TestrModelRunTest<C_CheckingTheException>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;

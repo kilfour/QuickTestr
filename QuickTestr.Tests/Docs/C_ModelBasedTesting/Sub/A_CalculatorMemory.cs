@@ -14,7 +14,7 @@ namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
 [DocExample(typeof(A_CalculatorMemory), nameof(Example))]
 [DocReportHeader]
 [DocReport]
-public class A_CalculatorMemory : TestrRunTest<A_CalculatorMemory>
+public class A_CalculatorMemory : TestrModelRunTest<A_CalculatorMemory>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
