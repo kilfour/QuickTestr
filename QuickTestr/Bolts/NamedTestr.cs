@@ -1,7 +1,6 @@
 using QuickCheckr;
 using QuickFuzzr;
 using QuickTestr.Bolts.Builders;
-using QuickTestr.Bolts.Builders.Tuple2;
 using QuickTestr.Bolts.Modelr;
 
 namespace QuickTestr.Bolts;
