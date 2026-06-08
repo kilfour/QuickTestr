@@ -4,7 +4,7 @@ using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 
 
-namespace QuickTestr.Bolts.Runners;
+namespace QuickTestr.Bolts.Builders;
 
 /// <summary>
 /// Provides the shared execution and vault behavior for concrete Testr runners.

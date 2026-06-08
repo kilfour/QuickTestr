@@ -1,7 +1,7 @@
 using QuickCheckr;
 using QuickFuzzr;
 using QuickTestr.Bolts.Builders.Oracle;
-using QuickTestr.Bolts.Runners;
+using QuickTestr.Bolts.Builders.Property;
 
 namespace QuickTestr.Bolts.Builders;
 

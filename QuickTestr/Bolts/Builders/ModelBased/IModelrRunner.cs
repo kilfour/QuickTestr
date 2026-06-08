@@ -1,7 +1,7 @@
 using QuickCheckr;
 using QuickCheckr.FilingCabinet;
 
-namespace QuickTestr.Bolts.Modelr;
+namespace QuickTestr.Bolts.Builders.ModelBased;
 
 /// <summary>
 /// Runs a model-based Testr through a non-generic handle.

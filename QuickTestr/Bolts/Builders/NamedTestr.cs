@@ -1,9 +1,8 @@
 using QuickCheckr;
 using QuickFuzzr;
-using QuickTestr.Bolts.Builders;
-using QuickTestr.Bolts.Modelr;
+using QuickTestr.Bolts.Builders.ModelBased;
 
-namespace QuickTestr.Bolts;
+namespace QuickTestr.Bolts.Builders;
 
 /// <summary>
 /// Starts the fluent configuration of a Testr.

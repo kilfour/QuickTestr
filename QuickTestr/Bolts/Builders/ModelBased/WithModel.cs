@@ -1,6 +1,6 @@
 using QuickCheckr;
 
-namespace QuickTestr.Bolts.Modelr;
+namespace QuickTestr.Bolts.Builders.ModelBased;
 
 /// <summary>
 /// Starts a model-based Testr from a trusted model factory.

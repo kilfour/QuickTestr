@@ -4,7 +4,7 @@ using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
 
-namespace QuickTestr.Bolts.Modelr;
+namespace QuickTestr.Bolts.Builders.ModelBased;
 
 /// <summary>
 /// Completes a model-based Testr after operations and an initial observation are defined.

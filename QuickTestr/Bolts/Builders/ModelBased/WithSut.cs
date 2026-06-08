@@ -1,7 +1,7 @@
 using QuickCheckr;
 using QuickFuzzr;
 
-namespace QuickTestr.Bolts.Modelr;
+namespace QuickTestr.Bolts.Builders.ModelBased;
 
 /// <summary>
 /// Configures operations and observations for a model-based Testr.

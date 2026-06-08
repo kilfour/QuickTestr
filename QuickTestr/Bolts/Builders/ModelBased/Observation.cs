@@ -1,6 +1,6 @@
 using QuickCheckr;
 
-namespace QuickTestr.Bolts.Modelr;
+namespace QuickTestr.Bolts.Builders.ModelBased;
 
 /// <summary>
 /// Represents a state comparison used in model-based testing.

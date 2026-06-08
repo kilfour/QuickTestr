@@ -1,7 +1,7 @@
 using QuickCheckr;
 using QuickCheckr.UnderTheHood;
 
-namespace QuickTestr.Bolts.Modelr;
+namespace QuickTestr.Bolts.Builders.ModelBased;
 
 /// <summary>
 /// Configures failure traces for model-based observations.
