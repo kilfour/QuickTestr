@@ -18,7 +18,7 @@ public class A_TupleArity2 : TestrPropertyTest<A_TupleArity2>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(649859307);
+        Run(() => GetTestr().Run(649859307));
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>

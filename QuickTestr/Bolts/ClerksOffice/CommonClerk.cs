@@ -29,7 +29,7 @@ public static class CommonClerk
             .OnNewLine()
             .Trace(summary.NumberOfRuns)
             .Space()
-            .Trace(Style.Pluralize(summary.NumberOfRuns, "Run"))
+            .Pluralize(summary.NumberOfRuns, "Run")
             .DrawLine();
 
     private static Flow<Flow> CaseFile(CaseFile caseFile) =>

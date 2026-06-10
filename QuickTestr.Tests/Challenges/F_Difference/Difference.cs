@@ -1,7 +1,7 @@
 using QuickFuzzr;
 using QuickCheckr;
 using QuickPulse.Explains;
-using QuickTestr.Tests.Tools;
+using QuickCheckr.Authoring;
 
 namespace QuickTestr.Tests.Challenges.F_Difference;
 

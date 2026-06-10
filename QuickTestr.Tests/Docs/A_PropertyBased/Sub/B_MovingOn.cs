@@ -32,7 +32,7 @@ public class B_MovingOn : TestrPropertyTest<B_MovingOn>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(1934478623);
+        Run(() => GetTestr().Run(1934478623));
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>

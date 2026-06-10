@@ -29,7 +29,7 @@ public class LargeUnionList : TestrPropertyTest<LargeUnionList>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(1575924946);
+        Run(() => GetTestr().Run(1575924946));
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>

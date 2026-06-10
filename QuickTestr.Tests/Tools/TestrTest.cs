@@ -5,6 +5,7 @@ using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.FilingCabinet;
+using QuickCheckr.Authoring;
 
 namespace QuickTestr.Tests.Tools;
 
@@ -30,28 +31,6 @@ public abstract class TestrTest<T> : QCTest<T>
         Func<IRecord> testr,
         [CallerFilePath] string callerPath = "")
         => ProcessArticle(TheJournalist.Investigates(testr), callerPath);
-
-    [StackTraceHidden]
-    protected void Run(
-        [CallerFilePath] string callerPath = "")
-        => ProcessArticle(TheJournalist.Investigates(
-            () => GetTestr().Run())
-            , callerPath);
-
-    protected void Run(
-        int seed,
-        [CallerFilePath] string callerPath = "")
-        => ProcessArticle(TheJournalist.Investigates(
-            () => GetTestr().Run(seed))
-            , callerPath);
-
-    [StackTraceHidden]
-    protected void Run(
-        RunCount runCount,
-        [CallerFilePath] string callerPath = "")
-        => ProcessArticle(TheJournalist.Investigates(
-            () => GetTestr().Run(runCount))
-            , callerPath);
 
     protected abstract ITestrRunner GetTestr();
 }

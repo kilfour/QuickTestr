@@ -51,7 +51,7 @@ and the engine continuously explores new combinations automatically.
 That makes it particularly effective for legacy systems with many interacting rules,
 where the real bugs tend to hide in unexpected edge-case combinations.
 """)]
-    public override void Example() => Run();
+    public override void Example() => Run(() => GetTestr().Run());
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>

@@ -23,7 +23,7 @@ public class B_WhatIfItThrows : TestrOracleTest<B_WhatIfItThrows>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(1055521326);
+        Run(() => GetTestr().Run(1055521326));
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>
