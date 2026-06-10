@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using QuickPulse.Explains;
-using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.FilingCabinet;
