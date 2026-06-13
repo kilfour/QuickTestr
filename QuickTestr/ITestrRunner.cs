@@ -1,7 +1,5 @@
 using QuickCheckr;
-using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol.Custodians;
-using QuickCheckr.UnderTheHood;
 using QuickTestr.Bolts;
 
 namespace QuickTestr;

@@ -1,8 +1,7 @@
 using QuickCheckr;
-using QuickCheckr.FilingCabinet;
-using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 using QuickPulse.Explains;
+using QuickTestr.Bolts.Builders.ModelBased;
 using QuickTestr.Tests.Tools;
 
 namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
@@ -25,10 +24,11 @@ public class B_Rolodex : TestrModelRunTest<B_Rolodex>
     protected override bool Explain => false;
 
     [Fact]
-    public void RunExample() => Example();
+    public void RunExample() => Document(Example(), a => a.Run(10.Runs(), 100.ExecutionsPerRun()), _ => { });
 
     [CodeSnippet]
-    private static void Example() =>
+    [CodeRemove("0, 0.ExecutionsPerRun()")]
+    private static IModelrRunner Example() =>
         Testr.Named("Rolodex")
             .Model(() => new RolodexOracle())
             .Sut(() => new Rolodex())
@@ -44,7 +44,7 @@ public class B_Rolodex : TestrModelRunTest<B_Rolodex>
                 (model, a) => model.DeleteAllByName(a),
                 (sut, a) => sut.DeleteAllByName(a))
             .Observe("People Match", PeopleMatch, a => a.Trace())
-            .Run(10.Runs(), 100.ExecutionsPerRun());
+            .Run(0, 0.ExecutionsPerRun());
 
     private static FuzzrOf<(string First, string Last)> NameFuzzr =>
         from first in Fuzzr.String()

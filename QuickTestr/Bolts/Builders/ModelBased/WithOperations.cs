@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using QuickCheckr;
-using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
 using QuickCheckr.Protocol.Custodians;
 using QuickCheckr.UnderTheHood;

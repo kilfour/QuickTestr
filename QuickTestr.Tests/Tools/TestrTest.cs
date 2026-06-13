@@ -3,17 +3,12 @@ using System.Runtime.CompilerServices;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Authoring.ThePress;
-using QuickCheckr.FilingCabinet;
-using QuickCheckr.Authoring;
 using QuickCheckr.UnderTheHood;
-using System.Reflection;
 
 namespace QuickTestr.Tests.Tools;
 
-public abstract class TestrTest<T> : QuickCheckrTest<T>
+public abstract class TestrTest<T> : TestrBaseTest<T>
 {
-    protected override bool WriteAllReportsToDisk { get; } = true;
-
     protected class DocTestrHeaderAttribute() :
         DocBoldHeaderAttribute("The Testr");
 

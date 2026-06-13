@@ -1,15 +1,12 @@
 using System.Diagnostics;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using QuickCheckr.Authoring;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
-using QuickCheckr.FilingCabinet;
 using QuickCheckr.UnderTheHood;
 
 namespace QuickTestr.Tests.Tools;
 
-public abstract class TestrRunTest<T> : QuickCheckrTest<T>
+public abstract class TestrRunTest<T> : TestrBaseTest<T>
 {
     protected class DocTestrHeaderAttribute() :
         DocBoldHeaderAttribute("The Testr");

@@ -1,7 +1,5 @@
 using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
-using QuickCheckr.FilingCabinet;
-using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickTestr.Tests.Tools;
@@ -16,14 +14,15 @@ public class B_Oracled : TestrOracleTest<B_Oracled>
     protected override bool Report => false;
     protected override bool Explain => false;
 
-    [Fact(Skip = "Touches the FileSystem, use InMemoryCustodian")]
+    [Fact]
     [DocTestrHeader]
     [DocTestr]
     [DocBoldHeader("The Runner")]
     [DocExample(typeof(B_Oracled), nameof(RunIt))]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Document(a => { });
+    public override void Example() =>
+        Document(a => a.WithVault<int>().FillVault(5.Searches(), 10.Runs()));
 
     [CodeSnippet]
     private ITestrRunner RunIt() =>

@@ -1,7 +1,7 @@
-using QuickCheckr.FilingCabinet;
-using QuickCheckr.UnderTheHood;
+using QuickCheckr;
 using QuickFuzzr;
 using QuickPulse.Explains;
+using QuickTestr.Bolts.Builders.ModelBased;
 using QuickTestr.Tests.Tools;
 
 namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
@@ -22,10 +22,11 @@ public class E_CheckingTheResultsAsWell : TestrModelRunTest<E_CheckingTheResults
     protected override bool Explain => false;
 
     [Fact]
-    public void RunExample() => Example();
+    public void RunExample() => Document(Example(), a => a.Run(), _ => { });
 
     [CodeSnippet]
-    private static void Example() =>
+    [CodeRemove("0, 0.ExecutionsPerRun()")]
+    private static IModelrRunner Example() =>
         Testr.Named("IdentityCounter matches model")
             .Model(() => new IdentityCounterModel())
             .Sut(() => new IdentityCounter())
@@ -35,7 +36,7 @@ public class E_CheckingTheResultsAsWell : TestrModelRunTest<E_CheckingTheResults
                 (sut, a) => sut.Do(a))
             .Observe("Counter Matches",
                 (model, sut) => model.Counter == sut.Counter)
-            .Run();
+            .Run(0, 0.ExecutionsPerRun());
 }
 
 [CodeExample]

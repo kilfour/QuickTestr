@@ -1,8 +1,8 @@
-using QuickCheckr.FilingCabinet;
-using QuickCheckr.UnderTheHood;
+using QuickCheckr;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickPulse.Instruments;
+using QuickTestr.Bolts.Builders.ModelBased;
 using QuickTestr.Tests.Tools;
 
 namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
@@ -29,10 +29,11 @@ public class C_CheckingTheException : TestrModelRunTest<C_CheckingTheException>
     protected override bool Explain => false;
 
     [Fact]
-    public void RunExample() => Example();
+    public void RunExample() => Document(Example(), a => a.Run(), _ => { });
 
     [CodeSnippet]
-    private static void Example() =>
+    [CodeRemove("0, 0.ExecutionsPerRun()")]
+    private static IModelrRunner Example() =>
         Testr.Named("NameCollector matches model")
             .Model(() => new NameCollectorModel())
             .Sut(() => new NameCollector())
@@ -41,7 +42,7 @@ public class C_CheckingTheException : TestrModelRunTest<C_CheckingTheException>
                 (sut, a) => sut.Add(a))
             .Observe("Result Matches",
                 (model, sut) => model.Names.SequenceEqual(sut.Names), a => a.Trace())
-            .Run();
+            .Run(0, 0.ExecutionsPerRun());
 }
 
 

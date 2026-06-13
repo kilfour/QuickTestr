@@ -1,6 +1,4 @@
 using QuickCheckr;
-using QuickCheckr.FilingCabinet;
-using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickTestr.Bolts.Builders.ModelBased;
