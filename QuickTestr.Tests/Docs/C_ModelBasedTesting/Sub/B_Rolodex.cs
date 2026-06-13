@@ -1,5 +1,6 @@
 using QuickCheckr;
 using QuickCheckr.FilingCabinet;
+using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickTestr.Tests.Tools;
@@ -27,7 +28,7 @@ public class B_Rolodex : TestrModelRunTest<B_Rolodex>
     public void RunExample() => Run(Example, a => { });
 
     [CodeSnippet]
-    private static IRecord Example() =>
+    private static ConfiguredCheckr Example() =>
         Testr.Named("Rolodex")
             .Model(() => new RolodexOracle())
             .Sut(() => new Rolodex())

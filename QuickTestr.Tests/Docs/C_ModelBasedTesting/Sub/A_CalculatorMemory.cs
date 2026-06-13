@@ -1,4 +1,5 @@
 using QuickCheckr.FilingCabinet;
+using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickTestr.Tests.Tools;
@@ -24,7 +25,7 @@ public class A_CalculatorMemory : TestrModelRunTest<A_CalculatorMemory>
     public void RunExample() => Run(Example, a => { });
 
     [CodeSnippet]
-    private static IRecord Example() =>
+    private static ConfiguredCheckr Example() =>
         Testr.Named("Calculator Clear matches model")
             .Model(() => new CalculatorModel())
             .Sut(() => new Calculator())

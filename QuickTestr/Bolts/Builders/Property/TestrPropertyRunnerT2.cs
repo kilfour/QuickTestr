@@ -10,16 +10,17 @@ namespace QuickTestr.Bolts.Builders.Property;
 /// Runs a property-based Testr against generated inputs.
 /// Use for Testrs defined with a boolean invariant through Assert.
 /// </summary>
-public class TestrPropertyRunner<TInput>(
-    FuzzrOf<TInput> fuzzr,
+public class TestrPropertyRunnerT2<TInput1, TInput2>(
+    FuzzrOf<TInput1> fuzzrOfT1,
+    FuzzrOf<TInput2> fuzzrOfT2,
     Shrinker[] shrinkers,
     CheckrOf<Case>[] formatters,
-    Func<TInput, bool> Invariant,
-    Func<TInput, int>? Deliberation,
+    Func<TInput1, TInput2, bool> Invariant,
+    Func<TInput1, TInput2, int>? Deliberation,
     int? DeliberationTarget,
     string testName,
     string fileName,
-    bool UseBuiltInReducers) : TestrRunner<TInput>
+    bool UseBuiltInReducers) : TestrRunner<(TInput1, TInput2)>
 {
     /// <summary>
     /// Gets the display name of this Testr.
@@ -30,9 +31,9 @@ public class TestrPropertyRunner<TInput>(
     protected override CheckrOf<Case> GetCheckr() =>
         from showr in Showr.ForInput()
         from format in Combine.Checkrs(formatters)
-        from input in Checkr.Input("Input", fuzzr, shrinkers)
-        from run in Checkr.ActCarefully("Run", () => Invariant(input))
-        from rethrow in Checkr.When(() => run.Threw, Checkr.Act("Rethrow", () => Invariant(input)))
+        from input in Checkr.Input("Input", Fuzzr.Tuple(fuzzrOfT1, fuzzrOfT2), shrinkers)
+        from run in Checkr.ActCarefully("Run", () => Invariant(input.Item1, input.Item2))
+        from rethrow in Checkr.When(() => run.Threw, Checkr.Act("Rethrow", () => Invariant(input.Item1, input.Item2)))
         from expectation in Checkr.ExpectWhen(TestName, () => !run.Threw, () => run.Value)
         select Case.Closed;
 
@@ -43,7 +44,7 @@ public class TestrPropertyRunner<TInput>(
             FileAs = fileName,
             Clerk = new PropertyClerk(),
             Deliberation = Deliberation != null
-                ? new Deliberation(a => a.InputsNamed<TInput>("Input", a => Deliberation(a)), DeliberationTarget)
+                ? new Deliberation(a => a.InputsNamed<(TInput1, TInput2)>("Input", a => Deliberation(a.Item1, a.Item2)), DeliberationTarget)
                 : null,
             ShrinkMode = UseBuiltInReducers ? a.ShrinkMode | ShrinkMode.Reduction : a.ShrinkMode,
             ReportMode = a.ReportMode & ~ReportMode.Labels & ~ReportMode.StackTrace

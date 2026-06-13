@@ -2,6 +2,7 @@ using System.Diagnostics;
 using QuickCheckr;
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
+using QuickCheckr.UnderTheHood;
 
 
 namespace QuickTestr.Bolts.Builders;
@@ -17,7 +18,7 @@ public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
     /// Use for the normal execution path when you do not need explicit configuration.
     /// </summary>
     [StackTraceHidden]
-    public IRecord Run()
+    public ConfiguredCheckr Run()
         => Run(100.Runs());
 
     /// <summary>
@@ -25,23 +26,23 @@ public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
     /// Use when you want a reproducible execution of a known case.
     /// </summary>
     [StackTraceHidden]
-    public IRecord Run(int seed)
-        => GetCheckr().Run(seed, GetConfig());
+    public ConfiguredCheckr Run(int seed)
+        => GetCheckr().Configure(GetConfig()).Run(seed);
 
     /// <summary>
     /// Runs the Testr using the specified number of runs.
     /// Use when you want to control how much search effort is spent.
     /// </summary>
     [StackTraceHidden]
-    public IRecord Run(RunCount tries)
-        => GetCheckr().Run(tries, GetConfig());
+    public ConfiguredCheckr Run(RunCount tries)
+        => GetCheckr().Configure(GetConfig()).Run(tries);
 
     /// <summary>
     /// Searches for distinct failing cases and stores them in the vault.
     /// Use when you want a representative set of different failing inputs for the same Testr.
     /// Inputs are grouped by value and a limited set of failures (10) is retained.
     /// </summary>
-    public IRecord FillVault(
+    public ConfiguredCheckr FillVault(
         SearchCount searchCount,
         RunCount runs) =>
             FillVault(searchCount, runs, VaultPolicy<TInput>.Default);
@@ -50,15 +51,16 @@ public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
     /// Searches for distinct failing cases and stores them in the vault using a custom policy.
     /// Use when you want to control how failures are grouped, limited, or skipped during vault filling.
     /// </summary>
-    public IRecord FillVault(
+    public ConfiguredCheckr FillVault(
         SearchCount searchCount,
         RunCount runs,
         VaultPolicy<TInput> policy) =>
-            GetCheckr().Conduct(
+            GetCheckr()
+                .Configure(AddFileAsToConfig())
+                .Conduct(
                 searchCount.NumberOfSearches.Investigations(),
                 runs,
                 1.ExecutionsPerRun(),
-                AddFileAsToConfig(),
                 new Directive
                 {
                     ClassifyBy = (a) => policy.ClassifyBy(a.GetInput<TInput>("Input")),
@@ -72,14 +74,18 @@ public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
     /// Use to review persisted seeds after code changes or fixes.
     /// </summary>
     public void InspectVault()
-        => GetCheckr().ReviewColdCases(AddFileAsToConfig());
+        => GetCheckr()
+            .Configure(AddFileAsToConfig())
+            .ReviewColdCases();
 
     /// <summary>
     /// Removes or closes vault cases that no longer reproduce.
     /// Use to keep the vault focused on still-relevant failures.
     /// </summary>
     public void CleanupVault()
-        => GetCheckr().CloseResolvedColdCases(AddFileAsToConfig());
+        => GetCheckr()
+            .Configure(AddFileAsToConfig())
+            .CloseResolvedColdCases();
 
     private Func<CheckrConfig, CheckrConfig> AddFileAsToConfig()
         => a => GetConfig()(a) with { FileAs = TestName };

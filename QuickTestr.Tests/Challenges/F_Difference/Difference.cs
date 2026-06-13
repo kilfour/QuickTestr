@@ -10,7 +10,7 @@ namespace QuickTestr.Tests.Challenges.F_Difference;
 [DocExample(typeof(Difference), nameof(TheFuzzr))]
 [DocBoldHeader("The Shrinkr")]
 [DocExample(typeof(The))]
-public class Difference : QCTest
+public class Difference : DocAttributeBaseTest
 {
     public record Pair(int A, int B);
 

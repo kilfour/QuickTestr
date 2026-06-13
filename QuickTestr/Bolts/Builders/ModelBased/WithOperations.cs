@@ -53,24 +53,24 @@ public sealed class WithOperations<T, U>(
     /// Use for the normal execution path when you do not need explicit run control.
     /// </summary>
     [StackTraceHidden]
-    public IRecord Run()
-        => GetCheckr().Run(10.Runs(), 50.ExecutionsPerRun(), GetConfig());
+    public ConfiguredCheckr Run()
+        => GetCheckr().Configure(GetConfig()).Run(10.Runs(), 50.ExecutionsPerRun());
 
     /// <summary>
     /// Runs the model-based Testr using the specified run and execution counts.
     /// Use when you want to control how much stateful exploration is performed.
     /// </summary>
     [StackTraceHidden]
-    public IRecord Run(RunCount runs, ExecutionCount executionsPerRun)
-        => GetCheckr().Run(runs, executionsPerRun, GetConfig());
+    public ConfiguredCheckr Run(RunCount runs, ExecutionCount executionsPerRun)
+        => GetCheckr().Configure(GetConfig()).Run(runs, executionsPerRun);
 
     /// <summary>
     /// Runs the model-based Testr using the specified seed.
     /// Use when you want to reproduce a known stateful execution path.
     /// </summary>
     [StackTraceHidden]
-    public IRecord Run(int seed, ExecutionCount executionsPerRun)
-        => GetCheckr().Run(seed, executionsPerRun, GetConfig());
+    public ConfiguredCheckr Run(int seed, ExecutionCount executionsPerRun)
+        => GetCheckr().Configure(GetConfig()).Run(seed, executionsPerRun);
 
     private Func<CheckrConfig, CheckrConfig> GetConfig()
     {

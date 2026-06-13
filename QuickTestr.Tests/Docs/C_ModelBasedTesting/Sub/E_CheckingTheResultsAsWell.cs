@@ -1,4 +1,5 @@
 using QuickCheckr.FilingCabinet;
+using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickTestr.Tests.Tools;
@@ -24,7 +25,7 @@ public class E_CheckingTheResultsAsWell : TestrModelRunTest<E_CheckingTheResults
     public void RunExample() => Run(Example, a => { });
 
     [CodeSnippet]
-    private static IRecord Example() =>
+    private static ConfiguredCheckr Example() =>
         Testr.Named("IdentityCounter matches model")
             .Model(() => new IdentityCounterModel())
             .Sut(() => new IdentityCounter())

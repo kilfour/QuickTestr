@@ -1,5 +1,6 @@
 using QuickCheckr;
 using QuickCheckr.FilingCabinet;
+using QuickCheckr.UnderTheHood;
 using QuickTestr.Bolts;
 
 namespace QuickTestr;
@@ -14,19 +15,19 @@ public interface ITestrRunner
     /// Runs the Testr using the default number of runs.
     /// Use for the normal execution path when you do not need explicit configuration.
     /// </summary>
-    IRecord Run();
+    ConfiguredCheckr Run();
 
     /// <summary>
     /// Runs the Testr using the specified seed.
     /// Use when you want a reproducible execution of a known case.
     /// </summary>
-    IRecord Run(int seed);
+    ConfiguredCheckr Run(int seed);
 
     /// <summary>
     /// Runs the Testr using the specified number of runs.
     /// Use when you want to control how much search effort is spent.
     /// </summary>
-    IRecord Run(RunCount tries);
+    ConfiguredCheckr Run(RunCount tries);
 
     /// <summary>
     /// Re-enters the typed vault workflow for this Testr.
@@ -46,7 +47,7 @@ public interface ITestrRunner<TInput>
     /// Use when you want a representative set of different failing inputs for the same Testr.
     /// Inputs are grouped by value and a limited set of failures (10) is retained.
     /// </summary>
-    IRecord FillVault(
+    ConfiguredCheckr FillVault(
         SearchCount searchCount,
         RunCount runs);
 
@@ -54,7 +55,7 @@ public interface ITestrRunner<TInput>
     /// Searches for distinct failing cases and stores them in the vault using a custom policy.
     /// Use when you want to control how failures are grouped, limited, or skipped during vault filling.
     /// </summary>
-    IRecord FillVault(
+    ConfiguredCheckr FillVault(
         SearchCount searchCount,
         RunCount runs,
         VaultPolicy<TInput> policy);

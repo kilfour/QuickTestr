@@ -1,5 +1,6 @@
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.FilingCabinet;
+using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickTestr.Tests.Tools;
@@ -20,7 +21,7 @@ public class A_ReversingAList : TestrPropertyRunTest<A_ReversingAList>
 
     [CodeSnippet]
     [CodeRemove("return")]
-    private static IRecord ReversePass()
+    private static ConfiguredCheckr ReversePass()
     {
         return
         Testr.Named("Reverse is its own inverse")              // The name of the property.
@@ -52,7 +53,7 @@ Let's break it by moving all `42`s to the end.
     [CodeSnippet]
     [CodeRemove("return")]
     [CodeRemove("174616483")]
-    private static IRecord ReversePassFail()
+    private static ConfiguredCheckr ReversePassFail()
     {
         return
         Testr.Named("Reverse is its own inverse")

@@ -1,4 +1,5 @@
 using QuickCheckr.FilingCabinet;
+using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickPulse.Instruments;
@@ -31,7 +32,7 @@ public class C_CheckingTheException : TestrModelRunTest<C_CheckingTheException>
     public void RunExample() => Run(Example, a => { });
 
     [CodeSnippet]
-    private static IRecord Example() =>
+    private static ConfiguredCheckr Example() =>
         Testr.Named("NameCollector matches model")
             .Model(() => new NameCollectorModel())
             .Sut(() => new NameCollector())

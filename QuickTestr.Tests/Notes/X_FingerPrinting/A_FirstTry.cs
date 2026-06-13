@@ -1,6 +1,7 @@
 using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.FilingCabinet;
+using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickTestr.Tests.Tools;
@@ -25,7 +26,7 @@ public class A_FirstTry : TestrPropertyTest<A_FirstTry>
     public override void Example() => Run(RunIt);
 
     [CodeSnippet]
-    private IRecord RunIt() =>
+    private ConfiguredCheckr RunIt() =>
         GetTestr()
             .WithVault<int>()
             .FillVault(5.Searches(), 10.Runs());
