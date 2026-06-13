@@ -2,6 +2,7 @@ using System.Diagnostics;
 using QuickCheckr;
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.Protocol;
+using QuickCheckr.Protocol.Custodians;
 using QuickCheckr.UnderTheHood;
 using QuickTestr.Bolts.ClerksOffice;
 
@@ -13,7 +14,6 @@ namespace QuickTestr.Bolts.Builders.ModelBased;
 /// </summary>
 public sealed class WithOperations<T, U>(
     string testName,
-    string fileName,
     bool useBuiltInReducers,
     CheckrOf<Case>[] formatters,
     Func<T> model,
@@ -22,6 +22,20 @@ public sealed class WithOperations<T, U>(
     List<Func<bool, T, U, CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)>>> operations,
     Observation<T, U> observation) : IModelrRunner
 {
+    private string fileName = string.Empty;
+    private ICustodian? custodian;
+
+    /// <summary>
+    /// Persists case files for this Testr under its test name.
+    /// Use when you want to inspect or clean up stored cases later through the vault workflow.
+    /// </summary>
+    public IModelrRunner StoreCaseFiles(ICustodian? custodian = null)
+    {
+        fileName = TestName;
+        this.custodian = custodian;
+        return this;
+    }
+
     /// <summary>
     /// Gets the display name of this Testr.
     /// Use when you need the configured name for reporting or storage.
@@ -53,7 +67,7 @@ public sealed class WithOperations<T, U>(
     /// Use for the normal execution path when you do not need explicit run control.
     /// </summary>
     [StackTraceHidden]
-    public ConfiguredCheckr Run()
+    public void Run()
         => GetCheckr().Configure(GetConfig()).Run(10.Runs(), 50.ExecutionsPerRun());
 
     /// <summary>
@@ -61,7 +75,7 @@ public sealed class WithOperations<T, U>(
     /// Use when you want to control how much stateful exploration is performed.
     /// </summary>
     [StackTraceHidden]
-    public ConfiguredCheckr Run(RunCount runs, ExecutionCount executionsPerRun)
+    public void Run(RunCount runs, ExecutionCount executionsPerRun)
         => GetCheckr().Configure(GetConfig()).Run(runs, executionsPerRun);
 
     /// <summary>
@@ -69,7 +83,7 @@ public sealed class WithOperations<T, U>(
     /// Use when you want to reproduce a known stateful execution path.
     /// </summary>
     [StackTraceHidden]
-    public ConfiguredCheckr Run(int seed, ExecutionCount executionsPerRun)
+    public void Run(int seed, ExecutionCount executionsPerRun)
         => GetCheckr().Configure(GetConfig()).Run(seed, executionsPerRun);
 
     private Func<CheckrConfig, CheckrConfig> GetConfig()
@@ -78,6 +92,7 @@ public sealed class WithOperations<T, U>(
         {
             FileAs = fileName,
             Clerk = new ModelClerk(),
+            Custodian = custodian is null ? Custodian.Default : custodian,
             // DeliberationPolicy = Deliberation == null ? null :
             //     a => a.InputsNamed<TInput>("Input", a => Deliberation(a)),
             // DeliberationTarget = DeliberationTarget == null ? null : DeliberationTarget,

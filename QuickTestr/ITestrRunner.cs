@@ -1,5 +1,6 @@
 using QuickCheckr;
 using QuickCheckr.FilingCabinet;
+using QuickCheckr.Protocol.Custodians;
 using QuickCheckr.UnderTheHood;
 using QuickTestr.Bolts;
 
@@ -15,19 +16,25 @@ public interface ITestrRunner
     /// Runs the Testr using the default number of runs.
     /// Use for the normal execution path when you do not need explicit configuration.
     /// </summary>
-    ConfiguredCheckr Run();
+    ITestrRunner Run();
 
     /// <summary>
     /// Runs the Testr using the specified seed.
     /// Use when you want a reproducible execution of a known case.
     /// </summary>
-    ConfiguredCheckr Run(int seed);
+    ITestrRunner Run(int seed);
 
     /// <summary>
     /// Runs the Testr using the specified number of runs.
     /// Use when you want to control how much search effort is spent.
     /// </summary>
-    ConfiguredCheckr Run(RunCount tries);
+    ITestrRunner Run(RunCount tries);
+
+    /// <summary>
+    /// Persists case files for this Testr under its test name.
+    /// Use when you want to inspect or clean up stored cases later through the vault workflow.
+    /// </summary>
+    ITestrRunner StoreCaseFiles(ICustodian? custodian = null);
 
     /// <summary>
     /// Re-enters the typed vault workflow for this Testr.
@@ -47,7 +54,7 @@ public interface ITestrRunner<TInput>
     /// Use when you want a representative set of different failing inputs for the same Testr.
     /// Inputs are grouped by value and a limited set of failures (10) is retained.
     /// </summary>
-    ConfiguredCheckr FillVault(
+    ITestrRunner FillVault(
         SearchCount searchCount,
         RunCount runs);
 
@@ -55,7 +62,7 @@ public interface ITestrRunner<TInput>
     /// Searches for distinct failing cases and stores them in the vault using a custom policy.
     /// Use when you want to control how failures are grouped, limited, or skipped during vault filling.
     /// </summary>
-    ConfiguredCheckr FillVault(
+    ITestrRunner FillVault(
         SearchCount searchCount,
         RunCount runs,
         VaultPolicy<TInput> policy);
@@ -64,11 +71,11 @@ public interface ITestrRunner<TInput>
     /// Re-runs the stored vault cases and reports which ones still fail.
     /// Use to review persisted seeds after code changes or fixes.
     /// </summary>
-    void InspectVault();
+    ITestrRunner InspectVault();
 
     /// <summary>
     /// Removes or closes vault cases that no longer reproduce.
     /// Use to keep the vault focused on still-relevant failures.
     /// </summary>
-    void CleanupVault();
+    ITestrRunner CleanupVault();
 }

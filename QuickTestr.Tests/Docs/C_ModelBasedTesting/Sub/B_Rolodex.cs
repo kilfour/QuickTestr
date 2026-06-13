@@ -25,10 +25,10 @@ public class B_Rolodex : TestrModelRunTest<B_Rolodex>
     protected override bool Explain => false;
 
     [Fact]
-    public void RunExample() => Run(Example, a => { });
+    public void RunExample() => Example();
 
     [CodeSnippet]
-    private static ConfiguredCheckr Example() =>
+    private static void Example() =>
         Testr.Named("Rolodex")
             .Model(() => new RolodexOracle())
             .Sut(() => new Rolodex())

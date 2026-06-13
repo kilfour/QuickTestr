@@ -8,7 +8,7 @@ namespace QuickTestr.Bolts.Builders.ModelBased;
 /// Configures operations and observations for a model-based Testr.
 /// Use after supplying both the model and the system under test.
 /// </summary>
-public sealed class WithSut<T, U>(string testName, string fileName, bool useBuiltInReducers, CheckrOf<Case>[] formatters, Func<T> model, Func<U> sut)
+public sealed class WithSut<T, U>(string testName, bool useBuiltInReducers, CheckrOf<Case>[] formatters, Func<T> model, Func<U> sut)
 {
     private readonly Func<T> model = model;
     private readonly Func<U> sut = sut;
@@ -159,7 +159,7 @@ public sealed class WithSut<T, U>(string testName, string fileName, bool useBuil
     {
         if (operations.Count == 0)
             throw new InvalidOperationException("No operations defined. Add at least one .Operation(...) before calling Observe(...).");
-        return new(testName, fileName, useBuiltInReducers, formatters, model, sut, verifyReturnValues, operations, Observation.From(label, observe));
+        return new(testName, useBuiltInReducers, formatters, model, sut, verifyReturnValues, operations, Observation.From(label, observe));
     }
 
     /// <summary>
@@ -170,7 +170,7 @@ public sealed class WithSut<T, U>(string testName, string fileName, bool useBuil
     {
         if (operations.Count == 0)
             throw new InvalidOperationException("No operations defined. Add at least one .Operation(...) before calling Observe(...).");
-        return new(testName, fileName, useBuiltInReducers, formatters, model, sut, verifyReturnValues, operations,
+        return new(testName, useBuiltInReducers, formatters, model, sut, verifyReturnValues, operations,
             Observation.From(label, observe, ((Tracer<T, U>)trace(new Tracer<T, U>())).TraceCheckr));
     }
 }

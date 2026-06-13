@@ -1,3 +1,4 @@
+using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.UnderTheHood;
@@ -12,16 +13,16 @@ namespace QuickTestr.Tests.Docs.A_PropertyBased.Sub;
 public class A_ReversingAList : TestrPropertyRunTest<A_ReversingAList>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explain => false;
 
     [Fact]
     [DocExample(typeof(A_ReversingAList), nameof(ReversePass))]
-    public void RunReversePass() => Run(ReversePass, VerifyReversePass);
+    public void RunReversePass() => Run(ReversePass(), a => a.Run(), VerifyReversePass);
 
     [CodeSnippet]
     [CodeRemove("return")]
-    private static ConfiguredCheckr ReversePass()
+    private static ITestrRunner ReversePass()
     {
         return
         Testr.Named("Reverse is its own inverse")              // The name of the property.
@@ -53,7 +54,7 @@ Let's break it by moving all `42`s to the end.
     [CodeSnippet]
     [CodeRemove("return")]
     [CodeRemove("174616483")]
-    private static ConfiguredCheckr ReversePassFail()
+    private static ITestrRunner ReversePassFail()
     {
         return
         Testr.Named("Reverse is its own inverse")

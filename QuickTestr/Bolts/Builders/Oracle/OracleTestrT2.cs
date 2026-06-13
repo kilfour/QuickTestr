@@ -7,12 +7,13 @@ namespace QuickTestr.Bolts.Builders.Oracle;
 /// Completes an oracle-based Testr after the expected behavior has been defined.
 /// Use to provide the implementation that should match the trusted model.
 /// </summary>
-public class OracleTestr<T, TResult>(
-    FuzzrOf<T> fuzzr,
+public class OracleTestrT2<TInput1, TInput2, TResult>(
+    FuzzrOf<TInput1> fuzzrOfT1,
+    FuzzrOf<TInput2> fuzzrOfT2,
     Shrinker[] shrinkers,
     CheckrOf<Case>[] formatters,
-    Func<T, TResult> expected,
-    Func<T, int>? deliberation,
+    Func<TInput1, TInput2, TResult> expected,
+    Func<TInput1, TInput2, int>? deliberation,
     int? deliberationTarget,
     string testName,
     bool useBuiltInReducers)
@@ -21,6 +22,6 @@ public class OracleTestr<T, TResult>(
     /// Defines the implementation that should match the expected result.
     /// Use to finish an oracle-style Testr and obtain a runnable comparison.
     /// </summary>
-    public TestrOracleRunner<T, TResult> Actual(Func<T, TResult> actual)
-        => new(fuzzr, shrinkers, formatters, expected, actual, deliberation, deliberationTarget, testName, useBuiltInReducers);
+    public TestrOracleRunnerT2<TInput1, TInput2, TResult> Actual(Func<TInput1, TInput2, TResult> actual)
+        => new(fuzzrOfT1, fuzzrOfT2, shrinkers, formatters, expected, actual, deliberation, deliberationTarget, testName, useBuiltInReducers);
 }

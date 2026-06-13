@@ -26,7 +26,7 @@ public class B_Oracled : TestrOracleTest<B_Oracled>
     public override void Example() => Run(RunIt);
 
     [CodeSnippet]
-    private ConfiguredCheckr RunIt() =>
+    private ITestrRunner RunIt() =>
         GetTestr()
             .WithVault<int>()
             .FillVault(5.Searches(), 10.Runs());

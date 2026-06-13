@@ -10,7 +10,6 @@ namespace QuickTestr.Bolts.Builders;
 /// </summary>
 public class NamedTestr(string testName)
 {
-    private string fileName = string.Empty;
     private bool useBuiltInReducers = true;
     private CheckrOf<Case>[] formatters = [];
 
@@ -27,28 +26,22 @@ public class NamedTestr(string testName)
     public NamedTestr Format(CheckrOf<Case>[] formatters) { this.formatters = formatters; return this; }
 
     /// <summary>
-    /// Persists case files for this Testr under its test name.
-    /// Use when you want to inspect or clean up stored cases later through the vault workflow.
-    /// </summary>
-    public NamedTestr StoreCaseFiles() { fileName = testName; return this; }
-
-    /// <summary>
     /// Selects the input generator and optional custom shrinkers for this Testr.
     /// Use to define the values QuickTestr should explore and how they should shrink.
     /// </summary>
     public InputTestr<T> For<T>(FuzzrOf<T> fuzzr, params Shrinker[] shrinkers)
-        => new(testName, fileName, useBuiltInReducers, formatters, fuzzr, shrinkers);
+        => new(testName, useBuiltInReducers, formatters, fuzzr, shrinkers);
 
     /// <summary>
     /// Selects two input generators and optional custom shrinkers for this Testr.
     /// Use to define pairs of values QuickTestr should explore together and how they should shrink.
     /// </summary>
-    public InputTestr<T1, T2> For<T1, T2>(FuzzrOf<T1> fuzzrOfT1, FuzzrOf<T2> fuzzrOfT2, params Shrinker[] shrinkers)
-        => new(testName, fileName, useBuiltInReducers, formatters, fuzzrOfT1, fuzzrOfT2, shrinkers);
+    public InputTestrT2<T1, T2> For<T1, T2>(FuzzrOf<T1> fuzzrOfT1, FuzzrOf<T2> fuzzrOfT2, params Shrinker[] shrinkers)
+        => new(testName, useBuiltInReducers, formatters, fuzzrOfT1, fuzzrOfT2, shrinkers);
 
     /// <summary>
     /// Starts a model-based Testr from a trusted model instance.
     /// Use when you want to compare a stateful system under test against a reference implementation.
     /// </summary>
-    public WithModel<T> Model<T>(Func<T> model) => new(testName, fileName, useBuiltInReducers, formatters, model);
+    public WithModel<T> Model<T>(Func<T> model) => new(testName, useBuiltInReducers, formatters, model);
 }

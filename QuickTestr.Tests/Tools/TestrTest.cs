@@ -29,7 +29,7 @@ public abstract class TestrTest<T> : QuickCheckrTest<T>
 
     [StackTraceHidden]
     protected void Run(
-        Func<ConfiguredCheckr> testr,
+        Func<ITestrRunner> testr,
         [CallerFilePath] string callerPath = "")
     { }//ProcessArticle(TheJournalist.Investigates(testr), callerPath);
 

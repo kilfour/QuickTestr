@@ -22,10 +22,10 @@ public class A_CalculatorMemory : TestrModelRunTest<A_CalculatorMemory>
     protected override bool Explain => false;
 
     [Fact]
-    public void RunExample() => Run(Example, a => { });
+    public void RunExample() => Example();
 
     [CodeSnippet]
-    private static ConfiguredCheckr Example() =>
+    private static void Example() =>
         Testr.Named("Calculator Clear matches model")
             .Model(() => new CalculatorModel())
             .Sut(() => new Calculator())

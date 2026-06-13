@@ -1,5 +1,6 @@
 using QuickCheckr;
 using QuickCheckr.FilingCabinet;
+using QuickCheckr.Protocol.Custodians;
 using QuickCheckr.UnderTheHood;
 
 namespace QuickTestr.Bolts.Builders.ModelBased;
@@ -14,17 +15,23 @@ public interface IModelrRunner
     /// Runs the model-based Testr using the default execution settings.
     /// Use for the normal execution path when you do not need explicit run control.
     /// </summary>
-    ConfiguredCheckr Run();
+    void Run();
 
     /// <summary>
     /// Runs the model-based Testr using the specified run and execution counts.
     /// Use when you want to control how much stateful exploration is performed.
     /// </summary>
-    ConfiguredCheckr Run(RunCount runs, ExecutionCount executionsPerRun);
+    void Run(RunCount runs, ExecutionCount executionsPerRun);
 
     /// <summary>
     /// Runs the model-based Testr using the specified seed.
     /// Use when you want to reproduce a known stateful execution path.
     /// </summary>
-    ConfiguredCheckr Run(int seed, ExecutionCount executionsPerRun);
+    void Run(int seed, ExecutionCount executionsPerRun);
+
+    /// <summary>
+    /// Persists case files for this Testr under its test name.
+    /// Use when you want to inspect or clean up stored cases later through the vault workflow.
+    /// </summary>
+    IModelrRunner StoreCaseFiles(ICustodian? custodian = null);
 }

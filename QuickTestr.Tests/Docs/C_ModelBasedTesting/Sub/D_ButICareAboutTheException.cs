@@ -28,10 +28,10 @@ public class D_ButICareAboutTheException : TestrModelRunTest<D_ButICareAboutTheE
     protected override bool Explain => false;
 
     [Fact]
-    public void RunExample() => Run(Example, a => { });
+    public void RunExample() => Example();
 
     [CodeSnippet]
-    private static ConfiguredCheckr Example() =>
+    private static void Example() =>
         Testr.Named("NameCollector matches model")
             .Model(() => new NameCollectorModel())
             .Sut(() => new NameCollector())

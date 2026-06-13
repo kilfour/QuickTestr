@@ -29,10 +29,10 @@ public class C_CheckingTheException : TestrModelRunTest<C_CheckingTheException>
     protected override bool Explain => false;
 
     [Fact]
-    public void RunExample() => Run(Example, a => { });
+    public void RunExample() => Example();
 
     [CodeSnippet]
-    private static ConfiguredCheckr Example() =>
+    private static void Example() =>
         Testr.Named("NameCollector matches model")
             .Model(() => new NameCollectorModel())
             .Sut(() => new NameCollector())

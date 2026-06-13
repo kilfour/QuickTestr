@@ -19,14 +19,9 @@ public class TestrPropertyRunnerT2<TInput1, TInput2>(
     Func<TInput1, TInput2, int>? Deliberation,
     int? DeliberationTarget,
     string testName,
-    string fileName,
     bool UseBuiltInReducers) : TestrRunner<(TInput1, TInput2)>
 {
-    /// <summary>
-    /// Gets the display name of this Testr.
-    /// Use when you need the configured name for reporting or storage.
-    /// </summary>
-    public override string TestName { get; } = testName;
+    protected override string TestName { get; } = testName;
 
     protected override CheckrOf<Case> GetCheckr() =>
         from showr in Showr.ForInput()
@@ -43,6 +38,7 @@ public class TestrPropertyRunnerT2<TInput1, TInput2>(
         {
             FileAs = fileName,
             Clerk = new PropertyClerk(),
+            Custodian = custodian is null ? Custodian.Default : custodian,
             Deliberation = Deliberation != null
                 ? new Deliberation(a => a.InputsNamed<(TInput1, TInput2)>("Input", a => Deliberation(a.Item1, a.Item2)), DeliberationTarget)
                 : null,

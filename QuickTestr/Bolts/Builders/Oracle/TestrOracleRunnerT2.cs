@@ -10,30 +10,31 @@ namespace QuickTestr.Bolts.Builders.Oracle;
 /// Runs an oracle-based Testr by comparing expected and actual behavior.
 /// Use for Testrs defined through Expected and Actual.
 /// </summary>
-public class TestrOracleRunner<TInput, TResult>(
-    FuzzrOf<TInput> fuzzr,
+public class TestrOracleRunnerT2<TInput1, TInput2, TResult>(
+    FuzzrOf<TInput1> fuzzrOfT1,
+    FuzzrOf<TInput2> fuzzrOfT2,
     Shrinker[] shrinkers,
     CheckrOf<Case>[] formatters,
-    Func<TInput, TResult> Expected,
-    Func<TInput, TResult> Actual,
-    Func<TInput, int>? Deliberation,
-    int? DeliberationTarget,
+    Func<TInput1, TInput2, TResult> expected,
+    Func<TInput1, TInput2, TResult> actual,
+    Func<TInput1, TInput2, int>? deliberation,
+    int? deliberationTarget,
     string testName,
-    bool UseBuiltInReducers) : TestrRunner<TInput>
+    bool UseBuiltInReducers) : TestrRunner<TInput1>
 {
     protected override string TestName { get; } = testName;
 
     protected override CheckrOf<Case> GetCheckr() =>
         from showr in Showr.ForInput()
         from format in Combine.Checkrs(formatters)
-        from input in Checkr.Input("Input", fuzzr, shrinkers)
-        from expected in Checkr.ActCarefully("Expected", () => Expected(input))
-        from actual in Checkr.ActCarefully("Actual", () => Actual(input))
-        from traceExpectedValue in Checkr.TraceWhen("Expected", () => !expected.Threw, () => expected.Value)
-        from traceExpectedException in Checkr.TraceWhen("Expected", () => expected.Threw, () => GetExceptionReport(expected.Exception!))
-        from traceActualValue in Checkr.TraceWhen("Actual  ", () => !actual.Threw, () => actual.Value)
-        from traceActualException in Checkr.TraceWhen("Actual  ", () => actual.Threw, () => GetExceptionReport(actual.Exception!))
-        from expectation in Checkr.Expect(TestName, () => CheckResults(expected, actual))
+        from input in Checkr.Input("Input", Fuzzr.Tuple(fuzzrOfT1, fuzzrOfT2), shrinkers)
+        from expectedResult in Checkr.ActCarefully("Expected", () => expected(input.Item1, input.Item2))
+        from actualResult in Checkr.ActCarefully("Actual", () => actual(input.Item1, input.Item2))
+        from traceExpectedValue in Checkr.TraceWhen("Expected", () => !expectedResult.Threw, () => expectedResult.Value)
+        from traceExpectedException in Checkr.TraceWhen("Expected", () => expectedResult.Threw, () => GetExceptionReport(expectedResult.Exception!))
+        from traceActualValue in Checkr.TraceWhen("Actual  ", () => !actualResult.Threw, () => actualResult.Value)
+        from traceActualException in Checkr.TraceWhen("Actual  ", () => actualResult.Threw, () => GetExceptionReport(actualResult.Exception!))
+        from expectation in Checkr.Expect(TestName, () => CheckResults(expectedResult, actualResult))
         select Case.Closed;
 
     private static string GetExceptionReport(Exception exception)
@@ -63,8 +64,8 @@ public class TestrOracleRunner<TInput, TResult>(
             FileAs = fileName,
             Clerk = new OracleClerk(),
             Custodian = custodian is null ? Custodian.Default : custodian,
-            Deliberation = Deliberation != null
-                ? new Deliberation(a => a.InputsNamed<TInput>("Input", a => Deliberation(a)), DeliberationTarget)
+            Deliberation = deliberation != null
+                ? new Deliberation(a => a.InputsNamed<(TInput1, TInput2)>("Input", a => deliberation(a.Item1, a.Item2)), deliberationTarget)
                 : null,
             ShrinkMode = UseBuiltInReducers ? a.ShrinkMode | ShrinkMode.Reduction : a.ShrinkMode,
             ReportMode = a.ReportMode & ~ReportMode.Labels & ~ReportMode.StackTrace | ReportMode.FinalTrace

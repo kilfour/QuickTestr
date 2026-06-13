@@ -22,10 +22,10 @@ public class E_CheckingTheResultsAsWell : TestrModelRunTest<E_CheckingTheResults
     protected override bool Explain => false;
 
     [Fact]
-    public void RunExample() => Run(Example, a => { });
+    public void RunExample() => Example();
 
     [CodeSnippet]
-    private static ConfiguredCheckr Example() =>
+    private static void Example() =>
         Testr.Named("IdentityCounter matches model")
             .Model(() => new IdentityCounterModel())
             .Sut(() => new IdentityCounter())
