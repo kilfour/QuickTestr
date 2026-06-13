@@ -33,7 +33,7 @@ public class Deletion : TestrPropertyTest<Deletion>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => GetTestr().Run(712389878));
+        Document(a => a.Run(712389878));
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>

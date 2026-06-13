@@ -22,7 +22,7 @@ public class B_AnInterpreter : TestrOracleTest<B_AnInterpreter>
     [DocBoldHeader("Domain Aware String Reduction Rules")]
     [DocExample(typeof(Remove))]
     public override void Example() =>
-        Run(() => GetTestr().Run(443608219));
+        Document(a => a.Run(443608219));
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>

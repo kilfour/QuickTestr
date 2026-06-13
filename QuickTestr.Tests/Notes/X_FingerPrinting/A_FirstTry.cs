@@ -23,7 +23,7 @@ public class A_FirstTry : TestrPropertyTest<A_FirstTry>
     [DocExample(typeof(A_FirstTry), nameof(RunIt))]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(RunIt);
+    public override void Example() => Document(a => { });
 
     [CodeSnippet]
     private ITestrRunner RunIt() =>

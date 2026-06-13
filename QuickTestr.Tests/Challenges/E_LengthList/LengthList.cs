@@ -32,7 +32,7 @@ public class LengthList : TestrPropertyTest<LengthList>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => GetTestr().Run(357470573));
+        Document(a => a.Run(357470573));
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>

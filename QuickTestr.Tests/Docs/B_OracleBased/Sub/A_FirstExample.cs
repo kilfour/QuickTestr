@@ -23,7 +23,7 @@ public class A_FirstExample : TestrOracleTest<A_FirstExample>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => GetTestr().Run(1471595869));
+        Document(a => a.Run(1471595869));
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>

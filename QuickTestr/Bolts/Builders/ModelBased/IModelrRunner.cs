@@ -15,19 +15,19 @@ public interface IModelrRunner
     /// Runs the model-based Testr using the default execution settings.
     /// Use for the normal execution path when you do not need explicit run control.
     /// </summary>
-    void Run();
+    IModelrRunner Run();
 
     /// <summary>
     /// Runs the model-based Testr using the specified run and execution counts.
     /// Use when you want to control how much stateful exploration is performed.
     /// </summary>
-    void Run(RunCount runs, ExecutionCount executionsPerRun);
+    IModelrRunner Run(RunCount runs, ExecutionCount executionsPerRun);
 
     /// <summary>
     /// Runs the model-based Testr using the specified seed.
     /// Use when you want to reproduce a known stateful execution path.
     /// </summary>
-    void Run(int seed, ExecutionCount executionsPerRun);
+    IModelrRunner Run(int seed, ExecutionCount executionsPerRun);
 
     /// <summary>
     /// Persists case files for this Testr under its test name.

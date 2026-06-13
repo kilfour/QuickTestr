@@ -25,7 +25,7 @@ public class Coupling : TestrPropertyTest<Coupling>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => GetTestr().Run(1934478623));
+        Document(a => a.Run(1934478623));
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>

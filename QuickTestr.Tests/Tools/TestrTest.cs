@@ -12,6 +12,8 @@ namespace QuickTestr.Tests.Tools;
 
 public abstract class TestrTest<T> : QuickCheckrTest<T>
 {
+    protected override bool WriteAllReportsToDisk { get; } = true;
+
     protected class DocTestrHeaderAttribute() :
         DocBoldHeaderAttribute("The Testr");
 
@@ -27,32 +29,23 @@ public abstract class TestrTest<T> : QuickCheckrTest<T>
         Verify(article);
     }
 
-    [StackTraceHidden]
-    protected void Run(
-        Func<ITestrRunner> testr,
-        [CallerFilePath] string callerPath = "")
-    { }//ProcessArticle(TheJournalist.Investigates(testr), callerPath);
+    protected abstract ITestrRunner GetTestr();
 
     [StackTraceHidden]
     protected void Document(
         Action<ITestrRunner> runTestr,
         [CallerFilePath] string callerPath = "")
     {
-        var testr = GetTestr();
-        var methodInfo = typeof(ITestrRunner).GetMethod("AddFileAsToConfig", BindingFlags.NonPublic);
-        // CheckrOf<Case> checkr,
-        // Action< ConfiguredCheckr > runCheckr)
-
-        // try
-        // {
-        //     runCheckr(checkr.Configure(a => a with { FileAs = "WhistleBlower", Custodian = this }));
-        // }
-        // catch (FalsifiableException) { }
-
-        // var article = Journalist.Publish(GetTestr(), runCheckr);
-        // ProcessArticle(article, callerPath);
-        // Verify(article);
+        var article = Publish(GetTestr(), runTestr);
+        ProcessArticle(article, callerPath);
+        Verify(article);
     }
 
-    protected abstract ITestrRunner GetTestr();
+    protected static Article Publish(ITestrRunner runner, Action<ITestrRunner> runTestr)
+    {
+        var journalist = new Journalist();
+        try { runTestr(runner.StoreCaseFiles(journalist)); }
+        catch (FalsifiableException) { }
+        return journalist.GetArticle();
+    }
 }

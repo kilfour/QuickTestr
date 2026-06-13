@@ -32,7 +32,7 @@ public class B_MovingOn : TestrPropertyTest<B_MovingOn>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => GetTestr().Run(1934478623));
+        Document(a => a.Run(1934478623));
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>
@@ -43,7 +43,6 @@ public class B_MovingOn : TestrPropertyTest<B_MovingOn>
                 from length in Fuzzr.Int()
                 from enumerable in Fuzzr.Int(0, length - 1).Many(length)
                 select enumerable.ToList())
-
             .Deliberate(a => a.Count, 2)
             .Assert(list => list.All(
                 element =>

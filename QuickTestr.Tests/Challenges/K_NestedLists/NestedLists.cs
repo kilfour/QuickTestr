@@ -32,7 +32,7 @@ public class NestedLists : TestrPropertyTest<NestedLists>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => GetTestr().Run(1959968277));
+        Document(a => a.Run(1959968277));
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>

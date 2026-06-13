@@ -13,22 +13,23 @@ namespace QuickTestr.Tests.Docs.A_PropertyBased.Sub;
 public class A_ReversingAList : TestrPropertyRunTest<A_ReversingAList>
 {
     protected override bool Asserts => false;
-    protected override bool Report => true;
+    protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
     [DocExample(typeof(A_ReversingAList), nameof(ReversePass))]
-    public void RunReversePass() => Run(ReversePass(), a => a.Run(), VerifyReversePass);
+    public void RunReversePass() => Document(ReversePass(), a => a.Run(), VerifyReversePass);
 
     [CodeSnippet]
     [CodeRemove("return")]
+    [CodeRemove("0.Runs()")]
     private static ITestrRunner ReversePass()
     {
         return
         Testr.Named("Reverse is its own inverse")              // The name of the property.
             .For(Fuzzr.Int().Many(1, 10))                      // The input Fuzzr.
             .Assert(s => Reverse(Reverse(s)).SequenceEqual(s)) // The property to assert.
-            .Run();                                            // Run the test.
+            .Run(0.Runs());                                            // Run the test.
         // --------------------------------------------------------------------------------
         static IEnumerable<int> Reverse(IEnumerable<int> l) => [.. l.Reverse()];
     }
@@ -49,18 +50,18 @@ Let's break it by moving all `42`s to the end.
     [DocExample(typeof(A_ReversingAList), nameof(ReversePassFail))]
     [DocReportHeader]
     [DocReport]
-    public void RunReversePassFail() => Run(ReversePassFail, VerifyReversePassFail);
+    public void RunReversePassFail() => Document(ReversePassFail(), a => a.Run(174616483), VerifyReversePassFail);
 
     [CodeSnippet]
     [CodeRemove("return")]
-    [CodeRemove("174616483")]
+    [CodeRemove("0.Runs()")]
     private static ITestrRunner ReversePassFail()
     {
         return
         Testr.Named("Reverse is its own inverse")
             .For(Fuzzr.Int().Many(1, 10))
             .Assert(s => Reverse(Reverse(s)).SequenceEqual(s))
-            .Run(174616483);
+            .Run(0.Runs());
         // ---------------------------------------------------------------------
         static IEnumerable<int> Reverse(IEnumerable<int> l) => [.. HideTheAnswer(l.Reverse())];
         static IEnumerable<int> HideTheAnswer(IEnumerable<int> l)

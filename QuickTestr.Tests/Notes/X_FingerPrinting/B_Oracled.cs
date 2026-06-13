@@ -23,7 +23,7 @@ public class B_Oracled : TestrOracleTest<B_Oracled>
     [DocExample(typeof(B_Oracled), nameof(RunIt))]
     [DocReportHeader]
     [DocReport]
-    public override void Example() => Run(RunIt);
+    public override void Example() => Document(a => { });
 
     [CodeSnippet]
     private ITestrRunner RunIt() =>

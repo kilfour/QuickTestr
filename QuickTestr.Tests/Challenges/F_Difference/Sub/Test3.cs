@@ -24,7 +24,7 @@ public class Test3 : TestrPropertyTest<Test3>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => GetTestr().Run(1231462692));
+        Document(a => a.Run(1231462692));
 
     [CodeSnippet]
     [CodeRemove("Difference.")]

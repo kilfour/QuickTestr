@@ -18,7 +18,7 @@ public class A_TupleArity2 : TestrOracleTest<A_TupleArity2>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => GetTestr().Run(649859307));
+        Document(a => a.Run(649859307));
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>

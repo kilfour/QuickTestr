@@ -1,7 +1,9 @@
+using QuickCheckr;
 using QuickCheckr.FilingCabinet;
 using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
 using QuickPulse.Explains;
+using QuickTestr.Bolts.Builders.ModelBased;
 using QuickTestr.Tests.Tools;
 
 namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
@@ -22,10 +24,11 @@ public class A_CalculatorMemory : TestrModelRunTest<A_CalculatorMemory>
     protected override bool Explain => false;
 
     [Fact]
-    public void RunExample() => Example();
+    public void RunExample() => Document(Example(), a => a.Run(), _ => { });
 
     [CodeSnippet]
-    private static void Example() =>
+    [CodeRemove("0, 0.ExecutionsPerRun()")]
+    private static IModelrRunner Example() =>
         Testr.Named("Calculator Clear matches model")
             .Model(() => new CalculatorModel())
             .Sut(() => new Calculator())
@@ -40,7 +43,7 @@ public class A_CalculatorMemory : TestrModelRunTest<A_CalculatorMemory>
                 sut => sut.Clear())
             .Observe("Result Matches",
                 (model, sut) => model.Result == sut.Result, a => a.Trace())
-            .Run();
+            .Run(0, 0.ExecutionsPerRun());
 }
 
 

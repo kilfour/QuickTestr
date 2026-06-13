@@ -23,7 +23,7 @@ public class ReverseList : TestrPropertyTest<ReverseList>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => GetTestr().Run(12901993));
+        Document(a => a.Run(12901993));
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>

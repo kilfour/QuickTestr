@@ -53,6 +53,7 @@ public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
     /// </summary>
     public ITestrRunner StoreCaseFiles(ICustodian? custodian = null)
     {
+        fileName = TestName;
         this.custodian = custodian;
         return this;
     }

@@ -40,7 +40,7 @@ public class Calculator : TestrPropertyTest<Calculator>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => GetTestr().Run(729093046));
+        Document(a => a.Run(729093046));
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>

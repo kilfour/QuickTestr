@@ -15,18 +15,7 @@ public abstract class TestrRunTest<T> : QuickCheckrTest<T>
         DocBoldHeaderAttribute("The Testr");
 
     [StackTraceHidden]
-    protected void Run(
-        Func<ITestrRunner> runTestr,
-        Action<Article> verifier,
-        [CallerFilePath] string callerPath = "")
-    {
-        // var article = TheJournalist.Investigates(runTestr);
-        // ProcessArticle(article, callerPath);
-        // verifier(article);
-    }
-
-    [StackTraceHidden]
-    protected void Run(
+    protected void Document(
         ITestrRunner testr,
         Action<ITestrRunner> runTestr,
         Action<Article> verifier,
@@ -37,7 +26,7 @@ public abstract class TestrRunTest<T> : QuickCheckrTest<T>
         verifier(article);
     }
 
-    public static Article Publish(ITestrRunner runner, Action<ITestrRunner> runTestr)
+    protected static Article Publish(ITestrRunner runner, Action<ITestrRunner> runTestr)
     {
         var journalist = new Journalist();
         try { runTestr(runner.StoreCaseFiles(journalist)); }

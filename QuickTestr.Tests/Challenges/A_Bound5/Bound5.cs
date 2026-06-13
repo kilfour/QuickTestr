@@ -32,7 +32,7 @@ public class Bound5 : TestrPropertyTest<Bound5>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => GetTestr().Run(472166887));
+        Document(a => a.Run(472166887));
 
     [CodeSnippet]
     private static readonly FuzzrOf<List<short>> ShortList =

@@ -31,7 +31,7 @@ public class BinHeap : TestrPropertyTest<BinHeap>
     [DocReportHeader]
     [DocReport]
     public override void Example() =>
-        Run(() => GetTestr().Run(2136249593));
+        Document(a => a.Run(2136249593));
 
     [CodeSnippet]
     protected override ITestrRunner GetTestr() =>
