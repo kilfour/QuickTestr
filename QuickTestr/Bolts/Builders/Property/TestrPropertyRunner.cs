@@ -40,8 +40,7 @@ public class TestrPropertyRunner<TInput>(
             Deliberation = deliberation != null
                 ? new Deliberation(a => a.InputsNamed<TInput>("Input", a => deliberation(a)), deliberationTarget)
                 : null,
-            ShrinkMode = useBuiltInReducers ? a.ShrinkMode | ShrinkMode.Reduction : a.ShrinkMode,
-            ReportMode = a.ReportMode & ~ReportMode.Labels & ~ReportMode.StackTrace
+            ShrinkMode = useBuiltInReducers ? a.ShrinkMode | ShrinkMode.Reduction : a.ShrinkMode
         };
     }
 }

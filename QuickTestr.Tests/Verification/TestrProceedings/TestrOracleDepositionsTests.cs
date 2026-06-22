@@ -17,7 +17,7 @@ public class TestrOracleDepositionsTests
             RunInfo: new RunInfo(1, 1, 12345678),
             PassedExpectations: new Dictionary<string, int>() { { "Some Invariant", 2 } },
             UseMemoryForInputReporting: false,
-            ReportMode: ReportMode.Default & ~ReportMode.StackTrace,
+            ReportMode: ReportMode.Default,
             WarningLevel: WarningLevel.Debug
         );
 
