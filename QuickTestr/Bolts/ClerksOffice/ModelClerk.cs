@@ -21,7 +21,7 @@ public class ModelClerk : ITranscribe
     public Flow<Flow> File(IRecord record) =>
         record is CaseFile caseFile ?
             CaseFile(caseFile) :
-            TheCourtStyleGuide.Flow(record, new Decorum());
+            TheCourtStyleGuide.Record(record, new Decorum());
 
     private static Flow<Flow> CaseFile(CaseFile caseFile) =>
         Style
@@ -77,7 +77,7 @@ public class ModelClerk : ITranscribe
         => Style.Caption("Failed").Space().Trace(failure.FailedExpectation);
 
     private static Flow<Flow> ExceptionFlow(FailedExceptionDeposition failure)
-        => Pulse.Trace(failure.Message);
+        => Pulse.Trace(failure.GetFailureDescription());
 
     private static Flow<Flow> Trace(TraceDeposition input) =>
         Style

@@ -1,0 +1,14 @@
+ ------------------------------------------------------------
+  QuickPulse.Instruments.ComputerSaysNo: Title is required.
+   at QuickPulse.Instruments.ComputerSays.No(String msg)
+   at QuickTestr.Tests.Notes.T_Exploration.BookTitle.Create(String value) in C:\Code\QuickTestr\QuickTestr.Tests\Notes\T_Exploration\BookTitle.cs:line 19
+   at QuickTestr.Tests.Notes.T_Exploration.Sub.B_SlightlyLessEvil.<>c.<GetTestr>b__7_0(String a) in C:\Code\QuickTestr\QuickTestr.Tests\Notes\T_Exploration\Sub\A_EvilizingInput copy.cs:line 27
+   at QuickTestr.Bolts.Builders.Property.TestrPropertyRunner`1.<>c__DisplayClass11_1.<GetCheckr>b__12() in C:\Code\QuickTestr\QuickTestr\Bolts\Builders\Property\TestrPropertyRunner.cs:line 29
+   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1()
+   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, Func`1 func, Action`1 onException)
+  Seed: 1540338462
+ ------------------------------------------------------------
+  Falsified:
+    Input = " "
+    Redux = ""
+ ------------------------------------------------------------

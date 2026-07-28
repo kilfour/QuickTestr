@@ -14,5 +14,3 @@ public static class Testr
     /// </summary>
     public static NamedTestr Named(string name) => new(name);
 }
-
-

@@ -50,7 +50,7 @@ public static class CommonClerk
         => Style.OnNewLine().Indent(1).Trace(failure.FailedExpectation);
 
     private static Flow<Flow> ExceptionFlow(FailedExceptionDeposition failure)
-        => Style.OnNewLine().Indent(1).Trace(failure.Message);
+        => Style.OnNewLine().Indent(1).Trace(failure.GetFailureDescription());
 
     private static Flow<Flow> ExecutionFlow(ExecutionDeposition execution) =>
         from executionFlow in Pulse.Draw<Func<ExecutionDeposition, Flow<Flow>>>()

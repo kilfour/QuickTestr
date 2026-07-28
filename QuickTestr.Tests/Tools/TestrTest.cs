@@ -18,12 +18,6 @@ public abstract class TestrTest<T> : TestrBaseTest<T>
     public abstract void Example();
     protected abstract void Verify(Article article);
 
-    protected override void ProcessArticle(Article article, string callerPath)
-    {
-        base.ProcessArticle(article, callerPath);
-        Verify(article);
-    }
-
     protected abstract ITestrRunner GetTestr();
 
     [StackTraceHidden]
@@ -36,7 +30,7 @@ public abstract class TestrTest<T> : TestrBaseTest<T>
         Verify(article);
     }
 
-    protected static Article Publish(ITestrRunner runner, Action<ITestrRunner> runTestr)
+    private static Article Publish(ITestrRunner runner, Action<ITestrRunner> runTestr)
     {
         var journalist = new Journalist();
         try { runTestr(runner.StoreCaseFiles(journalist)); }

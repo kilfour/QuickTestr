@@ -67,7 +67,7 @@ public class TestrOracleRunner<TInput, TResult>(
                 ? new Deliberation(a => a.InputsNamed<TInput>("Input", a => Deliberation(a)), DeliberationTarget)
                 : null,
             ShrinkMode = UseBuiltInReducers ? a.ShrinkMode | ShrinkMode.Reduction : a.ShrinkMode,
-            ReportMode = a.ReportMode & ~ReportMode.Labels & ~ReportMode.StackTrace | ReportMode.FinalTrace
+            ReportMode = a.ReportMode | ReportMode.FinalTrace
         };
     }
 }
