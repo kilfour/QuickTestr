@@ -4,11 +4,12 @@ using QuickCheckr;
 using QuickCheckr.StringReduction;
 using QuickTestr.Tests.Docs.B_OracleBased.Sub.Model;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
 
 namespace QuickTestr.Tests.Docs.B_OracleBased.Sub;
 
 [DocFile]
-public class B_AnInterpreter : TestrOracleTest<B_AnInterpreter>
+public class B_AnInterpreter : QuickTestrOracleTest<B_AnInterpreter>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -21,11 +22,12 @@ public class B_AnInterpreter : TestrOracleTest<B_AnInterpreter>
     [DocReport]
     [DocBoldHeader("Domain Aware String Reduction Rules")]
     [DocExample(typeof(Remove))]
-    public override void Example() =>
-        Document(a => a.Run(443608219));
+    public override void Example() => Document();
 
     [CodeSnippet]
-    protected override ITestrRunner GetTestr() =>
+    [CodeRemoveJournalist]
+    [CodeRemove("443608219")]
+    protected override void GetTestr(Journalist journalist) =>
         Testr
             .Named("Interpreter matches golden model.")
             .For(ExpressionFuzzr.GetExpression(),
@@ -37,7 +39,9 @@ public class B_AnInterpreter : TestrOracleTest<B_AnInterpreter>
                         Remove.UnaryMinusNoise)))
             .Deliberate(a => a.Length, 4) // prefer smaller length strings
             .Expected(a => LostIn.Translation(a).Eval())
-            .Actual(a => LostIn.FaultyTranslation(a).Eval());
+            .Actual(a => LostIn.FaultyTranslation(a).Eval())
+            .StoreCaseFiles(journalist)
+            .Run(443608219);
 
     [CodeExample]
     public class Remove

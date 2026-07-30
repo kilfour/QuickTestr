@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickTestr.Tests.Tools;
@@ -7,7 +8,7 @@ namespace QuickTestr.Tests.Examples.DantesCalculator;
 
 [DocFile]
 [DocFileHeader("Dante's Calculator")]
-public class DantesCalculator : TestrOracleTest<DantesCalculator>
+public class DantesCalculator : QuickTestrOracleTest<DantesCalculator>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -51,14 +52,17 @@ and the engine continuously explores new combinations automatically.
 That makes it particularly effective for legacy systems with many interacting rules,
 where the real bugs tend to hide in unexpected edge-case combinations.
 """)]
-    public override void Example() => Document(a => a.Run());
+    public override void Example() => Document();
 
     [CodeSnippet]
-    protected override ITestrRunner GetTestr() =>
+    [CodeRemoveJournalist]
+    protected override void GetTestr(Journalist journalist) =>
         Testr.Named("Calculator Oracle")
             .For(ItemFuzzr.Get.Many(1, 20).ToList())
             .Expected(Calculator.Total)
-            .Actual(CalculatorNew.Total);
+            .Actual(CalculatorNew.Total)
+            .StoreCaseFiles(journalist)
+            .Run();
 
     protected override void Verify(Article article)
     {

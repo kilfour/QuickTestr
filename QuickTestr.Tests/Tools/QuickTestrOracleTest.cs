@@ -5,5 +5,5 @@ namespace QuickTestr.Tests.Tools;
 
 public abstract class QuickTestrOracleTest<T> : QuickTestrTest<T>
 {
-    protected override ITranscribe Clerk => new PropertyClerk();
+    protected override ITranscribe Clerk => new OracleClerk();
 }

@@ -2,11 +2,12 @@ using QuickTestr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
 
 namespace QuickTestr.Tests.Notes.F_DealingWithTuples.B_OracleBased;
 
 [DocFile]
-public class A_TupleArity2 : TestrOracleTest<A_TupleArity2>
+public class A_TupleArity2 : QuickTestrOracleTest<A_TupleArity2>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -17,15 +18,18 @@ public class A_TupleArity2 : TestrOracleTest<A_TupleArity2>
     [DocTestr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() =>
-        Document(a => a.Run(649859307));
+    public override void Example() => Document();
 
     [CodeSnippet]
-    protected override ITestrRunner GetTestr() =>
+    [CodeRemoveJournalist]
+    [CodeRemove("649859307")]
+    protected override void GetTestr(Journalist journalist) =>
         Testr.Named("Tuple2 can deconstruct")
             .For(Fuzzr.Int(), Fuzzr.Int())
             .Expected((a, b) => a)
-            .Actual((a, b) => b);
+            .Actual((a, b) => b)
+            .StoreCaseFiles(journalist)
+            .Run(649859307);
 
     protected override void Verify(Article article)
     {

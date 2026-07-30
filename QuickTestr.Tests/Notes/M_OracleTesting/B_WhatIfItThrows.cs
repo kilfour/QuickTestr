@@ -3,11 +3,12 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickPulse.Instruments;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
 
 namespace QuickTestr.Tests.Notes.M_OracleTesting;
 
 [DocFile]
-public class B_WhatIfItThrows : TestrOracleTest<B_WhatIfItThrows>
+public class B_WhatIfItThrows : QuickTestrOracleTest<B_WhatIfItThrows>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -22,15 +23,18 @@ public class B_WhatIfItThrows : TestrOracleTest<B_WhatIfItThrows>
     [DocExample(typeof(B_WhatIfItThrows), nameof(AddBuggy))]
     [DocReportHeader]
     [DocReport]
-    public override void Example() =>
-        Document(a => a.Run(1055521326));
+    public override void Example() => Document();
 
     [CodeSnippet]
-    protected override ITestrRunner GetTestr() =>
+    [CodeRemoveJournalist]
+    [CodeRemove("1055521326")]
+    protected override void GetTestr(Journalist journalist) =>
         Testr.Named("AddBuggy Matches AddCorrect")
             .For(Fuzzr.Tuple(Fuzzr.Int(), Fuzzr.Int()))
             .Expected(a => AddCorrect(a.Item1, a.Item2))
-            .Actual(a => AddBuggy(a.Item1, a.Item2));
+            .Actual(a => AddBuggy(a.Item1, a.Item2))
+            .StoreCaseFiles(journalist)
+            .Run(1055521326);
 
     protected override void Verify(Article article)
     {
