@@ -37,7 +37,7 @@ public class D_ButICareAboutTheException : QuickTestrModelRunTest<D_ButICareAbou
         Testr.Named("NameCollector matches model")
             .Model(() => new NameCollectorModel())
             .Sut(() => new NameCollector())
-            .VerifyReturnValues()
+            .VerifyOperationResults()
             .Operation("Add", Fuzzr.String(1),
                 (model, a) => model.Add(a),
                 (sut, a) => sut.Add(a))

@@ -35,7 +35,7 @@ public sealed class WithSut<T, U>(string testName, bool useBuiltInReducers, Chec
     /// Enables result verification for operations that return values.
     /// Use before adding return-value operations when the model and the system under test should be compared.
     /// </summary>
-    public WithSut<T, U> VerifyReturnValues()
+    public WithSut<T, U> VerifyOperationResults()
     {
         verifyReturnValues = true;
         return this;

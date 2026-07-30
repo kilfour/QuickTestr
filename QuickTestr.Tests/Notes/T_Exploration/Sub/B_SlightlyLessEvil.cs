@@ -42,8 +42,8 @@ public class B_SlightlyLessEvil : QuickTestrPropertyTest<B_SlightlyLessEvil>
         Assert.Equal("Rethrow", article.Execution(1).Action(1).Read().Label);
         Assert.Equal("Run", article.Execution(1).Action(2).Read().Label);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
-        Assert.Equal("\" \"", article.Execution(1).Input(1).Read().Value);
-        Assert.Equal("\" \"", article.Execution(1).Input(1).Read().Original.Value);
+        Assert.Equal("\"\\u00A0\"", article.Execution(1).Input(1).Read().Value);
+        Assert.Equal("\"\\u00A0\"", article.Execution(1).Input(1).Read().Original.Value);
         Assert.Equal("\"\"", article.Execution(1).Input(1).Read().Redux.Value);
     }
 }

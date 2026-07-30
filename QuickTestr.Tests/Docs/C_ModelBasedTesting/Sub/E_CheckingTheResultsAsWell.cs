@@ -32,7 +32,7 @@ public class E_CheckingTheResultsAsWell : QuickTestrModelRunTest<E_CheckingTheRe
         Testr.Named("IdentityCounter matches model")
             .Model(() => new IdentityCounterModel())
             .Sut(() => new IdentityCounter())
-            .VerifyReturnValues()
+            .VerifyOperationResults()
             .Operation("Do", Fuzzr.Int(),
                 (model, a) => model.Do(a),
                 (sut, a) => sut.Do(a))
