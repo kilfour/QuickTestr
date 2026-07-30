@@ -1,4 +1,6 @@
 using QuickCheckr;
+using QuickCheckr.Authoring.ThePress;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickTestr.Bolts.Builders.ModelBased;
@@ -17,21 +19,21 @@ When activating *strict mode* a mismatch in exceptions do fail the model test.
 [DocBoldHeader("SUT")]
 [DocExample(typeof(NameCollector))]
 [DocTestrHeader]
-[DocExample(typeof(D_ButICareAboutTheException), nameof(Example))]
+[DocTestr]
 [DocReportHeader]
 [DocReport]
-public class D_ButICareAboutTheException : TestrModelRunTest<D_ButICareAboutTheException>
+public class D_ButICareAboutTheException : QuickTestrModelRunTest<D_ButICareAboutTheException>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
-    public void RunExample() => Document(Example(), a => a.Run(), _ => { });
+    public override void Example() => Document();
 
     [CodeSnippet]
-    [CodeRemove("0, 0.ExecutionsPerRun()")]
-    private static IModelrRunner Example() =>
+    [CodeRemoveJournalist]
+    protected override void GetTestr(Journalist journalist) =>
         Testr.Named("NameCollector matches model")
             .Model(() => new NameCollectorModel())
             .Sut(() => new NameCollector())
@@ -41,6 +43,11 @@ public class D_ButICareAboutTheException : TestrModelRunTest<D_ButICareAboutTheE
                 (sut, a) => sut.Add(a))
             .Observe("Result Matches",
                 (model, sut) => model.Names.SequenceEqual(sut.Names), a => a.Trace())
-            .Run(0, 0.ExecutionsPerRun());
+            .StoreCaseFiles(journalist)
+            .Run();
+
+    protected override void Verify(Article article)
+    {
+    }
 }
 

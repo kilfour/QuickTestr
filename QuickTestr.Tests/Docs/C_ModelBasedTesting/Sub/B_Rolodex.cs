@@ -1,4 +1,6 @@
 using QuickCheckr;
+using QuickCheckr.Authoring.ThePress;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickTestr.Bolts.Builders.ModelBased;
@@ -14,21 +16,22 @@ namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
 [DocExample(typeof(Rolodex))]
 [DocExample(typeof(Person))]
 [DocTestrHeader]
-[DocExample(typeof(B_Rolodex), nameof(Example))]
+[DocTestr]
 [DocReportHeader]
 [DocReport]
-public class B_Rolodex : TestrModelRunTest<B_Rolodex>
+public class B_Rolodex : QuickTestrModelRunTest<B_Rolodex>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
-    public void RunExample() => Document(Example(), a => a.Run(10.Runs(), 100.ExecutionsPerRun()), _ => { });
+    public override void Example() => Document();
 
     [CodeSnippet]
-    [CodeRemove("0, 0.ExecutionsPerRun()")]
-    private static IModelrRunner Example() =>
+    [CodeRemoveJournalist]
+    [CodeRemove("10.Runs(), 100.ExecutionsPerRun()")]
+    protected override void GetTestr(Journalist journalist) =>
         Testr.Named("Rolodex")
             .Model(() => new RolodexOracle())
             .Sut(() => new Rolodex())
@@ -44,7 +47,12 @@ public class B_Rolodex : TestrModelRunTest<B_Rolodex>
                 (model, a) => model.DeleteAllByName(a),
                 (sut, a) => sut.DeleteAllByName(a))
             .Observe("People Match", PeopleMatch, a => a.Trace())
-            .Run(0, 0.ExecutionsPerRun());
+            .StoreCaseFiles(journalist)
+            .Run(10.Runs(), 100.ExecutionsPerRun());
+
+    protected override void Verify(Article article)
+    {
+    }
 
     private static FuzzrOf<(string First, string Last)> NameFuzzr =>
         from first in Fuzzr.String()

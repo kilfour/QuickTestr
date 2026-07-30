@@ -1,4 +1,6 @@
 using QuickCheckr;
+using QuickCheckr.Authoring.ThePress;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickPulse.Instruments;
@@ -19,21 +21,21 @@ They only matter if they lead to an observed state mismatch.
 [DocBoldHeader("SUT")]
 [DocExample(typeof(NameCollector))]
 [DocTestrHeader]
-[DocExample(typeof(C_CheckingTheException), nameof(Example))]
+[DocTestr]
 [DocReportHeader]
 [DocReport]
-public class C_CheckingTheException : TestrModelRunTest<C_CheckingTheException>
+public class C_CheckingTheException : QuickTestrModelRunTest<C_CheckingTheException>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
-    public void RunExample() => Document(Example(), a => a.Run(), _ => { });
+    public override void Example() => Document();
 
     [CodeSnippet]
-    [CodeRemove("0, 0.ExecutionsPerRun()")]
-    private static IModelrRunner Example() =>
+    [CodeRemoveJournalist]
+    protected override void GetTestr(Journalist journalist) =>
         Testr.Named("NameCollector matches model")
             .Model(() => new NameCollectorModel())
             .Sut(() => new NameCollector())
@@ -42,7 +44,12 @@ public class C_CheckingTheException : TestrModelRunTest<C_CheckingTheException>
                 (sut, a) => sut.Add(a))
             .Observe("Result Matches",
                 (model, sut) => model.Names.SequenceEqual(sut.Names), a => a.Trace())
-            .Run(0, 0.ExecutionsPerRun());
+            .StoreCaseFiles(journalist)
+            .Run();
+
+    protected override void Verify(Article article)
+    {
+    }
 }
 
 

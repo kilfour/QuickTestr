@@ -1,4 +1,6 @@
 using QuickCheckr;
+using QuickCheckr.Authoring.ThePress;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickTestr.Bolts.Builders.ModelBased;
@@ -12,21 +14,21 @@ namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
 [DocBoldHeader("SUT")]
 [DocExample(typeof(IdentityCounter))]
 [DocTestrHeader]
-[DocExample(typeof(E_CheckingTheResultsAsWell), nameof(Example))]
+[DocTestr]
 [DocReportHeader]
 [DocReport]
-public class E_CheckingTheResultsAsWell : TestrModelRunTest<E_CheckingTheResultsAsWell>
+public class E_CheckingTheResultsAsWell : QuickTestrModelRunTest<E_CheckingTheResultsAsWell>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
-    public void RunExample() => Document(Example(), a => a.Run(), _ => { });
+    public override void Example() => Document();
 
     [CodeSnippet]
-    [CodeRemove("0, 0.ExecutionsPerRun()")]
-    private static IModelrRunner Example() =>
+    [CodeRemoveJournalist]
+    protected override void GetTestr(Journalist journalist) =>
         Testr.Named("IdentityCounter matches model")
             .Model(() => new IdentityCounterModel())
             .Sut(() => new IdentityCounter())
@@ -36,7 +38,12 @@ public class E_CheckingTheResultsAsWell : TestrModelRunTest<E_CheckingTheResults
                 (sut, a) => sut.Do(a))
             .Observe("Counter Matches",
                 (model, sut) => model.Counter == sut.Counter)
-            .Run(0, 0.ExecutionsPerRun());
+            .StoreCaseFiles(journalist)
+            .Run();
+
+    protected override void Verify(Article article)
+    {
+    }
 }
 
 [CodeExample]
