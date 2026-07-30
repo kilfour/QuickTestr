@@ -31,4 +31,19 @@ public class DeliberatedTestr<T>(
     /// </summary>
     public OracleTestr<T, TResult> Expected<TResult>(Func<T, TResult> expected)
         => new(fuzzr, shrinkers, formatters, expected, deliberation, deliberationTarget, testName, useBuiltInReducers);
+
+    /// <summary>
+    /// Defines the asynchronous expected result for oracle-style testing.
+    /// Use when the trusted model returns a task after deliberation has been configured.
+    /// </summary>
+    public OracleTestr<T, TResult> Expected<TResult>(Func<T, Task<TResult>> expected)
+        => new(
+            fuzzr,
+            shrinkers,
+            formatters,
+            input => expected(input).GetAwaiter().GetResult(),
+            deliberation,
+            deliberationTarget,
+            testName,
+            useBuiltInReducers);
 }

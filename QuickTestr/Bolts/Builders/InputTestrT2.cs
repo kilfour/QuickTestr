@@ -45,4 +45,20 @@ public class InputTestrT2<T1, T2>(
     /// </summary>
     public OracleTestrT2<T1, T2, TResult> Expected<TResult>(Func<T1, T2, TResult> expected)
         => new(fuzzrOfT1, fuzzrOfT2, shrinkers, formatters, expected, null, null, testName, useBuiltInReducers);
+
+    /// <summary>
+    /// Defines the asynchronous expected result for oracle-style testing.
+    /// Use when the trusted model returns a task.
+    /// </summary>
+    public OracleTestrT2<T1, T2, TResult> Expected<TResult>(Func<T1, T2, Task<TResult>> expected)
+        => new(
+            fuzzrOfT1,
+            fuzzrOfT2,
+            shrinkers,
+            formatters,
+            (input1, input2) => expected(input1, input2).GetAwaiter().GetResult(),
+            null,
+            null,
+            testName,
+            useBuiltInReducers);
 }

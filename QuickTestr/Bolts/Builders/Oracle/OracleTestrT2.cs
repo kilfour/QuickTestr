@@ -24,4 +24,22 @@ public class OracleTestrT2<TInput1, TInput2, TResult>(
     /// </summary>
     public TestrOracleRunnerT2<TInput1, TInput2, TResult> Actual(Func<TInput1, TInput2, TResult> actual)
         => new(fuzzrOfT1, fuzzrOfT2, shrinkers, formatters, expected, actual, deliberation, deliberationTarget, testName, useBuiltInReducers);
+
+    /// <summary>
+    /// Defines the asynchronous implementation that should match the expected result.
+    /// Use to finish an oracle-style Testr when the implementation returns a task.
+    /// </summary>
+    public TestrOracleRunnerT2<TInput1, TInput2, TResult> Actual(
+        Func<TInput1, TInput2, Task<TResult>> actual)
+        => new(
+            fuzzrOfT1,
+            fuzzrOfT2,
+            shrinkers,
+            formatters,
+            expected,
+            (input1, input2) => actual(input1, input2).GetAwaiter().GetResult(),
+            deliberation,
+            deliberationTarget,
+            testName,
+            useBuiltInReducers);
 }

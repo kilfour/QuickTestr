@@ -24,5 +24,6 @@
 * Reorganized and expanded the documentation.
 
 ### 0.0.7: This Year's Model
-* Added syntactic sugar for generating Tuple input (arity 2 only)
 * Added initial support for model-based testing.
+* Added syntactic sugar for generating Tuple input (arity 2 only)
+* Added `Task<TResult>` overloads for asynchronous oracle-based testing.

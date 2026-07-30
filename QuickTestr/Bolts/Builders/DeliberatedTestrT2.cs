@@ -32,4 +32,21 @@ public class DeliberatedTestrT2<TInput1, TInput2>(
     /// </summary>
     public OracleTestrT2<TInput1, TInput2, TResult> Expected<TResult>(Func<TInput1, TInput2, TResult> expected)
         => new(fuzzrOfT1, fuzzrOfT2, shrinkers, formatters, expected, deliberation, deliberationTarget, testName, useBuiltInReducers);
+
+    /// <summary>
+    /// Defines the asynchronous expected result for oracle-style testing.
+    /// Use when the trusted model returns a task after deliberation has been configured.
+    /// </summary>
+    public OracleTestrT2<TInput1, TInput2, TResult> Expected<TResult>(
+        Func<TInput1, TInput2, Task<TResult>> expected)
+        => new(
+            fuzzrOfT1,
+            fuzzrOfT2,
+            shrinkers,
+            formatters,
+            (input1, input2) => expected(input1, input2).GetAwaiter().GetResult(),
+            deliberation,
+            deliberationTarget,
+            testName,
+            useBuiltInReducers);
 }
