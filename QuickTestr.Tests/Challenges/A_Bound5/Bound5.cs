@@ -17,7 +17,7 @@ A single list in the tuple will never break the invariant, but you need at least
 This prevents most of trivial shrinking algorithms from getting close to a minimum example,
 which would look something like ([-32768], [-1], [], [], []).
 ")]
-public class Bound5 : QuickTestrTest<Bound5>
+public class Bound5 : QuickTestrPropertyTest<Bound5>
 {
     protected override bool Asserts => false;
     protected override bool Report => true;

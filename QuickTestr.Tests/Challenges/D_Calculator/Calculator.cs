@@ -3,6 +3,7 @@ using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
 
 namespace QuickTestr.Tests.Challenges.D_Calculator;
 
@@ -20,7 +21,7 @@ This property is false, because we might have a term like 1 / (3 + -3), in which
 
 One of the possible difficulties that might come up is the shrinking of recursive expressions.
 ")]
-public class Calculator : TestrPropertyTest<Calculator>
+public class Calculator : QuickTestrPropertyTest<Calculator>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -39,17 +40,20 @@ public class Calculator : TestrPropertyTest<Calculator>
     [DocExample(typeof(Calculator), nameof(DepthOf))]
     [DocReportHeader]
     [DocReport]
-    public override void Example() =>
-        Document(a => a.Run(729093046));
+    public override void Example() => Document();
 
     [CodeSnippet]
-    protected override ITestrRunner GetTestr() =>
+    [CodeRemoveJournalist]
+    [CodeRemove("12901993")]
+    protected override void GetTestr(Journalist journalist) =>
         Testr
             .Named("No division by zero")
             .Format(TheFormatr)
             .For(TheFuzzr, TheShrinkr)
             .Deliberate(a => DepthOf(a))
-            .Assert(a => { a.Evaluate(); return true; });
+            .Assert(a => { a.Evaluate(); return true; })
+            .StoreCaseFiles(journalist)
+            .Run(729093046);
 
     [CodeSnippet]
     public static readonly FuzzrOf<Expr> TheFuzzr =

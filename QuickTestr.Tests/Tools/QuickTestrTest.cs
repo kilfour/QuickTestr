@@ -3,14 +3,12 @@ using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.UnderTheHood;
-using QuickCheckr.Protocol;
-using QuickTestr.Bolts.ClerksOffice;
 
 namespace QuickTestr.Tests.Tools;
 
 public abstract class QuickTestrTest<T> : TestrBaseTest<T>
 {
-    protected override ITranscribe Clerk => new PropertyClerk();
+    protected override bool WriteAllReportsToDisk { get; } = false;
 
     protected class DocTestrHeaderAttribute() :
         DocBoldHeaderAttribute("The Testr");

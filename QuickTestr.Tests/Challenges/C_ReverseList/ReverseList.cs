@@ -2,6 +2,7 @@ using QuickTestr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
 
 namespace QuickTestr.Tests.Challenges.C_ReverseList;
 
@@ -11,7 +12,7 @@ namespace QuickTestr.Tests.Challenges.C_ReverseList;
 This tests the (wrong) property that reversing a list of integers results in the same list. 
 It is a basic example to validate that a library can reliably normalize simple sample data.
 ")]
-public class ReverseList : TestrPropertyTest<ReverseList>
+public class ReverseList : QuickTestrPropertyTest<ReverseList>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -22,20 +23,22 @@ public class ReverseList : TestrPropertyTest<ReverseList>
     [DocTestr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() =>
-        Document(a => a.Run(12901993));
+    public override void Example() => Document();
 
     [CodeSnippet]
-    protected override ITestrRunner GetTestr() =>
-        Testr
-            .Named("Reversing a list of integers results in the same list")
+    [CodeRemoveJournalist]
+    [CodeRemove("12901993")]
+    protected override void GetTestr(Journalist journalist) =>
+        Testr.Named("Reversing a list of integers results in the same list")
             .For(Fuzzr.Int().Many(0, 10).ToList())
             .Assert(a =>
             {
                 var reversed = new List<int>(a);
                 reversed.Reverse();
                 return reversed.SequenceEqual(a);
-            });
+            })
+            .StoreCaseFiles(journalist)
+            .Run(12901993);
 
     protected override void Verify(Article article)
     {

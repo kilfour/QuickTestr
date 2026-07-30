@@ -3,6 +3,7 @@ using QuickTestr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
 
 namespace QuickTestr.Tests.Challenges.B_LargeUnionList;
 
@@ -17,7 +18,7 @@ This is trivially false, and this example is an artificial one to stress test a 
 In particular, a shrinker cannot hope to normalise this unless it is able to either split or join elements of the larger list.
 For example, it would have to be able to transform one of [[0, 1, -1, 2, -2]] and [[0], [1], [-1], [2], [-2]] into the other.
 ")]
-public class LargeUnionList : TestrPropertyTest<LargeUnionList>
+public class LargeUnionList : QuickTestrPropertyTest<LargeUnionList>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -28,15 +29,18 @@ public class LargeUnionList : TestrPropertyTest<LargeUnionList>
     [DocTestr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() =>
-        Document(a => a.Run(1575924946));
+    public override void Example() => Document();
 
     [CodeSnippet]
-    protected override ITestrRunner GetTestr() =>
+    [CodeRemoveJournalist]
+    [CodeRemove("1575924946")]
+    protected override void GetTestr(Journalist journalist) =>
         Testr.Named("No more than four distinct integers.")
             .For(Fuzzr.Int().Many(0, 10).ToList().Many(5, 20).ToList())
             .Deliberate(a => 0 - a.Count, -5)
-            .Assert(a => a.SelectMany(a => a).Distinct().Count() <= 4);
+            .Assert(a => a.SelectMany(a => a).Distinct().Count() <= 4)
+            .StoreCaseFiles(journalist)
+            .Run(1575924946);
 
     protected override void Verify(Article article)
     {
