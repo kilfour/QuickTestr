@@ -36,7 +36,7 @@ public class OracleClerk : ITranscribe
             .NewLine()
             .DoubleLine()
             .OnNewLine().Trace("Passed Expectations")
-            .ToFlow(InquiryPassedExpectations, inquiry.PassedExpectationDepositions)
+            .ToFlow(InquiryPassedExpectations, inquiry.PassedExpectations)
             .DoubleLine();
 
     public static Flow<Flow> InquiryCaseFile(CaseFile caseFile) =>

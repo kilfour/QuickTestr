@@ -22,7 +22,7 @@ public class StringTestrClerk : ITranscribe
     private static Flow<Flow> Inquiry(Inquiry inquiry) =>
         Style
             .DrawTopLine()
-            .ToFlow(PassedExpectations, inquiry.PassedExpectationDepositions);
+            .ToFlow(PassedExpectations, inquiry.PassedExpectations);
 
     private static Flow<Flow> Findings(Findings findings) =>
         Style
