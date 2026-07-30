@@ -68,38 +68,94 @@ public sealed class WithSut<T, U>(string testName, bool useBuiltInReducers, Chec
     private static string GetExceptionReport(Exception exception)
         => $"{exception!.GetType().Name}: {exception.Message}";
 
+    private static CheckrOf<Case> Execute(
+        string label,
+        bool verifyResults,
+        Action modelOperation,
+        Action sutOperation) =>
+        from modelResult in Checkr.ActCarefully($"{label} Model", modelOperation)
+        from sutResult in Checkr.ActCarefully($"{label} Sut", sutOperation)
+        from checkResult in Checkr.When(() => verifyResults,
+            from traceExpectedException in Checkr.TraceWhen(
+                "Expected",
+                () => modelResult.Threw,
+                () => GetExceptionReport(modelResult.Exception!))
+            from traceActualException in Checkr.TraceWhen(
+                "Actual  ",
+                () => sutResult.Threw,
+                () => GetExceptionReport(sutResult.Exception!))
+            from expectation in Checkr.Expect(
+                $"{label}, results do not match",
+                () => CheckResults(modelResult, sutResult))
+            select Case.Closed)
+        select Case.Closed;
+
+    private static CheckrOf<Case> Execute<TResult>(
+        string label,
+        bool verifyResults,
+        Func<TResult> modelOperation,
+        Func<TResult> sutOperation) =>
+        from modelResult in Checkr.ActCarefully($"{label} Model", modelOperation)
+        from sutResult in Checkr.ActCarefully($"{label} Sut", sutOperation)
+        from checkResult in Checkr.When(() => verifyResults,
+            from traceExpectedValue in Checkr.TraceWhen(
+                "Expected",
+                () => !modelResult.Threw,
+                () => modelResult.Value)
+            from traceExpectedException in Checkr.TraceWhen(
+                "Expected",
+                () => modelResult.Threw,
+                () => GetExceptionReport(modelResult.Exception!))
+            from traceActualValue in Checkr.TraceWhen(
+                "Actual  ",
+                () => !sutResult.Threw,
+                () => sutResult.Value)
+            from traceActualException in Checkr.TraceWhen(
+                "Actual  ",
+                () => sutResult.Threw,
+                () => GetExceptionReport(sutResult.Exception!))
+            from expectation in Checkr.Expect(
+                $"{label}, results do not match",
+                () => CheckResults(modelResult, sutResult))
+            select Case.Closed)
+        select Case.Closed;
+
     /// <summary>
     /// Adds a state transition that runs on both the model and the system under test.
     /// Use when the operation needs no generated input.
     /// </summary>
     public WithSut<T, U> Operation(string label, Action<T> modelOperation, Action<U> sutOperation)
-        => AddOperation((a, m, s) =>
-            from act in Checkr.Act(label, () => { modelOperation(m); sutOperation(s); })
-            select Case.Closed);
+        => AddOperation((verifyResults, m, s) =>
+            Execute(
+                label,
+                verifyResults,
+                () => modelOperation(m),
+                () => sutOperation(s)));
 
     /// <summary>
     /// Adds a conditional state transition that runs on both the model and the system under test.
     /// Use when the operation needs no generated input and should only run in specific model states.
     /// </summary>
     public WithSut<T, U> Operation(string label, Func<T, bool> condition, Action<T> modelOperation, Action<U> sutOperation)
-        => AddConditionalOperation(condition, (a, m, s) =>
-             from act in Checkr.ActCarefully(label, () => { modelOperation(m); sutOperation(s); })
-             select Case.Closed);
+        => AddConditionalOperation(condition, (verifyResults, m, s) =>
+            Execute(
+                label,
+                verifyResults,
+                () => modelOperation(m),
+                () => sutOperation(s)));
 
     /// <summary>
     /// Adds a generated state transition that runs on both the model and the system under test.
     /// Use when the operation should explore parameterized inputs.
     /// </summary>
     public WithSut<T, U> Operation<V>(string label, FuzzrOf<V> fuzzr, Action<T, V> modelOperation, Action<U, V> sutOperation)
-        => AddOperation((a, m, s) =>
+        => AddOperation((verifyResults, m, s) =>
             from input in Checkr.Input("Input", fuzzr)
-            from modelResult in Checkr.ActCarefully($"{label} Model", () => modelOperation(m, input))
-            from sutResult in Checkr.ActCarefully($"{label} Sut", () => sutOperation(s, input))
-            from checkResult in Checkr.When(() => a,
-                from traceExpectedException in Checkr.TraceWhen("Expected", () => modelResult.Threw, () => GetExceptionReport(modelResult.Exception!))
-                from traceActualException in Checkr.TraceWhen("Actual  ", () => sutResult.Threw, () => GetExceptionReport(sutResult.Exception!))
-                from expectation in Checkr.Expect($"{label}, results do not match", () => CheckResults(modelResult, sutResult))
-                select Case.Closed)
+            from execution in Execute(
+                label,
+                verifyResults,
+                () => modelOperation(m, input),
+                () => sutOperation(s, input))
             select Case.Closed);
 
     /// <summary>
@@ -107,17 +163,13 @@ public sealed class WithSut<T, U>(string testName, bool useBuiltInReducers, Chec
     /// Use when the operation should explore parameterized inputs.
     /// </summary>
     public WithSut<T, U> Operation<V, W>(string label, FuzzrOf<V> fuzzr, Func<T, V, W> modelOperation, Func<U, V, W> sutOperation)
-        => AddOperation((a, m, s) =>
+        => AddOperation((verifyResults, m, s) =>
             from input in Checkr.Input("Input", fuzzr)
-            from modelResult in Checkr.ActCarefully($"{label} Model", () => modelOperation(m, input))
-            from sutResult in Checkr.ActCarefully($"{label} Sut", () => sutOperation(s, input))
-            from checkResult in Checkr.When(() => a,
-                from traceExpectedValue in Checkr.TraceWhen("Expected", () => !modelResult.Threw, () => modelResult.Value)
-                from traceExpectedException in Checkr.TraceWhen("Expected", () => modelResult.Threw, () => GetExceptionReport(modelResult.Exception!))
-                from traceActualValue in Checkr.TraceWhen("Actual  ", () => !sutResult.Threw, () => sutResult.Value)
-                from traceActualException in Checkr.TraceWhen("Actual  ", () => sutResult.Threw, () => GetExceptionReport(sutResult.Exception!))
-                from expectation in Checkr.Expect($"{label}, results do not match", () => CheckResults(modelResult, sutResult))
-                select Case.Closed)
+            from execution in Execute(
+                label,
+                verifyResults,
+                () => modelOperation(m, input),
+                () => sutOperation(s, input))
             select Case.Closed);
 
     /// <summary>
@@ -125,9 +177,13 @@ public sealed class WithSut<T, U>(string testName, bool useBuiltInReducers, Chec
     /// Use when the operation should explore parameterized inputs only in specific model states.
     /// </summary>
     public WithSut<T, U> Operation<V>(string label, Func<T, bool> condition, FuzzrOf<V> fuzzr, Action<T, V> modelOperation, Action<U, V> sutOperation)
-        => AddConditionalOperation(condition, (a, m, s) =>
+        => AddConditionalOperation(condition, (verifyResults, m, s) =>
             from input in Checkr.Input("Input", fuzzr)
-            from act in Checkr.ActCarefully(label, () => { modelOperation(m, input); sutOperation(s, input); })
+            from execution in Execute(
+                label,
+                verifyResults,
+                () => modelOperation(m, input),
+                () => sutOperation(s, input))
             select Case.Closed);
 
     /// <summary>
@@ -135,9 +191,13 @@ public sealed class WithSut<T, U>(string testName, bool useBuiltInReducers, Chec
     /// Use when the generated input should depend on the current model state.
     /// </summary>
     public WithSut<T, U> Operation<V>(string label, Func<T, FuzzrOf<V>> fuzzr, Action<T, V> modelOperation, Action<U, V> sutOperation)
-        => AddOperation((a, m, s) =>
+        => AddOperation((verifyResults, m, s) =>
             from input in Checkr.Input("Input", () => fuzzr(m))
-            from act in Checkr.ActCarefully(label, () => { modelOperation(m, input); sutOperation(s, input); })
+            from execution in Execute(
+                label,
+                verifyResults,
+                () => modelOperation(m, input),
+                () => sutOperation(s, input))
             select Case.Closed);
 
     /// <summary>
@@ -145,9 +205,13 @@ public sealed class WithSut<T, U>(string testName, bool useBuiltInReducers, Chec
     /// Use when the generated input should depend on the current model state and only run in specific model states.
     /// </summary>
     public WithSut<T, U> Operation<V>(string label, Func<T, bool> condition, Func<T, FuzzrOf<V>> fuzzr, Action<T, V> modelOperation, Action<U, V> sutOperation)
-        => AddConditionalOperation(condition, (a, m, s) =>
+        => AddConditionalOperation(condition, (verifyResults, m, s) =>
             from input in Checkr.Input("Input", () => fuzzr(m))
-            from act in Checkr.ActCarefully(label, () => { modelOperation(m, input); sutOperation(s, input); })
+            from execution in Execute(
+                label,
+                verifyResults,
+                () => modelOperation(m, input),
+                () => sutOperation(s, input))
             select Case.Closed);
 
 

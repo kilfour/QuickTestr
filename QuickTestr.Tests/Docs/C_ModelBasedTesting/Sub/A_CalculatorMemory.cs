@@ -52,7 +52,7 @@ public class A_CalculatorMemory : QuickTestrModelRunTest<A_CalculatorMemory>
         Assert.Equal("Result Matches", article.FailureDescription());
         Assert.Equal("", article.VerifyFailed());
         Assert.Equal(2, article.Total().Executions());
-        Assert.Equal(3, article.Total().Actions());
+        Assert.Equal(4, article.Total().Actions());
         Assert.Equal(2, article.Total().Traces());
         Assert.Equal(1, article.Total().Warnings());
         Assert.Equal(1, article.Total().PassedExpectations());
@@ -63,7 +63,8 @@ public class A_CalculatorMemory : QuickTestrModelRunTest<A_CalculatorMemory>
         Assert.Equal("Add Sut", article.Execution(1).Action(2).Read().Label);
         Assert.Equal("All inputs were considered irrelevant.", article.Execution(1).Warning(1).Read().Value);
         Assert.Equal(17, article.Execution(2).Read().ExecutionId);
-        Assert.Equal("Clear", article.Execution(2).Action(1).Read().Label);
+        Assert.Equal("Clear Model", article.Execution(2).Action(1).Read().Label);
+        Assert.Equal("Clear Sut", article.Execution(2).Action(2).Read().Label);
         Assert.Equal("Model:", article.Execution(2).Trace(1).Read().Label);
         Assert.Equal("{ Result: 0 }", article.Execution(2).Trace(1).Read().Value);
         Assert.Equal("Sut:  ", article.Execution(2).Trace(2).Read().Label);

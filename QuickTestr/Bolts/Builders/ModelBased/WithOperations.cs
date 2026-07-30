@@ -120,8 +120,8 @@ public sealed class WithOperations<T, U>(
     private CheckrOf<Case> GetCheckr()
     {
         var checkr =
-            from m in Trackr.Stashed(model)
-            from s in Trackr.Stashed(sut)
+            from m in Trackr.Stashed("Model", model)
+            from s in Trackr.Stashed("Sut", sut)
             from showr in Showr.ForInput()
             from format in Combine.Checkrs(formatters)
             from ops in Checkr.OneOfWhen([.. operations.Select(a => a(verifyReturnValues, m, s))])

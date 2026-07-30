@@ -1,38 +1,37 @@
  ------------------------------------------------------------
- 232 Total Runs
+ 239 Total Runs
  200 Failed Runs
  4 Distinct Failures
  ------------------------------------------------------------
 
  ============================================================
- Seed:                    1974529761
- Failure:                 ComputerSaysNo: Title cannot be longer than 100 characters.
-    Input = "byxlwzoioysdebefxqsqslkgngdzqfujonfaljfptqlbmxmtwjwwzxopnqxqvpridiorwdunkcxbaitqtkchjykryqnumptezcxeivxtpjmwanoewgwlmkzfyxsgqzbvitbxkpiynjrzlnrlbixfsirpdrfkcqcqiroglruhyyxdsatlghfibvczbmutkxvwgbruzkzjoqgukowcxuevluomoofzxbwbcbwrjzlvivukohomprvptaklmeglfaln"
+ Seed:                    105900849
+Failure:                 ComputerSaysNo: Title cannot be longer than 100 characters.
+    Input = "fpqpprakevehcocqkbgzkorimlothinvuxbxzgaosmaxvzlxlnqldezrxhcddhcwiimfneqdbrgxnumnzqiusbrqyjarexkkkeommgkgwmkmxbedupdnzidgrvheeyzdhvnifaatgbyfqftwewxouxlcaivqyfbymgfbovyuojgxkxpmckzibljjkliwfjuazztjari"
     Redux = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
  ============================================================
 
  ============================================================
- Seed:                    1667817598
- Failure:                 ComputerSaysNo: Title is required.
-    Input = "\r"
-    Redux = ""
+ Seed:                    631860029
+Failure:                 ComputerSaysNo: Title is required.
+    Input = ""
  ============================================================
 
  ============================================================
- Seed:                    383318949
- Failure:                 Create Book Title
-    Input = "\r\nlomybamwqvksxwxyiucgpwycrmbqtmachndicsprucqddrheezipjcsppjhpywdd\t"
-    Redux = "a\t"
- ============================================================
-
- ============================================================
- Seed:                    1755156058
- Failure:                 ComputerSaysNo: Title is required.
+ Seed:                    2066079017
+Failure:                 ComputerSaysNo: Title is required.
     Input = null
+ ============================================================
+
+ ============================================================
+ Seed:                    836952288
+Failure:                 Create Book Title
+    Input = "\tgldhqfknckimoufcavtnfn\r\n"
+    Redux = "a\n"
  ============================================================
 
 
  ============================================================
  Passed Expectations
- - Create Book Title: 32x
+ - Create Book Title: 39x
  ============================================================
