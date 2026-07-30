@@ -29,7 +29,7 @@ public class B_Rolodex : QuickTestrModelRunTest<B_Rolodex>
 
     [CodeSnippet]
     [CodeRemoveJournalist]
-    [CodeRemove("10.Runs(), 100.ExecutionsPerRun()")]
+    [CodeRemove("322254521, 100.ExecutionsPerRun()")]
     protected override void GetTestr(Journalist journalist) =>
         Testr.Named("Rolodex")
             .Model(() => new RolodexOracle())
@@ -51,6 +51,20 @@ public class B_Rolodex : QuickTestrModelRunTest<B_Rolodex>
 
     protected override void Verify(Article article)
     {
+        Assert.Equal("People Match", article.FailureDescription());
+        Assert.Equal("", article.VerifyFailed());
+        Assert.Equal(322254521, article.Seed());
+        Assert.Equal(3, article.Total().Executions());
+        Assert.Equal(6, article.Total().Actions());
+        Assert.Equal(3, article.Total().Inputs());
+        Assert.Equal(2, article.Total().Traces());
+        Assert.Equal("-QTM-Add", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("-QTS-Add", article.Execution(1).Action(2).Read().Label);
+        Assert.Equal("-QTM-Delete All By Name", article.Execution(3).Action(1).Read().Label);
+        Assert.Equal("-QTS-Delete All By Name", article.Execution(3).Action(2).Read().Label);
+        Assert.Equal("\"w\"", article.Execution(3).Input(1).Read().Value);
+        Assert.Equal("Model:", article.Execution(3).Trace(1).Read().Label);
+        Assert.Equal("Sut:  ", article.Execution(3).Trace(2).Read().Label);
     }
 
     private static FuzzrOf<(string First, string Last)> NameFuzzr =>

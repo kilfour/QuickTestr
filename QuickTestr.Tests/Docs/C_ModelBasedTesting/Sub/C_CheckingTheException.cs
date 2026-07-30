@@ -47,6 +47,11 @@ public class C_CheckingTheException : QuickTestrModelRunTest<C_CheckingTheExcept
 
     protected override void Verify(Article article)
     {
+        Assert.Equal("", article.FailureDescription());
+        Assert.Equal("", article.VerifyFailed());
+        Assert.Equal(1, article.Total().PassedExpectations());
+        Assert.Equal("Result Matches", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(500, article.PassedExpectation(1).Read().TimesPassed);
     }
 }
 

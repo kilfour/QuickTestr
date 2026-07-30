@@ -27,6 +27,7 @@ public class E_CheckingTheResultsAsWell : QuickTestrModelRunTest<E_CheckingTheRe
 
     [CodeSnippet]
     [CodeRemoveJournalist]
+    [CodeRemove("520188124, 50.ExecutionsPerRun()")]
     protected override void GetTestr(Journalist journalist) =>
         Testr.Named("IdentityCounter matches model")
             .Model(() => new IdentityCounterModel())
@@ -42,6 +43,20 @@ public class E_CheckingTheResultsAsWell : QuickTestrModelRunTest<E_CheckingTheRe
 
     protected override void Verify(Article article)
     {
+        Assert.Equal("Do, results do not match", article.FailureDescription());
+        Assert.Equal("", article.VerifyFailed());
+        Assert.Equal(520188124, article.Seed());
+        Assert.Equal(4, article.Total().Executions());
+        Assert.Equal(8, article.Total().Actions());
+        Assert.Equal(1, article.Total().Inputs());
+        Assert.Equal(8, article.Total().Traces());
+        Assert.Equal("-QTM-Do", article.Execution(4).Action(1).Read().Label);
+        Assert.Equal("-QTS-Do", article.Execution(4).Action(2).Read().Label);
+        Assert.Equal("78", article.Execution(4).Input(1).Read().Value);
+        Assert.Equal("Expected", article.Execution(4).Trace(1).Read().Label);
+        Assert.Equal("78", article.Execution(4).Trace(1).Read().Value);
+        Assert.Equal("Actual  ", article.Execution(4).Trace(2).Read().Label);
+        Assert.Equal("0", article.Execution(4).Trace(2).Read().Value);
     }
 }
 

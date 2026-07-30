@@ -54,4 +54,24 @@ public class TestrModelBasedDepositionsTests
         Assert.True(reader.EndOfContent());
         Assert.True(reader.EndOfContent());
     }
+
+    [Fact]
+    public void PreservesMultiWordOperationLabels()
+    {
+        var caseFile = CaseFile.From(dossier.FailureInfo, dossier.RunInfo)
+            .AddExecutionDeposition(new ExecutionDeposition(1)
+                .AddActionDeposition(
+                    new ActionDeposition("-QTM-Delete All By Name")));
+
+        var reader = Transcribe(caseFile);
+        reader.NextLine();
+        reader.NextLine();
+        reader.NextLine();
+        reader.NextLine();
+        reader.NextLine();
+
+        Assert.Equal(
+            "  1. Delete All By Name",
+            reader.NextLine());
+    }
 }
