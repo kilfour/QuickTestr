@@ -13,7 +13,7 @@ public class StringTestingWithTestr : QuickTestrPropertyTest<StringTestingWithTe
     protected override bool Report => true;
     protected override bool Explain => false;
 
-    [Fact]
+    [Fact(Skip = "experiment")]
     public override void Example() => Document();
 
     protected override void GetTestr(Journalist journalist) =>
