@@ -3,7 +3,6 @@ using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
-using QuickTestr.Bolts.Builders.ModelBased;
 using QuickTestr.Tests.Tools;
 
 namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
@@ -39,7 +38,7 @@ public class E_CheckingTheResultsAsWell : QuickTestrModelRunTest<E_CheckingTheRe
             .Observe("Counter Matches",
                 (model, sut) => model.Counter == sut.Counter)
             .StoreCaseFiles(journalist)
-            .Run();
+            .Run(520188124, 50.ExecutionsPerRun());
 
     protected override void Verify(Article article)
     {

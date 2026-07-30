@@ -33,7 +33,7 @@ public class TestrModelBasedDepositionsTests
     {
         var caseFile = CaseFile.From(dossier.FailureInfo, dossier.RunInfo)
                 .AddExecutionDeposition(new ExecutionDeposition(1)
-                .AddActionDeposition(new ActionDeposition("Run"))
+                .AddActionDeposition(new ActionDeposition("-QTM-Run"))
                 .AddInputDeposition(new InputDeposition("PropertyName", 42)
                 {
                     Redux = Maybe.Just("1"),

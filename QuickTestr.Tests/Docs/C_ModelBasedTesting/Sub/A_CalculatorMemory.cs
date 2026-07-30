@@ -3,7 +3,6 @@ using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
-using QuickTestr.Bolts.Builders.ModelBased;
 using QuickTestr.Tests.Tools;
 
 namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
@@ -20,7 +19,7 @@ namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
 public class A_CalculatorMemory : QuickTestrModelRunTest<A_CalculatorMemory>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explain => false;
 
     [Fact]
@@ -59,12 +58,12 @@ public class A_CalculatorMemory : QuickTestrModelRunTest<A_CalculatorMemory>
         Assert.Equal(16, article.ShrinkCount);
         Assert.Equal(2, article.Execution(1).Read().ExecutionId);
         Assert.Equal(3, article.Execution(1).Times);
-        Assert.Equal("Add Model", article.Execution(1).Action(1).Read().Label);
-        Assert.Equal("Add Sut", article.Execution(1).Action(2).Read().Label);
+        Assert.Equal("-QTM-Add", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("-QTS-Add", article.Execution(1).Action(2).Read().Label);
         Assert.Equal("All inputs were considered irrelevant.", article.Execution(1).Warning(1).Read().Value);
         Assert.Equal(17, article.Execution(2).Read().ExecutionId);
-        Assert.Equal("Clear Model", article.Execution(2).Action(1).Read().Label);
-        Assert.Equal("Clear Sut", article.Execution(2).Action(2).Read().Label);
+        Assert.Equal("-QTM-Clear", article.Execution(2).Action(1).Read().Label);
+        Assert.Equal("-QTS-Clear", article.Execution(2).Action(2).Read().Label);
         Assert.Equal("Model:", article.Execution(2).Trace(1).Read().Label);
         Assert.Equal("{ Result: 0 }", article.Execution(2).Trace(1).Read().Value);
         Assert.Equal("Sut:  ", article.Execution(2).Trace(2).Read().Label);

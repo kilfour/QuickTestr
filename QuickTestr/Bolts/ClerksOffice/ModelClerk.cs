@@ -55,7 +55,7 @@ public class ModelClerk : ITranscribe
                 .Trace(input.Index + 1)
                 .Trace(".")
                 .Space()
-                .Trace(input.Execution.ActionDepositions.First().Label)
+                .Trace(input.Execution.ActionDepositions.First().Label[5..])
                 .ToFlow(Input, input.Execution.InputDepositions);
 
     private static Flow<Flow> Input(InputDeposition input) =>

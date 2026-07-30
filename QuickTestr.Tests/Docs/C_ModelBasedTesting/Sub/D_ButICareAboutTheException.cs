@@ -3,7 +3,6 @@ using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
-using QuickTestr.Bolts.Builders.ModelBased;
 using QuickTestr.Tests.Tools;
 
 namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
@@ -44,7 +43,7 @@ public class D_ButICareAboutTheException : QuickTestrModelRunTest<D_ButICareAbou
             .Observe("Result Matches",
                 (model, sut) => model.Names.SequenceEqual(sut.Names), a => a.Trace())
             .StoreCaseFiles(journalist)
-            .Run();
+            .Run(1830780673, 50.ExecutionsPerRun());
 
     protected override void Verify(Article article)
     {

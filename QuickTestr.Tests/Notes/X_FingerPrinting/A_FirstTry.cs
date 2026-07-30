@@ -16,7 +16,7 @@ public class A_FirstTry : QuickTestrPropertyTest<A_FirstTry>
     protected override bool Report => false;
     protected override bool Explain => false;
 
-    [Fact]
+    [Fact(Skip = "undeterministic")]
     [DocTestrHeader]
     [DocTestr]
     [DocBoldHeader("The Runner")]

@@ -73,8 +73,8 @@ public sealed class WithSut<T, U>(string testName, bool useBuiltInReducers, Chec
         bool verifyResults,
         Action modelOperation,
         Action sutOperation) =>
-        from modelResult in Checkr.ActCarefully($"{label} Model", modelOperation)
-        from sutResult in Checkr.ActCarefully($"{label} Sut", sutOperation)
+        from modelResult in Checkr.ActCarefully($"-QTM-{label}", modelOperation)
+        from sutResult in Checkr.ActCarefully($"-QTS-{label}", sutOperation)
         from checkResult in Checkr.When(() => verifyResults,
             from traceExpectedException in Checkr.TraceWhen(
                 "Expected",
@@ -95,8 +95,8 @@ public sealed class WithSut<T, U>(string testName, bool useBuiltInReducers, Chec
         bool verifyResults,
         Func<TResult> modelOperation,
         Func<TResult> sutOperation) =>
-        from modelResult in Checkr.ActCarefully($"{label} Model", modelOperation)
-        from sutResult in Checkr.ActCarefully($"{label} Sut", sutOperation)
+        from modelResult in Checkr.ActCarefully($"-QTM-{label}", modelOperation)
+        from sutResult in Checkr.ActCarefully($"-QTS-{label}", sutOperation)
         from checkResult in Checkr.When(() => verifyResults,
             from traceExpectedValue in Checkr.TraceWhen(
                 "Expected",

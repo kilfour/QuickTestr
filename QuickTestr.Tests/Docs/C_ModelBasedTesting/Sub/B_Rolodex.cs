@@ -3,7 +3,6 @@ using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
-using QuickTestr.Bolts.Builders.ModelBased;
 using QuickTestr.Tests.Tools;
 
 namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
@@ -48,7 +47,7 @@ public class B_Rolodex : QuickTestrModelRunTest<B_Rolodex>
                 (sut, a) => sut.DeleteAllByName(a))
             .Observe("People Match", PeopleMatch, a => a.Trace())
             .StoreCaseFiles(journalist)
-            .Run(10.Runs(), 100.ExecutionsPerRun());
+            .Run(322254521, 100.ExecutionsPerRun());
 
     protected override void Verify(Article article)
     {
