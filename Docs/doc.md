@@ -1,14 +1,17 @@
 # QuickTestr
-QuickTestr currently supports three styles:
+QuickTestr currently supports four styles:
 - [Property-based][PropertyBased] : Define what should always hold.
 - [Oracle-based][OracleBased]: Compare against something that already works.
-- [Model-based][ModelBased]: Compare state transitions against a model.  
+- [Model-based][ModelBased]: Compare state transitions against a model.
+- [Eploration-based][EplorationBased]: TODO.  
 
 [PropertyBased]: #property-based-style-testing
 
 [OracleBased]: #oracle-based-style-testing
 
 [ModelBased]: #model-based-testing
+
+[EplorationBased]: #eploration-based-testing
 ## Property-based Style Testing
 In property-based testing you describe **what should always be true**, regardless of the input.  
 QuickTestr generates many inputs and tries to falsify your rule, shrinking failures to a minimal example.
@@ -541,3 +544,9 @@ Testr.Named("IdentityCounter matches model")
      Actual   0
  ------------------------------------------------------------
 ```
+## Eploration-based Testing
+The fourth supported style of QuickTestr verification.
+
+TODO
+  
+### Reversing a List

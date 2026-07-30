@@ -1,13 +1,61 @@
  ------------------------------------------------------------
-  QuickPulse.Instruments.ComputerSaysNo: Title is required.
-   at QuickPulse.Instruments.ComputerSays.No(String msg)
-   at QuickTestr.Tests.Notes.T_Exploration.BookTitle.Create(String value) in C:\Code\QuickTestr\QuickTestr.Tests\Notes\T_Exploration\BookTitle.cs:line 19
-   at QuickTestr.Tests.Notes.T_Exploration.Sub.A_EvilizingInput.<>c.<GetTestr>b__7_0(String a) in C:\Code\QuickTestr\QuickTestr.Tests\Notes\T_Exploration\Sub\A_EvilizingInput.cs:line 27
-   at QuickTestr.Bolts.Builders.Property.TestrPropertyRunner`1.<>c__DisplayClass11_1.<GetCheckr>b__12() in C:\Code\QuickTestr\QuickTestr\Bolts\Builders\Property\TestrPropertyRunner.cs:line 29
-   at QuickCheckr.Checkr.<>c__DisplayClass10_1`1.<TryCatch>b__1()
-   at QuickCheckr.UnderTheHood.TheCatcher.InTheCheckr[T](CheckrState state, Func`1 func, Action`1 onException)
-  Seed: 1540338462
+ 194 Total Runs
+ 150 Failed Runs
+ 8 Distinct Failures
  ------------------------------------------------------------
-  Falsified:
+
+ ============================================================
+ Seed:                    2099687420
+ Failure:                 ComputerSaysNo: Title is required.
+    Input = " "
+ ============================================================
+
+ ============================================================
+ Seed:                    1559196442
+ Failure:                 ComputerSaysNo: Title is required.
+    Input = ""
+ ============================================================
+
+ ============================================================
+ Seed:                    1751368969
+ Failure:                 ComputerSaysNo: Title is required.
     Input = ""
- ------------------------------------------------------------
+ ============================================================
+
+ ============================================================
+ Seed:                    626992511
+ Failure:                 ComputerSaysNo: Title is required.
+    Input = null
+ ============================================================
+
+ ============================================================
+ Seed:                    1635414240
+ Failure:                 ComputerSaysNo: Title is required.
+    Input = "	"
+ ============================================================
+
+ ============================================================
+ Seed:                    1609411597
+ Failure:                 ComputerSaysNo: Title is required.
+    Input = "
+"
+ ============================================================
+
+ ============================================================
+ Seed:                    441284392
+ Failure:                 ComputerSaysNo: Title is required.
+    Input = " "
+ ============================================================
+
+ ============================================================
+ Seed:                    644167413
+ Failure:                 ComputerSaysNo: Title is required.
+    Input = "
+"
+ ============================================================
+
+
+ ============================================================
+ Passed Expectations
+ - BookTitle Creation: 44x
+ ============================================================

@@ -2,6 +2,7 @@ using QuickTestr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
 
 namespace QuickTestr.Tests.Challenges.A_Bound5;
 
@@ -16,10 +17,10 @@ A single list in the tuple will never break the invariant, but you need at least
 This prevents most of trivial shrinking algorithms from getting close to a minimum example,
 which would look something like ([-32768], [-1], [], [], []).
 ")]
-public class Bound5 : TestrPropertyTest<Bound5>
+public class Bound5 : QuickTestrTest<Bound5>
 {
     protected override bool Asserts => false;
-    protected override bool Report => false;
+    protected override bool Report => true;
     protected override bool Explain => false;
 
     [Fact]
@@ -31,8 +32,7 @@ public class Bound5 : TestrPropertyTest<Bound5>
     [DocExample(typeof(H))]
     [DocReportHeader]
     [DocReport]
-    public override void Example() =>
-        Document(a => a.Run(472166887));
+    public override void Example() => Document();
 
     [CodeSnippet]
     private static readonly FuzzrOf<List<short>> ShortList =
@@ -42,11 +42,15 @@ public class Bound5 : TestrPropertyTest<Bound5>
             .ToList();
 
     [CodeSnippet]
-    protected override ITestrRunner GetTestr() =>
+    [CodeRemoveJournalist]
+    [CodeRemove("472166887")]
+    protected override void GetTestr(Journalist journalist) =>
         Testr.Named("The sum of all values is less than 5 * 256.")
             .For(Fuzzr.Tuple(ShortList, ShortList, ShortList, ShortList, ShortList))
             .Deliberate(H.ElementCount, 2)
-            .Assert(a => H.Sum(a) < (5 * 256));
+            .Assert(a => H.Sum(a) < (5 * 256))
+            .StoreCaseFiles(journalist)
+            .Run(472166887);
 
     [CodeExample]
     public class H
@@ -71,7 +75,6 @@ public class Bound5 : TestrPropertyTest<Bound5>
         Assert.Equal("The sum of all values is less than 5 * 256.", article.FailureDescription());
         Assert.Equal(1, article.Total().Executions());
         Assert.Equal(1, article.Total().Inputs());
-        // Assert.Equal(0, article.ShrinkCount);
         Assert.Equal(1, article.Execution(1).Read().ExecutionId);
         Assert.Equal("Input", article.Execution(1).Input(1).Read().Label);
         Assert.Equal("( _, _, _, [ -23457 ], [ -25242 ] )", article.Execution(1).Input(1).Read().Value);
