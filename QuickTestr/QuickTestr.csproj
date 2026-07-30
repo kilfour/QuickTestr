@@ -10,8 +10,8 @@
 
     <PackageId>QuickTestr</PackageId>
     <Title>QuickTestr</Title>
-    <Description>A small, opinionated property-based testing DSL for C#, built on QuickCheckr. Define inputs, assert invariants, and get reproducible, shrunk counterexamples.</Description>
-    <PackageTags>fuzzing;testing</PackageTags>
+    <Description>A small, opinionated property-based, oracle-based, and model-based testing DSL for C#, built on QuickCheckr. Define inputs, assert invariants, and get reproducible, shrunk counterexamples.</Description>
+    <PackageTags>fuzzing;testing;property-based-testing;oracle-based-testing;model-based-testing</PackageTags>
 
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/kilfour/QuickTestr</RepositoryUrl>

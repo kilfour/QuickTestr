@@ -74,7 +74,8 @@ Testr
             if (index != element && list[index] == element)
                 return false;
             return true;
-        }));
+        }))
+    .Run();
 ```
 **Some Notes:**
 - `DisableValueReduction()`: By default QuickTestr tries to move ints towards zero, but here that isn't necessary.
@@ -117,7 +118,8 @@ This implementation silently breaks when `a > 42`.
 Testr.Named("AddBuggy Matches AddCorrect")
     .For(Fuzzr.Tuple(Fuzzr.Int(), Fuzzr.Int()))
     .Expected(a => AddCorrect(a.Item1, a.Item2))
-    .Actual(a => AddBuggy(a.Item1, a.Item2));
+    .Actual(a => AddBuggy(a.Item1, a.Item2))
+    .Run();
 ```
 
 **The Report:**  
@@ -157,7 +159,8 @@ Testr
                 Remove.UnaryMinusNoise)))
     .Deliberate(a => a.Length, 4) // prefer smaller length strings
     .Expected(a => LostIn.Translation(a).Eval())
-    .Actual(a => LostIn.FaultyTranslation(a).Eval());
+    .Actual(a => LostIn.FaultyTranslation(a).Eval())
+    .Run();
 ```
 
 **The Report:**  
@@ -177,6 +180,8 @@ Testr
       Observed:
         Expected = -4
         Actual   = 4
+
+  WARNING: Reducer stopped at Input. Max steps (1024) exceeded.
  ------------------------------------------------------------
 ```
 
@@ -353,7 +358,7 @@ Testr.Named("Rolodex")
      ( "w", _ )
   2. Add
      ( _, "w" )
-  3. Delete
+  3. Delete All By Name
      "w"
  ------------------------------------------------------------
   !! Failed: People Match
@@ -454,7 +459,7 @@ public class NameCollector
 Testr.Named("NameCollector matches model")
     .Model(() => new NameCollectorModel())
     .Sut(() => new NameCollector())
-    .VerifyReturnValues()
+    .VerifyOperationResults()
     .Operation("Add", Fuzzr.String(1),
         (model, a) => model.Add(a),
         (sut, a) => sut.Add(a))
@@ -515,7 +520,7 @@ public class IdentityCounter
 Testr.Named("IdentityCounter matches model")
     .Model(() => new IdentityCounterModel())
     .Sut(() => new IdentityCounter())
-    .VerifyReturnValues()
+    .VerifyOperationResults()
     .Operation("Do", Fuzzr.Int(),
         (model, a) => model.Do(a),
         (sut, a) => sut.Do(a))

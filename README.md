@@ -36,7 +36,8 @@ Testr.Named("Reversing a list of integers results in the same list")
         var reversed = new List<int>(a);
         reversed.Reverse();
         return reversed.SequenceEqual(a);
-    });
+    })
+    .Run();
 ```
 That property is false, of course, and QuickTestr reports a shrunk counterexample:  
 ```text
