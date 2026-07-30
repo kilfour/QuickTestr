@@ -128,7 +128,7 @@ public class OperationExceptionSemanticsTests
         Assert.Equal(1, sut.Attempts);
     }
 
-    private sealed class Probe
+    private class Probe
     {
         public int Attempts { get; private set; }
 

@@ -6,7 +6,7 @@ namespace QuickTestr.Bolts.Builders.ModelBased;
 /// Starts a model-based Testr from a trusted model factory.
 /// Use when defining a comparison between a reference implementation and a system under test.
 /// </summary>
-public sealed class WithModel<T>(string testName, bool useBuiltInReducers, CheckrOf<Case>[] formatters, Func<T> model)
+public class WithModel<T>(string testName, bool useBuiltInReducers, CheckrOf<Case>[] formatters, Func<T> model)
 {
     private readonly Func<T> model = model;
 

@@ -11,7 +11,7 @@ namespace QuickTestr.Bolts.Builders.ModelBased;
 /// Completes a model-based Testr after operations and an initial observation are defined.
 /// Use when adding more observations or running the configured model-based check.
 /// </summary>
-public sealed class WithOperations<T, U>(
+public class WithOperations<T, U>(
     string testName,
     bool useBuiltInReducers,
     CheckrOf<Case>[] formatters,
@@ -19,7 +19,7 @@ public sealed class WithOperations<T, U>(
     Func<U> sut,
     bool verifyReturnValues,
     List<Func<bool, T, U, CheckrOf<(Func<bool> condition, CheckrOf<Case> checkr)>>> operations,
-    Observation<T, U> observation) : IModelrRunner
+    Observation<T, U> observation)
 {
     private string fileName = string.Empty;
     private ICustodian? custodian;
@@ -28,7 +28,7 @@ public sealed class WithOperations<T, U>(
     /// Persists case files for this Testr under its test name.
     /// Use when you want to inspect or clean up stored cases later through the vault workflow.
     /// </summary>
-    public IModelrRunner StoreCaseFiles(ICustodian? custodian = null)
+    public WithOperations<T, U> StoreCaseFiles(ICustodian? custodian = null)
     {
         fileName = TestName;
         this.custodian = custodian;
@@ -66,7 +66,7 @@ public sealed class WithOperations<T, U>(
     /// Use for the normal execution path when you do not need explicit run control.
     /// </summary>
     [StackTraceHidden]
-    public IModelrRunner Run()
+    public WithOperations<T, U> Run()
     {
         GetCheckr().Configure(GetConfig()).Run(10.Runs(), 50.ExecutionsPerRun());
         return this;
@@ -78,7 +78,7 @@ public sealed class WithOperations<T, U>(
     /// Use when you want to control how much stateful exploration is performed.
     /// </summary>
     [StackTraceHidden]
-    public IModelrRunner Run(RunCount runs, ExecutionCount executionsPerRun)
+    public WithOperations<T, U> Run(RunCount runs, ExecutionCount executionsPerRun)
     {
         GetCheckr().Configure(GetConfig()).Run(runs, executionsPerRun);
         return this;
@@ -90,7 +90,7 @@ public sealed class WithOperations<T, U>(
     /// Use when you want to reproduce a known stateful execution path.
     /// </summary>
     [StackTraceHidden]
-    public IModelrRunner Run(int seed, ExecutionCount executionsPerRun)
+    public WithOperations<T, U> Run(int seed, ExecutionCount executionsPerRun)
     {
         GetCheckr().Configure(GetConfig()).Run(seed, executionsPerRun);
         return this;

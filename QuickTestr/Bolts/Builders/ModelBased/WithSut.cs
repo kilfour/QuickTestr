@@ -8,7 +8,7 @@ namespace QuickTestr.Bolts.Builders.ModelBased;
 /// Configures operations and observations for a model-based Testr.
 /// Use after supplying both the model and the system under test.
 /// </summary>
-public sealed class WithSut<T, U>(string testName, bool useBuiltInReducers, CheckrOf<Case>[] formatters, Func<T> model, Func<U> sut)
+public class WithSut<T, U>(string testName, bool useBuiltInReducers, CheckrOf<Case>[] formatters, Func<T> model, Func<U> sut)
 {
     private readonly Func<T> model = model;
     private readonly Func<U> sut = sut;
