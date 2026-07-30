@@ -3,10 +3,11 @@ using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.UnderTheHood;
+using QuickCheckr.Authoring;
 
 namespace QuickTestr.Tests.Tools;
 
-public abstract class QuickTestrTest<T> : TestrBaseTest<T>
+public abstract class QuickTestrTest<T> : QuickCheckrTest<T>
 {
     protected override bool WriteAllReportsToDisk { get; } = false;
 
