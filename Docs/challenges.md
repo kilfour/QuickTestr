@@ -50,7 +50,8 @@ which would look something like ([-32768], [-1], [], [], []).
 Testr.Named("The sum of all values is less than 5 * 256.")
     .For(Fuzzr.Tuple(ShortList, ShortList, ShortList, ShortList, ShortList))
     .Deliberate(H.ElementCount, 2)
-    .Assert(a => H.Sum(a) < (5 * 256));
+    .Assert(a => H.Sum(a) < (5 * 256))
+    .Run();
 ```
 
 **The Short List Fuzzr:**  
@@ -109,7 +110,8 @@ For example, it would have to be able to transform one of [[0, 1, -1, 2, -2]] an
 Testr.Named("No more than four distinct integers.")
     .For(Fuzzr.Int().Many(0, 10).ToList().Many(5, 20).ToList())
     .Deliberate(a => 0 - a.Count, -5)
-    .Assert(a => a.SelectMany(a => a).Distinct().Count() <= 4);
+    .Assert(a => a.SelectMany(a => a).Distinct().Count() <= 4)
+    .Run();
 ```
 
 **The Report:**  
@@ -134,15 +136,15 @@ It is a basic example to validate that a library can reliably normalize simple s
 
 **The Testr:**  
 ```csharp
-Testr
-    .Named("Reversing a list of integers results in the same list")
+Testr.Named("Reversing a list of integers results in the same list")
     .For(Fuzzr.Int().Many(0, 10).ToList())
     .Assert(a =>
     {
         var reversed = new List<int>(a);
         reversed.Reverse();
         return reversed.SequenceEqual(a);
-    });
+    })
+    .Run();
 ```
 
 **The Report:**  
@@ -182,7 +184,8 @@ Testr
     .Format(TheFormatr)
     .For(TheFuzzr, TheShrinkr)
     .Deliberate(a => DepthOf(a))
-    .Assert(a => { a.Evaluate(); return true; });
+    .Assert(a => { a.Evaluate(); return true; })
+    .Run(729093046);
 ```
 
 **The Fuzzr:**  

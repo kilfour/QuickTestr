@@ -1,23 +1,21 @@
 # QuickTestr
-QuickTestr currently supports four styles:
+QuickTestr currently supports three styles:
 - [Property-based][PropertyBased] : Define what should always hold.
 - [Oracle-based][OracleBased]: Compare against something that already works.
-- [Model-based][ModelBased]: Compare state transitions against a model.
-- [Eploration-based][EplorationBased]: TODO.  
+- [Model-based][ModelBased]: Compare state transitions against a model.  
 
 [PropertyBased]: #property-based-style-testing
 
 [OracleBased]: #oracle-based-style-testing
 
 [ModelBased]: #model-based-testing
-
-[EplorationBased]: #eploration-based-testing
 ## Property-based Style Testing
 In property-based testing you describe **what should always be true**, regardless of the input.  
 QuickTestr generates many inputs and tries to falsify your rule, shrinking failures to a minimal example.
 
 A classic to begin with:  
 ### Reversing a List
+####  
 ```csharp
 Testr.Named("Reverse is its own inverse")              // The name of the property.
     .For(Fuzzr.Int().Many(1, 10))                      // The input Fuzzr.
@@ -26,6 +24,7 @@ Testr.Named("Reverse is its own inverse")              // The name of the proper
 // --------------------------------------------------------------------------------
 static IEnumerable<int> Reverse(IEnumerable<int> l) => [.. l.Reverse()];
 ```
+####  
 That passes, which isn't very interesting.
 Let's break it by moving all `42`s to the end.  
 ```csharp
@@ -544,9 +543,3 @@ Testr.Named("IdentityCounter matches model")
      Actual   0
  ------------------------------------------------------------
 ```
-## Eploration-based Testing
-The fourth supported style of QuickTestr verification.
-
-TODO
-  
-### Reversing a List

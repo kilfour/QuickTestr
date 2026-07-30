@@ -7,7 +7,7 @@ using QuickTestr.Tests.Tools;
 
 namespace QuickTestr.Tests.Docs.A_PropertyBased.Sub;
 
-[DocFileHeader("")]
+[DocFileHeader(" ")]
 public class AA_ReversingAListPass : QuickTestrPropertyTest<AA_ReversingAListPass>
 {
     protected override bool Asserts => false;
@@ -20,7 +20,7 @@ public class AA_ReversingAListPass : QuickTestrPropertyTest<AA_ReversingAListPas
 
     [CodeSnippet]
     [CodeRemove("return")]
-    [CodeRemove("0.Runs()")]
+    [CodeRemove("1.Runs()")]
     [CodeRemoveJournalist]
     protected override void GetTestr(Journalist journalist)
     {
