@@ -3,6 +3,7 @@ using QuickTestr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
 
 namespace QuickTestr.Tests.Docs.A_PropertyBased.Sub;
 
@@ -14,7 +15,7 @@ Now for something less trivial, one of the `jqwik` challenges.
 The property we are testing states:  
 > No two different elements point to each other when used as indexes into the list.
 """)]
-public class B_MovingOn : TestrPropertyTest<B_MovingOn>
+public class B_MovingOn : QuickTestrPropertyTest<B_MovingOn>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -31,11 +32,12 @@ public class B_MovingOn : TestrPropertyTest<B_MovingOn>
 """)]
     [DocReportHeader]
     [DocReport]
-    public override void Example() =>
-        Document(a => a.Run(1934478623));
+    public override void Example() => Document();
 
     [CodeSnippet]
-    protected override ITestrRunner GetTestr() =>
+    [CodeRemoveJournalist]
+    [CodeRemove("1934478623")]
+    protected override void GetTestr(Journalist journalist) =>
         Testr
             .Named("No two different indexes point to each other.")
             .DisableValueReduction()
@@ -51,7 +53,9 @@ public class B_MovingOn : TestrPropertyTest<B_MovingOn>
                     if (index != element && list[index] == element)
                         return false;
                     return true;
-                }));
+                }))
+            .StoreCaseFiles(journalist)
+            .Run(1934478623);
 
     protected override void Verify(Article article)
     {

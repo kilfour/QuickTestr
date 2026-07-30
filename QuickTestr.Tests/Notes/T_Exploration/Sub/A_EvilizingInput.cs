@@ -1,4 +1,5 @@
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
 using QuickPulse.Explains;
 using QuickTestr.Tests.Tools;
 
@@ -9,22 +10,25 @@ namespace QuickTestr.Tests.Notes.T_Exploration.Sub;
 [DocTestr]
 [DocContent("This results in:")]
 [DocReport]
-public class A_EvilizingInput : TestrPropertyTest<A_EvilizingInput>
+public class A_EvilizingInput : QuickTestrPropertyTest<A_EvilizingInput>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
-    public override void Example() =>
-        Document(a => a.Run(1540338462));
+    public override void Example() => Document();
 
     [CodeSnippet]
-    protected override ITestrRunner GetTestr() =>
+    [CodeRemoveJournalist]
+    [CodeRemove("1540338462")]
+    protected override void GetTestr(Journalist journalist) =>
         Testr
             .Named("BookTitle Creation")
             .For(Evilr.String())
-            .Assert(a => BookTitle.Create(a!).Value == a);
+            .Assert(a => BookTitle.Create(a!).Value == a)
+            .StoreCaseFiles(journalist)
+            .Run(1540338462);
 
     protected override void Verify(Article article)
     {

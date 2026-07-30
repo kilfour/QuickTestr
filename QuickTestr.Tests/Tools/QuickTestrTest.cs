@@ -8,7 +8,7 @@ namespace QuickTestr.Tests.Tools;
 
 public abstract class QuickTestrTest<T> : TestrBaseTest<T>
 {
-    protected override bool WriteAllReportsToDisk { get; } = false;
+    protected override bool WriteAllReportsToDisk { get; } = true;
 
     protected class DocTestrHeaderAttribute() :
         DocBoldHeaderAttribute("The Testr");
