@@ -38,6 +38,21 @@ public class InputTestr<T>(
         => new(fuzzr, shrinkers, formatters, invariant, null, null, testName, useBuiltInReducers);
 
     /// <summary>
+    /// Defines the asynchronous property that must hold for generated inputs.
+    /// Use for direct property-based testing when the invariant returns a task.
+    /// </summary>
+    public TestrPropertyRunner<T> Assert(Func<T, Task<bool>> invariant)
+        => new(
+            fuzzr,
+            shrinkers,
+            formatters,
+            input => invariant(input).GetAwaiter().GetResult(),
+            null,
+            null,
+            testName,
+            useBuiltInReducers);
+
+    /// <summary>
     /// Defines the expected result for oracle-style testing.
     /// Use when you want to compare a trusted model against another implementation.
     /// </summary>

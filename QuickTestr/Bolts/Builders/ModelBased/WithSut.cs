@@ -133,10 +133,41 @@ public class WithSut<T, U>(string testName, bool useBuiltInReducers, CheckrOf<Ca
                 () => sutOperation(s)));
 
     /// <summary>
+    /// Adds a state transition with a result that runs on both the model and the system under test.
+    /// Use with <see cref="VerifyOperationResults"/> when the returned values should also match.
+    /// </summary>
+    public WithSut<T, U> Operation<W>(
+        string label,
+        Func<T, W> modelOperation,
+        Func<U, W> sutOperation)
+        => AddOperation((verifyResults, m, s) =>
+            Execute(
+                label,
+                verifyResults,
+                () => modelOperation(m),
+                () => sutOperation(s)));
+
+    /// <summary>
     /// Adds a conditional state transition that runs on both the model and the system under test.
     /// Use when the operation needs no generated input and should only run in specific model states.
     /// </summary>
     public WithSut<T, U> Operation(string label, Func<T, bool> condition, Action<T> modelOperation, Action<U> sutOperation)
+        => AddConditionalOperation(condition, (verifyResults, m, s) =>
+            Execute(
+                label,
+                verifyResults,
+                () => modelOperation(m),
+                () => sutOperation(s)));
+
+    /// <summary>
+    /// Adds a conditional state transition with a result that runs on both the model and the system under test.
+    /// Use with <see cref="VerifyOperationResults"/> when the returned values should also match.
+    /// </summary>
+    public WithSut<T, U> Operation<W>(
+        string label,
+        Func<T, bool> condition,
+        Func<T, W> modelOperation,
+        Func<U, W> sutOperation)
         => AddConditionalOperation(condition, (verifyResults, m, s) =>
             Execute(
                 label,
@@ -187,6 +218,25 @@ public class WithSut<T, U>(string testName, bool useBuiltInReducers, CheckrOf<Ca
             select Case.Closed);
 
     /// <summary>
+    /// Adds a conditional generated state transition with a result that runs on both the model and the system under test.
+    /// Use with <see cref="VerifyOperationResults"/> when the returned values should also match.
+    /// </summary>
+    public WithSut<T, U> Operation<V, W>(
+        string label,
+        Func<T, bool> condition,
+        FuzzrOf<V> fuzzr,
+        Func<T, V, W> modelOperation,
+        Func<U, V, W> sutOperation)
+        => AddConditionalOperation(condition, (verifyResults, m, s) =>
+            from input in Checkr.Input("Input", fuzzr)
+            from execution in Execute(
+                label,
+                verifyResults,
+                () => modelOperation(m, input),
+                () => sutOperation(s, input))
+            select Case.Closed);
+
+    /// <summary>
     /// Adds a generated state transition that runs on both the model and the system under test.
     /// Use when the generated input should depend on the current model state.
     /// </summary>
@@ -201,10 +251,47 @@ public class WithSut<T, U>(string testName, bool useBuiltInReducers, CheckrOf<Ca
             select Case.Closed);
 
     /// <summary>
+    /// Adds a state-dependent generated transition with a result that runs on both the model and the system under test.
+    /// Use with <see cref="VerifyOperationResults"/> when the returned values should also match.
+    /// </summary>
+    public WithSut<T, U> Operation<V, W>(
+        string label,
+        Func<T, FuzzrOf<V>> fuzzr,
+        Func<T, V, W> modelOperation,
+        Func<U, V, W> sutOperation)
+        => AddOperation((verifyResults, m, s) =>
+            from input in Checkr.Input("Input", () => fuzzr(m))
+            from execution in Execute(
+                label,
+                verifyResults,
+                () => modelOperation(m, input),
+                () => sutOperation(s, input))
+            select Case.Closed);
+
+    /// <summary>
     /// Adds a conditional generated state transition that runs on both the model and the system under test.
     /// Use when the generated input should depend on the current model state and only run in specific model states.
     /// </summary>
     public WithSut<T, U> Operation<V>(string label, Func<T, bool> condition, Func<T, FuzzrOf<V>> fuzzr, Action<T, V> modelOperation, Action<U, V> sutOperation)
+        => AddConditionalOperation(condition, (verifyResults, m, s) =>
+            from input in Checkr.Input("Input", () => fuzzr(m))
+            from execution in Execute(
+                label,
+                verifyResults,
+                () => modelOperation(m, input),
+                () => sutOperation(s, input))
+            select Case.Closed);
+
+    /// <summary>
+    /// Adds a conditional state-dependent generated transition with a result that runs on both the model and the system under test.
+    /// Use with <see cref="VerifyOperationResults"/> when the returned values should also match.
+    /// </summary>
+    public WithSut<T, U> Operation<V, W>(
+        string label,
+        Func<T, bool> condition,
+        Func<T, FuzzrOf<V>> fuzzr,
+        Func<T, V, W> modelOperation,
+        Func<U, V, W> sutOperation)
         => AddConditionalOperation(condition, (verifyResults, m, s) =>
             from input in Checkr.Input("Input", () => fuzzr(m))
             from execution in Execute(

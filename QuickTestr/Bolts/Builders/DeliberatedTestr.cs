@@ -26,6 +26,21 @@ public class DeliberatedTestr<T>(
         => new(fuzzr, shrinkers, formatters, invariant, deliberation, deliberationTarget, testName, useBuiltInReducers);
 
     /// <summary>
+    /// Defines the asynchronous property that must hold for generated inputs.
+    /// Use when the invariant returns a task after deliberation has been configured.
+    /// </summary>
+    public TestrPropertyRunner<T> Assert(Func<T, Task<bool>> invariant)
+        => new(
+            fuzzr,
+            shrinkers,
+            formatters,
+            input => invariant(input).GetAwaiter().GetResult(),
+            deliberation,
+            deliberationTarget,
+            testName,
+            useBuiltInReducers);
+
+    /// <summary>
     /// Defines the expected result for oracle-style testing.
     /// Use when you want to compare a trusted model against another implementation after adding deliberation settings.
     /// </summary>

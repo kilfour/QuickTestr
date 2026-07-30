@@ -27,3 +27,5 @@
 * Added initial support for model-based testing.
 * Added syntactic sugar for generating Tuple input (arity 2 only)
 * Added `Task<TResult>` overloads for asynchronous oracle-based testing.
+* Completed return-value verification across model-based operation variants.
+* Added `Task<bool>` overloads for asynchronous property assertions.
