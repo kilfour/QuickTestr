@@ -21,6 +21,7 @@ public class TestrPropertyRunner<TInput>(
     bool useBuiltInReducers) : TestrRunner<TInput>
 {
     protected override string TestName { get; } = testName;
+
     protected override CheckrOf<Case> GetCheckr() =>
         from showr in Showr.ForInput()
         from format in Combine.Checkrs(formatters)
