@@ -1,6 +1,7 @@
 using QuickTestr.Tests.Tools;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
 
 namespace QuickTestr.Tests.Challenges.F_Difference.Sub;
 
@@ -12,7 +13,7 @@ Test 1 ('difference must not be zero') only succeeds if
 - _or_ the difference is not zero.
 The smallest falsified sample is `[10, 10]`
 ")]
-public class Test1 : TestrPropertyTest<Test1>
+public class Test1 : QuickTestrPropertyTest<Test1>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -23,16 +24,19 @@ public class Test1 : TestrPropertyTest<Test1>
     [DocTestr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() =>
-        Document(a => a.Run(1485535450));
+    public override void Example() => Document();
 
     [CodeSnippet]
     [CodeRemove("Difference.")]
     [CodeRemove("The.")]
-    protected override ITestrRunner GetTestr() =>
+    [CodeRemoveJournalist]
+    [CodeRemove("1485535450")]
+    protected override void GetTestr(Journalist journalist) =>
         Testr.Named("Difference must not be zero.")
             .For(Difference.TheFuzzr, Difference.The.Shrinkr)
-            .Assert(a => a.A < 10 || a.A != a.B);
+            .Assert(a => a.A < 10 || a.A != a.B)
+            .StoreCaseFiles(journalist)
+            .Run(1485535450);
 
     protected override void Verify(Article article)
     {

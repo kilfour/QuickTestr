@@ -2,6 +2,7 @@ using QuickTestr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
 
 namespace QuickTestr.Tests.Challenges.K_NestedLists;
 
@@ -20,7 +21,7 @@ Some libraries, e.g. Hypothesis and jqwik, can shrink this reliably to
 a single list of 11 elements: `[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]`.
 
 ")]
-public class NestedLists : TestrPropertyTest<NestedLists>
+public class NestedLists : QuickTestrPropertyTest<NestedLists>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -31,16 +32,19 @@ public class NestedLists : TestrPropertyTest<NestedLists>
     [DocTestr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() =>
-        Document(a => a.Run(1959968277));
+    public override void Example() => Document();
 
     [CodeSnippet]
-    protected override ITestrRunner GetTestr() =>
+    [CodeRemoveJournalist]
+    [CodeRemove("1959968277")]
+    protected override void GetTestr(Journalist journalist) =>
         Testr
             .Named("The sum of lengths of the element lists is at most 10.")
             .For(Fuzzr.Int().Many(0, 20).ToList().Many(0, 20).ToList())
             .Deliberate(a => a.Count)
-            .Assert(a => a.Sum(a => a.Count) <= 10);
+            .Assert(a => a.Sum(a => a.Count) <= 10)
+            .StoreCaseFiles(journalist)
+            .Run(1959968277);
 
     protected override void Verify(Article article)
     {

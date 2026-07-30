@@ -2,6 +2,7 @@ using QuickTestr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
 
 namespace QuickTestr.Tests.Challenges.J_Distinct;
 
@@ -19,7 +20,7 @@ so the ""example of size at least N"" provides a sort of lower bound for how wel
 
 The expected smallest falsified sample is `[0, 1, -1]` or `[0, 1, 2]`.
 ")]
-public class Distinct : TestrPropertyTest<Distinct>
+public class Distinct : QuickTestrPropertyTest<Distinct>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -30,11 +31,12 @@ public class Distinct : TestrPropertyTest<Distinct>
     [DocTestr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() =>
-        Document(a => a.Run(1943621438));
+    public override void Example() => Document();
 
     [CodeSnippet]
-    protected override ITestrRunner GetTestr() =>
+    [CodeRemoveJournalist]
+    [CodeRemove("1943621438")]
+    protected override void GetTestr(Journalist journalist) =>
         Testr
             .Named("Contains at least three distinct elements.")
             .For(Fuzzr.Int(1, 10).Many(3, 20))
@@ -43,7 +45,9 @@ public class Distinct : TestrPropertyTest<Distinct>
                 if (a.Count() >= 3)
                     return a.ToHashSet().Count >= 3;
                 return true;
-            });
+            })
+            .StoreCaseFiles(journalist)
+            .Run(1943621438);
 
     protected override void Verify(Article article)
     {

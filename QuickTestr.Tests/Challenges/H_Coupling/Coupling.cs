@@ -3,6 +3,7 @@ using QuickTestr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
 
 namespace QuickTestr.Tests.Challenges.H_Coupling;
 
@@ -13,7 +14,7 @@ In this example the elements of a list of integers are coupled to their position
 
 The expected smallest falsified sample is [1, 0].
 ")]
-public class Coupling : TestrPropertyTest<Coupling>
+public class Coupling : QuickTestrPropertyTest<Coupling>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -24,11 +25,12 @@ public class Coupling : TestrPropertyTest<Coupling>
     [DocTestr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() =>
-        Document(a => a.Run(1934478623));
+    public override void Example() => Document();
 
     [CodeSnippet]
-    protected override ITestrRunner GetTestr() =>
+    [CodeRemoveJournalist]
+    [CodeRemove("1934478623")]
+    protected override void GetTestr(Journalist journalist) =>
         Testr
             .Named("No two different indexes point to each other.")
             .DisableValueReduction()
@@ -44,7 +46,9 @@ public class Coupling : TestrPropertyTest<Coupling>
                     if (index != element && list[index] == element)
                         return false;
                     return true;
-                }));
+                }))
+            .StoreCaseFiles(journalist)
+            .Run(1934478623);
 
     protected override void Verify(Article article)
     {

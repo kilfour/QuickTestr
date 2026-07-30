@@ -1,4 +1,6 @@
 using QuickCheckr;
+using QuickCheckr.Authoring.ThePress;
+using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickTestr.Bolts.Builders.ModelBased;
@@ -12,21 +14,22 @@ namespace QuickTestr.Tests.Docs.C_ModelBasedTesting.Sub;
 [DocBoldHeader("SUT")]
 [DocExample(typeof(Calculator))]
 [DocTestrHeader]
-[DocExample(typeof(A_CalculatorMemory), nameof(Example))]
+[DocTestr]
 [DocReportHeader]
 [DocReport]
-public class A_CalculatorMemory : TestrModelRunTest<A_CalculatorMemory>
+public class A_CalculatorMemory : QuickTestrModelTest<A_CalculatorMemory>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
     protected override bool Explain => false;
 
     [Fact]
-    public void RunExample() => Document(Example(), a => a.Run(), _ => { });
+    public override void Example() => Document();
 
     [CodeSnippet]
-    [CodeRemove("0, 0.ExecutionsPerRun()")]
-    private static IModelrRunner Example() =>
+    [CodeRemoveJournalist]
+    [CodeRemove("1626335899, 20.ExecutionsPerRun()")]
+    protected override void GetTestr(Journalist journalist) =>
         Testr.Named("Calculator Clear matches model")
             .Model(() => new CalculatorModel())
             .Sut(() => new Calculator())
@@ -41,7 +44,33 @@ public class A_CalculatorMemory : TestrModelRunTest<A_CalculatorMemory>
                 sut => sut.Clear())
             .Observe("Result Matches",
                 (model, sut) => model.Result == sut.Result, a => a.Trace())
-            .Run(0, 0.ExecutionsPerRun());
+            .StoreCaseFiles(journalist)
+            .Run(1626335899, 20.ExecutionsPerRun());
+
+    protected override void Verify(Article article)
+    {
+        Assert.Equal("Result Matches", article.FailureDescription());
+        Assert.Equal("", article.VerifyFailed());
+        Assert.Equal(2, article.Total().Executions());
+        Assert.Equal(3, article.Total().Actions());
+        Assert.Equal(2, article.Total().Traces());
+        Assert.Equal(1, article.Total().Warnings());
+        Assert.Equal(1, article.Total().PassedExpectations());
+        Assert.Equal(16, article.ShrinkCount);
+        Assert.Equal(2, article.Execution(1).Read().ExecutionId);
+        Assert.Equal(3, article.Execution(1).Times);
+        Assert.Equal("Add Model", article.Execution(1).Action(1).Read().Label);
+        Assert.Equal("Add Sut", article.Execution(1).Action(2).Read().Label);
+        Assert.Equal("All inputs were considered irrelevant.", article.Execution(1).Warning(1).Read().Value);
+        Assert.Equal(17, article.Execution(2).Read().ExecutionId);
+        Assert.Equal("Clear", article.Execution(2).Action(1).Read().Label);
+        Assert.Equal("Model:", article.Execution(2).Trace(1).Read().Label);
+        Assert.Equal("{ Result: 0 }", article.Execution(2).Trace(1).Read().Value);
+        Assert.Equal("Sut:  ", article.Execution(2).Trace(2).Read().Label);
+        Assert.Equal("{ Result: 124 }", article.Execution(2).Trace(2).Read().Value);
+        Assert.Equal("Result Matches", article.PassedExpectation(1).Read().Label);
+        Assert.Equal(16, article.PassedExpectation(1).Read().TimesPassed);
+    }
 }
 
 

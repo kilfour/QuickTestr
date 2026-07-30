@@ -3,6 +3,7 @@ using QuickTestr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
 
 namespace QuickTestr.Tests.Challenges.E_LengthList;
 
@@ -20,7 +21,7 @@ This is only interesting as a test of a problem
 In particular the use of the length parameter is critical,
 and the challenge is to shrink this example to `[900]` reliably when using a PBT library's built in generator for lists.
 ")]
-public class LengthList : TestrPropertyTest<LengthList>
+public class LengthList : QuickTestrPropertyTest<LengthList>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -31,17 +32,20 @@ public class LengthList : TestrPropertyTest<LengthList>
     [DocTestr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() =>
-        Document(a => a.Run(357470573));
+    public override void Example() => Document();
 
     [CodeSnippet]
-    protected override ITestrRunner GetTestr() =>
+    [CodeRemoveJournalist]
+    [CodeRemove("357470573")]
+    protected override void GetTestr(Journalist journalist) =>
         Testr.Named("The maximum value of the list is smaller than 900.")
             .For(
                 from length in Fuzzr.Int(1, 100)
                 from list in Fuzzr.Int(0, 1000).Many(length)
                 select list.ToList())
-            .Assert(a => a.Max() < 900);
+            .Assert(a => a.Max() < 900)
+            .StoreCaseFiles(journalist)
+            .Run(357470573);
 
     protected override void Verify(Article article)
     {

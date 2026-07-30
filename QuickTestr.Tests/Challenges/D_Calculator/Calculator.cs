@@ -46,8 +46,7 @@ public class Calculator : QuickTestrPropertyTest<Calculator>
     [CodeRemoveJournalist]
     [CodeRemove("12901993")]
     protected override void GetTestr(Journalist journalist) =>
-        Testr
-            .Named("No division by zero")
+        Testr.Named("No division by zero")
             .Format(TheFormatr)
             .For(TheFuzzr, TheShrinkr)
             .Deliberate(a => DepthOf(a))

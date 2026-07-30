@@ -179,8 +179,7 @@ One of the possible difficulties that might come up is the shrinking of recursiv
 
 **The Testr:**  
 ```csharp
-Testr
-    .Named("No division by zero")
+Testr.Named("No division by zero")
     .Format(TheFormatr)
     .For(TheFuzzr, TheShrinkr)
     .Deliberate(a => DepthOf(a))
@@ -283,7 +282,8 @@ Testr.Named("The maximum value of the list is smaller than 900.")
         from length in Fuzzr.Int(1, 100)
         from list in Fuzzr.Int(0, 1000).Many(length)
         select list.ToList())
-    .Assert(a => a.Max() < 900);
+    .Assert(a => a.Max() < 900)
+    .Run();
 ```
 
 **The Report:**  
@@ -340,7 +340,8 @@ The smallest falsified sample is `[10, 10]`
 ```csharp
 Testr.Named("Difference must not be zero.")
     .For(TheFuzzr, Shrinkr)
-    .Assert(a => a.A < 10 || a.A != a.B);
+    .Assert(a => a.A < 10 || a.A != a.B)
+    .Run();
 ```
 
 **The Report:**  
@@ -366,7 +367,8 @@ The smallest falsified sample is `[10, 6]`.
 ```csharp
 Testr.Named("Difference must not be small.")
     .For(TheFuzzr, Shrinkr)
-    .Assert(a => a.A < 10 || Math.Abs(a.A - a.B) > 4 || a.A == a.B);
+    .Assert(a => a.A < 10 || Math.Abs(a.A - a.B) > 4 || a.A == a.B)
+    .Run();
 ```
 
 **The Report:**  
@@ -392,7 +394,8 @@ The smallest falsified sample is `[10, 9]`.
 ```csharp
 Testr.Named("Difference is not exactly 1.")
     .For(TheFuzzr, Shrinkr)
-    .Assert(a => a.A < 10 || Math.Abs(a.A - a.B) != 1);
+    .Assert(a => a.A < 10 || Math.Abs(a.A - a.B) != 1)
+    .Run();
 ```
 
 **The Report:**  
@@ -427,7 +430,8 @@ Testr.Named("Heap sort is correct.")
         var correct = Flatten(a).OrderBy(x => x).ToList();
         var buggy = Flatten(a).ToList();
         return correct.SequenceEqual(buggy);
-    });
+    })
+    .Run();
 ```
 
 **The Fuzzr:**  
@@ -482,7 +486,8 @@ Testr
             if (index != element && list[index] == element)
                 return false;
             return true;
-        }));
+        }))
+    .Run();
 ```
 
 **The Report:**  
@@ -524,7 +529,8 @@ Testr
         var list = a.Item1.ToList();
         list.Remove(a.Item2);
         return !list.Contains(a.Item2);
-    });
+    })
+    .Run();
 ```
 
 **The Report:**  
@@ -564,7 +570,8 @@ Testr
         if (a.Count() >= 3)
             return a.ToHashSet().Count >= 3;
         return true;
-    });
+    })
+    .Run();
 ```
 
 **The Report:**  
@@ -601,7 +608,8 @@ Testr
     .Named("The sum of lengths of the element lists is at most 10.")
     .For(Fuzzr.Int().Many(0, 20).ToList().Many(0, 20).ToList())
     .Deliberate(a => a.Count)
-    .Assert(a => a.Sum(a => a.Count) <= 10);
+    .Assert(a => a.Sum(a => a.Count) <= 10)
+    .Run();
 ```
 
 **The Report:**  

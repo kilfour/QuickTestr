@@ -3,6 +3,7 @@ using QuickTestr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
 
 namespace QuickTestr.Tests.Challenges.G_BinHeap;
 
@@ -17,7 +18,7 @@ Interestingly most libraries seem to never find the smallest example here,
 which is the four valued heap (0, None, (0, (0, None, None), (1, None, None))). 
 This is essentially because small examples are ""too sparse"", so it's very hard to find one by luck.
 ")]
-public class BinHeap : TestrPropertyTest<BinHeap>
+public class BinHeap : QuickTestrPropertyTest<BinHeap>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -30,11 +31,12 @@ public class BinHeap : TestrPropertyTest<BinHeap>
     [DocExample(typeof(BinHeap), nameof(TheFuzzr))]
     [DocReportHeader]
     [DocReport]
-    public override void Example() =>
-        Document(a => a.Run(2136249593));
+    public override void Example() => Document();
 
     [CodeSnippet]
-    protected override ITestrRunner GetTestr() =>
+    [CodeRemoveJournalist]
+    [CodeRemove("2136249593")]
+    protected override void GetTestr(Journalist journalist) =>
         Testr.Named("Heap sort is correct.")
             .For(TheFuzzr)
             .Deliberate(a => Flatten(a).Count())
@@ -43,7 +45,9 @@ public class BinHeap : TestrPropertyTest<BinHeap>
                 var correct = Flatten(a).OrderBy(x => x).ToList();
                 var buggy = Flatten(a).ToList();
                 return correct.SequenceEqual(buggy);
-            });
+            })
+            .StoreCaseFiles(journalist)
+            .Run(2136249593);
 
     [CodeSnippet]
     private static readonly FuzzrOf<Heap> TheFuzzr =

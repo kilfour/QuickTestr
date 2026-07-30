@@ -2,6 +2,7 @@ using QuickTestr.Tests.Tools;
 using QuickFuzzr;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
 
 namespace QuickTestr.Tests.Challenges.I_Deletion;
 
@@ -21,7 +22,7 @@ This example is interesting for a couple of reasons:
 
 The expected smallest falsified sample is `([0, 0], 0)`.
 ")]
-public class Deletion : TestrPropertyTest<Deletion>
+public class Deletion : QuickTestrPropertyTest<Deletion>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -32,11 +33,12 @@ public class Deletion : TestrPropertyTest<Deletion>
     [DocTestr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() =>
-        Document(a => a.Run(712389878));
+    public override void Example() => Document();
 
     [CodeSnippet]
-    protected override ITestrRunner GetTestr() =>
+    [CodeRemoveJournalist]
+    [CodeRemove("712389878")]
+    protected override void GetTestr(Journalist journalist) =>
         Testr
             .Named("Element is no longer in the list.")
             .For(Fuzzr.Tuple(Fuzzr.Int(1, 10).Many(3, 20), Fuzzr.Int(1, 10)))
@@ -45,7 +47,9 @@ public class Deletion : TestrPropertyTest<Deletion>
                 var list = a.Item1.ToList();
                 list.Remove(a.Item2);
                 return !list.Contains(a.Item2);
-            });
+            })
+            .StoreCaseFiles(journalist)
+            .Run(712389878);
 
     protected override void Verify(Article article)
     {

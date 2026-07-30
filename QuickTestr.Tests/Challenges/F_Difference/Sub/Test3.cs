@@ -1,6 +1,7 @@
 using QuickTestr.Tests.Tools;
 using QuickPulse.Explains;
 using QuickCheckr.Authoring.ThePress.Printing;
+using QuickCheckr.Authoring.ThePress;
 
 namespace QuickTestr.Tests.Challenges.F_Difference.Sub;
 
@@ -12,7 +13,7 @@ Test 3 ('difference must not be one') only succeeds if
 - _or_ the difference is not exactly 1.
 The smallest falsified sample is `[10, 9]`.
 ")]
-public class Test3 : TestrPropertyTest<Test3>
+public class Test3 : QuickTestrPropertyTest<Test3>
 {
     protected override bool Asserts => false;
     protected override bool Report => false;
@@ -23,16 +24,19 @@ public class Test3 : TestrPropertyTest<Test3>
     [DocTestr]
     [DocReportHeader]
     [DocReport]
-    public override void Example() =>
-        Document(a => a.Run(1231462692));
+    public override void Example() => Document();
 
     [CodeSnippet]
     [CodeRemove("Difference.")]
     [CodeRemove("The.")]
-    protected override ITestrRunner GetTestr() =>
+    [CodeRemoveJournalist]
+    [CodeRemove("1231462692")]
+    protected override void GetTestr(Journalist journalist) =>
         Testr.Named("Difference is not exactly 1.")
             .For(Difference.TheFuzzr, Difference.The.Shrinkr)
-            .Assert(a => a.A < 10 || Math.Abs(a.A - a.B) != 1);
+            .Assert(a => a.A < 10 || Math.Abs(a.A - a.B) != 1)
+            .StoreCaseFiles(journalist)
+            .Run(1231462692);
 
     protected override void Verify(Article article)
     {
