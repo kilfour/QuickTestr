@@ -3,6 +3,7 @@ using QuickCheckr.Authoring.ThePress;
 using QuickCheckr.Authoring.ThePress.Printing;
 using QuickFuzzr;
 using QuickPulse.Explains;
+using QuickTestr.Bolts.Builders;
 using QuickTestr.Tests.Tools;
 
 namespace QuickTestr.Tests.Notes.X_FingerPrinting;
@@ -25,10 +26,8 @@ public class B_Oracled : QuickTestrOracleTest<B_Oracled>
     public override void Example() => Document();
 
     [CodeSnippet]
-    private ITestrRunner RunIt(ITestrRunner testr) =>
-        testr
-            .WithVault<int>()
-            .FillVault(5.Searches(), 10.Runs());
+    private TestrRunner<int> RunIt(TestrRunner<int> testr) =>
+        testr.FillVault(5.Searches(), 10.Runs());
 
     [CodeSnippet]
     [CodeRemoveJournalist]

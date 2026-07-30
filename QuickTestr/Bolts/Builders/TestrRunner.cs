@@ -10,7 +10,7 @@ namespace QuickTestr.Bolts.Builders;
 /// Provides the shared execution and vault behavior for concrete Testr runners.
 /// Use as the base implementation for property-based and oracle-based runner types.
 /// </summary>
-public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
+public abstract class TestrRunner<TInput>
 {
     protected string fileName = string.Empty;
     protected virtual string TestName { get; } = string.Empty;
@@ -21,7 +21,7 @@ public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
     /// Use for the normal execution path when you do not need explicit configuration.
     /// </summary>
     [StackTraceHidden]
-    public ITestrRunner Run()
+    public TestrRunner<TInput> Run()
         => Run(100.Runs());
 
     /// <summary>
@@ -29,7 +29,7 @@ public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
     /// Use when you want a reproducible execution of a known case.
     /// </summary>
     [StackTraceHidden]
-    public ITestrRunner Run(int seed)
+    public TestrRunner<TInput> Run(int seed)
     {
         GetCheckr().Configure(GetConfig()).Run(seed);
         return this;
@@ -41,7 +41,7 @@ public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
     /// Use when you want to control how much search effort is spent.
     /// </summary>
     [StackTraceHidden]
-    public ITestrRunner Run(RunCount tries)
+    public TestrRunner<TInput> Run(RunCount tries)
     {
         GetCheckr().Configure(GetConfig()).Run(tries);
         return this;
@@ -51,7 +51,7 @@ public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
     /// Persists case files for this Testr under its test name.
     /// Use when you want to inspect or clean up stored cases later through the vault workflow.
     /// </summary>
-    public ITestrRunner StoreCaseFiles(ICustodian? custodian = null)
+    public TestrRunner<TInput> StoreCaseFiles(ICustodian? custodian = null)
     {
         fileName = TestName;
         this.custodian = custodian;
@@ -63,7 +63,7 @@ public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
     /// Use when you want a representative set of different failing inputs for the same Testr.
     /// Inputs are grouped by value and a limited set of failures (10) is retained.
     /// </summary>
-    public ITestrRunner FillVault(
+    public TestrRunner<TInput> FillVault(
         SearchCount searchCount,
         RunCount runs) =>
             FillVault(searchCount, runs, VaultPolicy<TInput>.Default);
@@ -72,7 +72,7 @@ public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
     /// Searches for distinct failing cases and stores them in the vault using a custom policy.
     /// Use when you want to control how failures are grouped, limited, or skipped during vault filling.
     /// </summary>
-    public ITestrRunner FillVault(
+    public TestrRunner<TInput> FillVault(
         SearchCount searchCount,
         RunCount runs,
         VaultPolicy<TInput> policy)
@@ -98,7 +98,7 @@ public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
     /// Re-runs the stored vault cases and reports which ones still fail.
     /// Use to review persisted seeds after code changes or fixes.
     /// </summary>
-    public ITestrRunner InspectVault()
+    public TestrRunner<TInput> InspectVault()
     {
         GetCheckr()
             .Configure(AddFileAsToConfig())
@@ -111,7 +111,7 @@ public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
     /// Removes or closes vault cases that no longer reproduce.
     /// Use to keep the vault focused on still-relevant failures.
     /// </summary>
-    public ITestrRunner CleanupVault()
+    public TestrRunner<TInput> CleanupVault()
     {
         GetCheckr()
             .Configure(AddFileAsToConfig())
@@ -125,16 +125,4 @@ public abstract class TestrRunner<TInput> : ITestrRunner, ITestrRunner<TInput>
 
     protected abstract CheckrOf<Case> GetCheckr();
     protected abstract Func<CheckrConfig, CheckrConfig> GetConfig();
-
-    /// <summary>
-    /// Re-enters the typed vault workflow for this Testr.
-    /// Use when the runner is stored non-generically but you want to fill or inspect the vault.
-    /// </summary>
-    public ITestrRunner<T> WithVault<T>()
-    {
-        if (this is ITestrRunner<T> typed)
-            return typed;
-        throw new InvalidOperationException(
-            $"This Testr expects input of type '{typeof(TInput).Name}', not '{typeof(T).Name}'.");
-    }
 }

@@ -18,10 +18,10 @@ namespace QuickTestr.Tests;
 public class CreateReadme
 {
     [Fact]
-    public void Example() => Assert.Throws<FalsifiableException>(TheTestr().Run);
+    public void Example() => Assert.Throws<FalsifiableException>(TheTestr);
 
     [CodeSnippet]
-    private static ITestrRunner TheTestr() =>
+    private static void TheTestr() =>
         Testr.Named("Reversing a list of integers results in the same list")
             .For(Fuzzr.Int().Many(0, 10).ToList())
             .Assert(a =>
@@ -29,10 +29,11 @@ public class CreateReadme
                 var reversed = new List<int>(a);
                 reversed.Reverse();
                 return reversed.SequenceEqual(a);
-            });
+            })
+            .Run();
 
     [CodeSnippet]
-    private static ITestrRunner DefineProperty() =>
+    private static void DefineProperty() =>
         Testr.Named("The maximum value of the list is smaller than 900.")
             .For(
                 from length in Fuzzr.Int(1, 100)
