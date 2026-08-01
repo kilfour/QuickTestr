@@ -1,14 +1,122 @@
 # QuickTestr
-QuickTestr currently supports three styles:
+Start with [Getting Started][GettingStarted], then choose the style that fits the
+thing you want to verify:
+
 - [Property-based][PropertyBased] : Define what should always hold.
 - [Oracle-based][OracleBased]: Compare against something that already works.
 - [Model-based][ModelBased]: Compare state transitions against a model.  
+
+[GettingStarted]: #getting-started
 
 [PropertyBased]: #property-based-style-testing
 
 [OracleBased]: #oracle-based-style-testing
 
 [ModelBased]: #model-based-testing
+## Getting Started
+QuickTestr checks a claim against many generated inputs. When it finds a counterexample,
+it tries to reduce that input to something smaller and reports both the failure and the
+seed needed to reproduce it.
+
+### Install
+
+Add QuickTestr to your test project:
+
+```bash
+dotnet add package QuickTestr
+```
+
+The examples below use:
+
+```csharp
+using QuickFuzzr;
+using QuickTestr;
+```
+
+QuickTestr works inside an ordinary test method. It does not require a custom test
+runner: when a claim is falsified, `Run()` throws and your existing test framework
+records the failure.  
+### Your First Testr
+Suppose this implementation of `Double` contains a boundary bug:
+
+```csharp
+static int Double(int value) => value > 42 ? 0 : value * 2;
+```
+
+We can describe what doubling should always mean and let QuickTestr search for an
+input that disproves it.  
+
+**The Testr:**  
+```csharp
+Testr.Named("Doubling matches addition")
+    .For(Fuzzr.Int(0, 100))
+    .Assert(value => Double(value) == value + value)
+    .Run();
+```
+The chain reads from top to bottom:
+
+- `Named` labels the claim in the report.
+- `For` supplies generated inputs. Here they are integers from 0 through 100.
+- `Assert` describes the property that should hold for every generated input.
+- `Run` performs the search.
+
+This test fails because the implementation disagrees with the property above 42.
+QuickTestr then reduces the failing value to the boundary where the bug begins.  
+
+**The Report:**  
+```text
+------------------------------------------------------------
+  Doubling matches addition
+  Seed: 1471595869
+ ------------------------------------------------------------
+  Falsified:
+    Input = 94
+    Redux = 43
+ ------------------------------------------------------------
+```
+### Reading the Report
+The report separates three useful values:
+
+- **Input** is the failing value after structural reduction.
+- **Redux** is the value-reduced form, when value reduction can make the failure
+  clearer.
+- **Original** appears when structural reduction changed the input and preserves
+  the generated value that first exposed the problem.
+
+The seed identifies the random run. Pass it to `Run(seed)` while investigating a
+failure:
+
+```csharp
+.Run(1471595869);
+```
+
+Once the problem is fixed, return to `Run()` so later test runs continue exploring
+new inputs.
+
+#### The Basic Shape
+
+Most QuickTestr properties follow the same four-part shape:
+
+```csharp
+Testr.Named("A useful description")
+    .For(inputGenerator)
+    .Assert(input => claim)
+    .Run();
+```
+
+Generation is provided by
+[QuickFuzzr](https://github.com/kilfour/QuickFuzzr/blob/main/README.md).
+Generators compose, so inputs can range from a single integer to collections and
+domain-specific objects.
+
+From here:
+
+- Use [property-based testing][PropertyBased] when you can state what must always
+  be true.
+- Use [oracle-based testing][OracleBased] when you can compare with a trusted
+  implementation.
+- Use [model-based testing][ModelBased] when correctness depends on a sequence of state
+  transitions.  
 ## Property-based Style Testing
 In property-based testing you describe **what should always be true**, regardless of the input.  
 QuickTestr generates many inputs and tries to falsify your rule, shrinking failures to a minimal example.

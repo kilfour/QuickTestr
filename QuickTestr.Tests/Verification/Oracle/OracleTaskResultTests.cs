@@ -86,4 +86,45 @@ public class OracleTaskResultTests
         Assert.Throws<FalsifiableException>(
             () => runner.Run(1.Runs()));
     }
+
+    [Fact]
+    public void ReportsNullResultMismatchWithoutAccessingTheMissingValue()
+    {
+        var runner =
+            Testr.Named("Null result mismatch")
+                .For(Fuzzr.Constant(42))
+                .Expected(_ => (string?)"value")
+                .Actual(_ => (string?)null);
+
+        Assert.Throws<FalsifiableException>(
+            () => runner.Run(1.Runs()));
+    }
+
+    [Fact]
+    public void ReportsTwoInputNullResultMismatchWithoutAccessingTheMissingValue()
+    {
+        var runner =
+            Testr.Named("Two-input null result mismatch")
+                .For(Fuzzr.Constant(20), Fuzzr.Constant(22))
+                .Expected((_, _) => (string?)null)
+                .Actual((_, _) => "value");
+
+        Assert.Throws<FalsifiableException>(
+            () => runner.Run(1.Runs()));
+    }
+
+    [Fact]
+    public void ShrinkingPreservesTheOriginalResultShape()
+    {
+        var runner =
+            Testr.Named("Stable oracle mismatch")
+                .For(Fuzzr.Constant(new List<int> { 1, 2 }))
+                .Expected(input => (int?)input.Count)
+                .Actual(input => input.Count == 1 ? null : 0);
+
+        var failure = Assert.Throws<FalsifiableException>(
+            () => runner.Run(1.Runs()));
+
+        Assert.Contains("Input = [ _, _ ]", failure.Message);
+    }
 }

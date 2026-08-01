@@ -23,7 +23,7 @@ public class NamedTestr(string testName)
     /// Adds custom formatters to the report for the generated input.
     /// Use when the default rendering does not explain the failing example clearly enough.
     /// </summary>
-    public NamedTestr Format(CheckrOf<Case>[] formatters) { this.formatters = formatters; return this; }
+    public NamedTestr Format(params CheckrOf<Case>[] formatters) { this.formatters = formatters; return this; }
 
     /// <summary>
     /// Selects the input generator and optional custom shrinkers for this Testr.
