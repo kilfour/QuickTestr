@@ -1,4 +1,4 @@
-### Next
+### 0.0.8: Another Five Cent Towards the Billion Dollar Mistake
 
 * Added seeded debug runs with `AutopsyProbe` support.
 * Improved oracle diagnostics by recording inputs and results and displaying `null` results explicitly.
