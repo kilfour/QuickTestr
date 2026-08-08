@@ -1,4 +1,5 @@
 using QuickCheckr;
+using QuickCheckr.Diagnostics;
 using QuickCheckr.Protocol;
 using QuickCheckr.UnderTheHood;
 using QuickFuzzr;
@@ -27,19 +28,30 @@ public class TestrOracleRunner<TInput, TResult>(
         from showr in Showr.ForInput()
         from format in Combine.Checkrs(formatters)
         from input in Checkr.Input("Input", fuzzr, shrinkers)
+        from noteInput in Autopsy.Note("Input", () => input)
         from expected in Checkr.ActCarefully("Expected", () => Expected(input))
         from actual in Checkr.ActCarefully("Actual", () => Actual(input))
-        from traceExpectedValue in Checkr.TraceWhen("Expected", () => !expected.Threw, () => expected.Value)
-        from traceExpectedException in Checkr.TraceWhen("Expected", () => expected.Threw, () => GetExceptionReport(expected.Exception!))
-        from traceActualValue in Checkr.TraceWhen("Actual  ", () => !actual.Threw, () => actual.Value)
-        from traceActualException in Checkr.TraceWhen("Actual  ", () => actual.Threw, () => GetExceptionReport(actual.Exception!))
+        from traceExpected in Trace("Expected", expected)
+        from noteExpected in Note("Expected", expected)
+        from traceActual in Trace("Actual  ", actual)
+        from noteActual in Note("Actual  ", actual)
         from expectation in Checkr.Expect(TestName, () => CheckResults(expected, actual))
         select Case.Closed;
 
+    private static CheckrOf<Case> Trace(string label, DelayedResult<TResult> result) =>
+        from traceValue in Checkr.TraceWhen(label, () => !result.Threw && result.HasValue, () => result.Value)
+        from traceValueNull in Checkr.TraceWhen(label, () => !result.Threw && !result.HasValue, () => "null")
+        from traceException in Checkr.TraceWhen(label, () => result.Threw, () => GetExceptionReport(result.Exception!))
+        select Case.Closed;
+
+    private static CheckrOf<Case> Note(string label, DelayedResult<TResult> result) =>
+        from noteValue in Checkr.When(() => !result.Threw && result.HasValue, Autopsy.Note(label, () => result.Value))
+        from noteValueNull in Checkr.When(() => !result.Threw && !result.HasValue, Autopsy.Note(label, () => "null"))
+        from noteException in Checkr.When(() => result.Threw, Autopsy.Note(label, () => GetExceptionReport(result.Exception!)))
+        select Case.Closed;
+
     private static string GetExceptionReport(Exception exception)
-    {
-        return $"{exception!.GetType().Name}: {exception.Message}";
-    }
+        => $"{exception.GetType().Name}: {exception.Message}";
 
     private static bool CheckResults(DelayedResult<TResult> expected, DelayedResult<TResult> actual)
     {

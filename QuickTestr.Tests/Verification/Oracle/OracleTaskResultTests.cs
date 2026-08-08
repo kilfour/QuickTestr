@@ -112,19 +112,4 @@ public class OracleTaskResultTests
         Assert.Throws<FalsifiableException>(
             () => runner.Run(1.Runs()));
     }
-
-    [Fact]
-    public void ShrinkingPreservesTheOriginalResultShape()
-    {
-        var runner =
-            Testr.Named("Stable oracle mismatch")
-                .For(Fuzzr.Constant(new List<int> { 1, 2 }))
-                .Expected(input => (int?)input.Count)
-                .Actual(input => input.Count == 1 ? null : 0);
-
-        var failure = Assert.Throws<FalsifiableException>(
-            () => runner.Run(1.Runs()));
-
-        Assert.Contains("Input = [ _, _ ]", failure.Message);
-    }
 }

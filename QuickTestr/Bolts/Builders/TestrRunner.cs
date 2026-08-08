@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using QuickCheckr;
+using QuickCheckr.Diagnostics;
 using QuickCheckr.Protocol;
 using QuickCheckr.Protocol.Custodians;
 
@@ -116,6 +117,12 @@ public abstract class TestrRunner<TInput>
         GetCheckr()
             .Configure(AddFileAsToConfig())
             .CloseResolvedColdCases();
+        return this;
+    }
+
+    public TestrRunner<TInput> Debug(int seed, AutopsyProbe autopsyProbe)
+    {
+        GetCheckr().Configure(GetConfig()).Autopsy(seed, 1.ExecutionsPerRun(), autopsyProbe);
         return this;
     }
 
